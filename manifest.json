@@ -9,12 +9,13 @@
   "permissions": [
     "identity",
     "storage",
-    "https://myshows.me/oauth/authorize",
-    "https://myshows.me/oauth/token"
+    "https://*.myshows.me/oauth/*"
   ],
   "background": {
     "scripts": [
       "scripts/config.js",
+      "scripts/app.js",
+      "scripts/types.js",
       "scripts/background.js"
     ]
   },
