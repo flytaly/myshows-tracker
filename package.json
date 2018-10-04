@@ -1,0 +1,16 @@
+{
+  "name": "myshows-tracker",
+  "version": "1.0.0",
+  "description": "Myshows.me Firefox extension for tracking TV shows",
+  "main": "manifest.json",
+  "scripts": {
+    "start": "web-ext run",
+    "start:ffdev": "web-ext run --firefox=firefoxdeveloperedition"
+  },
+  "author": "Vitaly Yerofeyevsky",
+  "license": "ISC",
+  "devDependencies": {
+    "web-ext": "^2.9.1"
+  },
+  "eslintIgnore": ["config.js"]
+}

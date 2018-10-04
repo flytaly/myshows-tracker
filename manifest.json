@@ -1,0 +1,25 @@
+{
+  "description": "Myshows.me extension for tracking TV shows",
+  "manifest_version": 2,
+  "name": "MyShows: TV Show tracker",
+  "version": "1.0",
+  "homepage_url": "https://localhost",
+  "icons": {
+  },
+  "permissions": [
+    "identity",
+    "storage",
+    "https://myshows.me/oauth/authorize",
+    "https://myshows.me/oauth/token"
+  ],
+  "background": {
+    "scripts": [
+      "scripts/config.js",
+      "scripts/background.js"
+    ]
+  },
+  "browser_action": {
+    "default_title": "MyShows",
+    "default_popup": "popup/popup.html"
+  }
+}
