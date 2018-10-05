@@ -74,6 +74,14 @@ const app = {
         return false;
     },
 
+    async saveToStorage(data) {
+        let expiresIn;
+        if (data.expiresIn) {
+            expiresIn = (new Date()).getTime() + data.expiresIn * 1000;
+        }
+        return browser.storage.local.set({ ...data, expiresIn });
+    },
+
     async login() {
         const state = this.generateAuthState();
         const code = await this.getAuthCode(state);
@@ -84,7 +92,8 @@ const app = {
                 expires_in: expiresIn,
                 refresh_token: refreshToken,
             } = await this.getTokens(code);
-            /* TODO: save data to localStorage */
+            await this.saveToStorage({ accessToken, expiresIn, refreshToken });
+            return true;
         } catch (e) {
             console.error(e);
         }

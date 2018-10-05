@@ -1,10 +1,9 @@
 /* global browser, types, app */
-
-browser.runtime.onMessage.addListener((message) => {
+browser.runtime.onMessage.addListener(async (message) => {
     const { type } = message;
     switch (type) {
         case types.LOGIN:
-            app.login();
+            await app.login();
             break;
         default:
     }
