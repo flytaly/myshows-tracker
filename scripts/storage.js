@@ -6,6 +6,11 @@ const storage = {
         return browser.storage.local.get(['accessToken', 'expiresIn', 'refreshToken']);
     },
 
+    async getWatchingShows() {
+        const { watchingShows } = await browser.storage.local.get(['watchingShows']);
+        return watchingShows;
+    },
+
     async saveAuthData(data) {
         let expiresIn;
         if (data.expiresIn) {

@@ -115,9 +115,7 @@ const app = {
     async updateData() {
         const { result } = await rpcHandler.profileShows();
         const shows = this.leftToWatch(result);
-        if (shows.length) {
-            await storage.saveWatchingShows(shows);
-        }
+        await storage.saveWatchingShows(shows.length ? shows : []);
         return true;
     },
 };
