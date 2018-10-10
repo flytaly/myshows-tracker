@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-/* global browser, clientId, clientSecret, redirectUri */
+/* global browser, clientId, clientSecret, redirectUri, storage, rpcHandler */
 
 const mapObjToQueryStr = params => Object.entries(params).map(pair => pair.join('=')).join('&');
 
@@ -74,14 +74,6 @@ const app = {
         return false;
     },
 
-    async saveToStorage(data) {
-        let expiresIn;
-        if (data.expiresIn) {
-            expiresIn = (new Date()).getTime() + data.expiresIn * 1000;
-        }
-        return browser.storage.local.set({ ...data, expiresIn });
-    },
-
     async login() {
         const state = this.generateAuthState();
         const code = await this.getAuthCode(state);
@@ -92,11 +84,40 @@ const app = {
                 expires_in: expiresIn,
                 refresh_token: refreshToken,
             } = await this.getTokens(code);
-            await this.saveToStorage({ accessToken, expiresIn, refreshToken });
+            await storage.saveAuthData({ accessToken, expiresIn, refreshToken });
             return true;
         } catch (e) {
             console.error(e);
         }
         return false;
+    },
+
+    // initiate authentication next time user click badge
+    setAuth() {
+        browser.browserAction.setPopup({ popup: '' });
+        browser.browserAction.setBadgeText({ text: '...' });
+        browser.browserAction.onClicked.addListener(async () => {
+            if (await this.login()) {
+                browser.browserAction.setPopup({ popup: browser.extension.getURL('popup/popup.html') });
+                browser.browserAction.setBadgeText({ text: '' });
+            }
+        });
+    },
+
+    /* Return shows that are being watched and have unwatched episodes */
+    leftToWatch(showRecords) {
+        const watchingShows = showRecords.filter(s => s.watchStatus === 'watching');
+        return watchingShows.filter(
+            ({ totalEpisodes, watchedEpisodes }) => totalEpisodes !== watchedEpisodes,
+        );
+    },
+
+    async updateData() {
+        const { result } = await rpcHandler.profileShows();
+        const shows = this.leftToWatch(result);
+        if (shows.length) {
+            await storage.saveWatchingShows(shows);
+        }
+        return true;
     },
 };

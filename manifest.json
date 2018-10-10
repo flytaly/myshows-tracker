@@ -9,13 +9,15 @@
   "permissions": [
     "identity",
     "storage",
-    "https://*.myshows.me/oauth/*"
+    "https://*.myshows.me/*"
   ],
   "background": {
     "scripts": [
       "scripts/config.js",
       "scripts/app.js",
       "scripts/types.js",
+      "scripts/storage.js",
+      "scripts/rpc-handler.js",
       "scripts/background.js"
     ]
   },
