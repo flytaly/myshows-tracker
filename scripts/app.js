@@ -112,10 +112,32 @@ const app = {
         );
     },
 
+    async episodesToWatch(showIds) {
+        const allEpisodes = await Promise.all(showIds.map(async (id) => {
+            const { result } = await rpcHandler.showsGetById(id);
+            return result.episodes;
+        }));
+        const watchedEpisodes = await Promise.all(showIds.map(async (id) => {
+            const { result } = await rpcHandler.profileEpisodes(id);
+            const episodeIds = result.map(e => e.id);
+            return episodeIds;
+        }));
+
+        const unwatchedEps = showIds.reduce((acc, showId, index) => {
+            acc[showId] = allEpisodes[index].filter(({ id }) => !watchedEpisodes[index].includes(id));
+            return acc;
+        }, {});
+
+        return unwatchedEps;
+    },
+
     async updateData() {
-        const { result } = await rpcHandler.profileShows();
-        const shows = this.leftToWatch(result);
+        const { result: allShows } = await rpcHandler.profileShows();
+        const shows = this.leftToWatch(allShows);
+        const showIds = shows.map(({ show }) => show.id);
+        const unwatchedEps = await this.episodesToWatch(showIds);
         await storage.saveWatchingShows(shows.length ? shows : []);
+        await storage.saveEpisodesToWatch(unwatchedEps);
         return true;
     },
 };

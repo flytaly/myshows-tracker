@@ -38,6 +38,8 @@ const rpcHandler = {
         return result;
     },
 
+    // List of RPC methods: https://api.myshows.me/shared/doc/
+
     // ========== Profile Methods ==========
     async profileGet() {
         return this.request('profile.Get');
@@ -54,4 +56,16 @@ const rpcHandler = {
     async profileEpisodes(showId) {
         return this.request('profile.Episodes', { showId });
     },
+
+    // ========== Shows Methods ==========
+    /*  Get show's info */
+    async showsGetById(showId, withEpisodes = true) {
+        return this.request('shows.GetById', { showId, withEpisodes });
+    },
+
+    async showsEpisode(id) {
+        return this.request('shows.Episode', { id });
+    },
+
+
 };
