@@ -1,20 +1,40 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="popup-styles.css">
-  </head>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup-styles.css">
+</head>
 
 <body>
-  <div id="popup-content">
-    <ul id="show-list">
-    </ul>
+  <div class="container">
+    <div id="main-view">
+      <ul class="show-list">
+        <template id="show-element">
+          <li><a href="#"></a></li>
+        </template>
+      </ul>
+    </div>
 
-    <button id="go-back" href="#" hidden>Back</button>
-    <ul id="episode-list" hidden>
+    <div id="episode-view" hidden>
+      <button id="go-back">Back</button>
+      <ul class="episode-list">
+        <template id="episode-element">
+          <li>
+            <div class="ep-check"></div>
+            <div class="ep-info">
+              <div class="ep-title"><a href="#"></a></div>
+              <div>
+                <div class="ep-number"></div>
+                <div class="ep-date"></div>
+              </div>
+            </div>
+            <div class="ep-comments"></div>
+          </li>
+        </template>
+      </ul>
+    </div>
 
-    </ul>
   </div>
   <script src="../scripts/types.js"></script>
   <script src="../scripts/storage.js"></script>

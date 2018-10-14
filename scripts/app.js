@@ -100,6 +100,7 @@ const app = {
             if (await this.login()) {
                 browser.browserAction.setPopup({ popup: browser.extension.getURL('popup/popup.html') });
                 browser.browserAction.setBadgeText({ text: '' });
+                return true;
             }
         });
     },

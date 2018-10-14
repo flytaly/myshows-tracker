@@ -2,9 +2,55 @@
 
 // browser.runtime.sendMessage({ type: types.LOGIN });
 
-const showList = document.getElementById('show-list');
-const episodeList = document.getElementById('episode-list');
-const goBackButton = document.getElementById('go-back');
+const getElem = document.getElementById.bind(document);
+
+const mainView = getElem('main-view');
+const episodeView = getElem('episode-view');
+
+const showElemTemplate = getElem('show-element');
+const episodeElemTemplate = getElem('episode-element');
+
+
+function renderShowRow({ show }, onClick) {
+    const listElem = showElemTemplate.content.cloneNode(true);
+    const link = listElem.querySelector('a');
+    link.dataset.id = show.id;
+    link.title = show.title;
+    link.href = `https://myshows.me/view/${show.id}/`;
+    link.innerText = show.title;
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const { id } = e.target.dataset;
+        onClick(id);
+    });
+    return listElem;
+}
+
+
+function renderEpisodeRow({
+    id, title, shortName, airDateUTC, commentsCount,
+}) {
+    const ep = episodeElemTemplate.content.cloneNode(true);
+    const link = ep.querySelector('.ep-title a');
+    const epNumber = ep.querySelector('.ep-number');
+    const epDate = ep.querySelector('.ep-date');
+    const epComments = ep.querySelector('.ep-comments');
+    const date = airDateUTC ? new Date(airDateUTC) : null;
+    link.href = `https://myshows.me/view/episode/${id}/`;
+    link.title = title;
+    link.innerText = title;
+    epNumber.textContent = shortName;
+
+    if (date) {
+        epDate.textContent = date.toLocaleDateString();
+        epDate.title = date.toLocaleString();
+    }
+
+    epComments.textContent = commentsCount;
+    epComments.title = `${commentsCount} comments`;
+
+    return ep;
+}
 
 const nav = {
     places: {
@@ -13,65 +59,48 @@ const nav = {
     },
     async navigate(location, params) {
         switch (location) {
-            case this.places.episodeList: {
-                const allEpisodes = await storage.getEpisodes();
-                if (allEpisodes) {
-                    const showEp = allEpisodes[params.id];
-                    showList.hidden = true;
-                    episodeList.hidden = false;
-                    goBackButton.hidden = false;
-                    episodeList.innerHTML = '';
+            case this.places.showList: {
+                const showList = mainView.querySelector('.show-list');
+                const shows = await storage.getWatchingShows();
+                if (!shows || !shows.length) break;
 
-                    const elems = showEp.map((episode) => {
-                        const epListElem = document.createElement('li');
-                        const linkElem = document.createElement('a');
-                        linkElem.href = `https://myshows.me/view/episode/${episode.id}/`;
-                        linkElem.title = episode.title;
-                        linkElem.innerText = episode.shortName;
-                        epListElem.appendChild(linkElem);
-                        return epListElem;
-                    });
+                mainView.hidden = false;
+                episodeView.hidden = true;
+                showList.innerHTML = '';
 
-                    episodeList.append(...elems);
-                }
+                const clickHandler = id => this.navigate(this.places.episodeList, { id });
+                showList.append(...shows.map(show => renderShowRow(show, clickHandler)));
                 break;
             }
-            case this.places.showList:
-                showList.hidden = false;
-                episodeList.hidden = true;
-                goBackButton.hidden = true;
+            case this.places.episodeList: {
+                const episodeList = episodeView.querySelector('.episode-list');
+                const allEpisodes = await storage.getEpisodes();
+                const episodes = allEpisodes ? allEpisodes[params.id] : null;
+                if (!episodes) break;
 
+                mainView.hidden = true;
+                episodeView.hidden = false;
+                episodeList.innerHTML = '';
+
+                episodeList.append(...episodes.map(ep => renderEpisodeRow(ep)));
+                break;
+            }
 
             default:
         }
     },
 };
 
-async function displayShows() {
-    const shows = await storage.getWatchingShows();
-    if (shows) {
-        const elems = shows.map(({ show }) => {
-            const listElem = document.createElement('li');
-            const link = document.createElement('a');
-            link.dataset.id = show.id;
-            link.title = show.titleOriginal;
-            link.href = `https://myshows.me/view/${show.id}/`;
-            link.innerText = show.title;
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const { id } = e.target.dataset;
-                nav.navigate(nav.places.episodeList, { id });
-            });
-            listElem.appendChild(link);
-            return listElem;
-        });
-        showList.append(...elems);
+async function init() {
+    getElem('go-back').addEventListener('click', () => {
+        nav.navigate(nav.places.showList);
+    });
+
+    try {
+        await nav.navigate(nav.places.showList);
+    } catch (e) {
+        console.error(e);
     }
 }
 
-
-displayShows().catch(console.error);
-
-goBackButton.addEventListener('click', (e) => {
-    nav.navigate(nav.places.showList);
-});
+init();
