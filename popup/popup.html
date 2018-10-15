@@ -4,20 +4,51 @@
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="popup-styles.css">
+  <script src="../scripts/types.js"></script>
+  <script src="../scripts/storage.js"></script>
 </head>
 
 <body>
-  <div class="container">
+  <div id="container">
+    <header class="header">
+      <div class="button-container">
+        <button id="go-back-btn" hidden>
+          <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 256 512">
+            <path
+                d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="logo">
+        <a href="https://myshows.me">
+          <img src="images/logo.png" alt="MyShows.me">
+        </a>
+      </div>
+    </header>
+
     <div id="main-view">
+
+      <div class="tabs">
+        <div class="tab active">Shows</div>
+        <div class="tab">Calendar</div>
+      </div>
+
       <ul class="show-list">
         <template id="show-element">
-          <li><a href="#"></a></li>
+          <li>
+            <div class="show-title"><a href="#"></a></div>
+            <div class="unwatched-ep" hidden></div>
+          </li>
         </template>
       </ul>
+
     </div>
 
     <div id="episode-view" hidden>
-      <button id="go-back">Back</button>
+
+      <div class="show-title"><a href=""></a></div>
+
       <ul class="episode-list">
         <template id="episode-element">
           <li>
@@ -26,18 +57,17 @@
               <div class="ep-title"><a href="#"></a></div>
               <div>
                 <div class="ep-number"></div>
-                <div class="ep-date"></div>
+                <time class="ep-date"></time>
               </div>
             </div>
-            <div class="ep-comments"></div>
+            <div class="ep-comments" hidden><a href="#"></a></div>
           </li>
         </template>
       </ul>
     </div>
 
   </div>
-  <script src="../scripts/types.js"></script>
-  <script src="../scripts/storage.js"></script>
+
   <script src="popup-script.js"></script>
 </body>
 

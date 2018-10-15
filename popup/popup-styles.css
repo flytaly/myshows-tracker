@@ -4,30 +4,260 @@
 
 html {
     font-size: 62.5%;
+    font-family: "PT Sans", "Trebuchet MS", Arial, sans-serif;
 }
 
 body {
     width: 350px;
     height: 400px;
-    overflow-x: hidden;
+    overflow: hidden auto;
 }
 
-.container {
-    width: 335px;
-    min-height: 100%;
+a, a:visited {
+    color: #0066D0;
+    text-decoration: none;
 }
 
-.show-list {
-    list-style-type: none;
-    margin: 10px 0 0 0;
+#container {
+    display: flex;
+    flex-direction: column;
+    overflow-x: auto;
+    width: 100%;
+    height: 100%;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 5px 10px;
+    color: aliceblue;
+    background: rgba(37, 37, 37, 0.95);
+    border-bottom: solid #c00 3px;
+}
+
+.logo {
+    height: 27px;
+    margin-left: 20px;
+}
+
+.button-container {
+    width: 13px;
+    height: 26px;
+}
+
+#go-back-btn {
+    width: 100%;
     padding: 0;
+    margin: 0;
+    background: none;
+    border: none;
+}
+
+#go-back-btn svg {
+    width: 100%;
+    height: auto;
+}
+
+#go-back-btn svg path {
+    fill: #ffffff;
+}
+
+#go-back-btn:hover svg path {
+    fill: #999999;
+}
+
+#go-back-btn:focus {
+    outline: 1px dotted #999999;
+}
+
+#main-view,
+#episode-view {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+#main-view[hidden],
+#episode-view[hidden] {
+    display: none;
+}
+
+#main-view .tabs {
+    display: flex;
+    flex-direction: row;
+    background: #999999;
+}
+
+.tabs .tab {
+    background-color: #EEEEEE;
+    padding: 0.5rem 1.6rem;
+    font-size: 1.7rem;
+    margin: 0.5rem 0.5rem 0 0.5rem;
+    border-radius: 5px 5px 0 0;
+    border: 1px solid black;
+    border-bottom: 1px solid #999999;
+}
+
+.tabs .tab:first-child {
+    margin-left: 2rem;
+}
+
+.tabs .tab.active {
+    border-bottom: none;
+    background-color: white;
+}
+
+
+#main-view ul.show-list {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    padding: 1rem;
     font-size: 1.7rem;
 }
 
+#main-view .show-list li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.5rem;
+}
+
+#main-view .show-list li:nth-child(2n) {
+    background-color: #EEEEEE;
+}
+
+#main-view .show-title{
+    flex: 1;
+    overflow-x: hidden;
+}
+
+#main-view .unwatched-ep {
+    background-color: #A80303;
+    border-radius: 5px;
+    padding: 2px 3px;
+    color: white;
+    min-width: 2.6rem;
+    font-size: 1.6rem;
+    text-align: center;
+}
+
+#main-view .unwatched-ep:hover {
+    cursor: pointer;
+}
+
+#episode-view .show-title {
+    padding: 1rem 1rem;
+    background: rgba(0, 0, 0, 0.4);
+    width: 100%;
+    color: white;
+    margin: 0;
+}
+
+#episode-view .show-title a,
+#episode-view .show-title a:visited {
+    color: white;
+    font-size: 1.9rem;
+}
+
 .episode-list {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
     list-style-type: none;
     margin: 0;
-    padding: 0;
-    width: 100%;
-    font-size: 1.5rem;
+    padding: 1rem 0;
+    background: rgba(255, 255, 255, 0.95);
+    font-size: 1.4rem;
 }
+
+.episode-list li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.episode-list li:nth-child(2n) {
+    background: #EEEEEE;
+}
+
+.episode-list li > div {
+    margin-left: 1rem;
+}
+
+.episode-list li > div:last-child {
+    margin-right: 1rem;
+}
+
+.ep-check {
+    position: relative;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+
+.ep-info {
+    flex: 1;
+    padding: 0.5rem 0;
+}
+
+.ep-info div:nth-child(2) {
+    display: inline-block;
+}
+
+.ep-title a {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.ep-number {
+    display: inline-block;
+    color: #cc0000;
+    font-size: 1.1rem;
+}
+
+.ep-date {
+    display: inline-block;
+    font-size: 1.1rem;
+}
+
+.ep-comments {
+    background-color: #999999;
+    color: white;
+    font-size: 1rem;
+    padding: 3px;
+}
+
+.ep-comments a,
+.ep-comments a:visited {
+    color: white;
+}
+
+.ep-check:hover {
+    border: 1px solid limegreen;
+    box-shadow: 0 0 2px limegreen;
+}
+
+.ep-check.checked:after,
+.ep-check:hover:after {
+    content: "";
+    cursor: pointer;
+    background: url(images/check-solid.svg) center center no-repeat;
+    background-size: 15px 15px;
+    width: 2.2rem;
+    height: 2.2rem;
+    top: -1px;
+    left: -1px;
+    position: absolute;
+}
+
+.episode-list .ep-info {
+
+}
+
+
+
+

@@ -23,6 +23,7 @@
   },
   "browser_action": {
     "default_title": "MyShows",
-    "default_popup": "popup/popup.html"
+    "default_popup": "popup/popup.html",
+    "browser_style": true
   }
 }

@@ -6,14 +6,23 @@ const getElem = document.getElementById.bind(document);
 
 const mainView = getElem('main-view');
 const episodeView = getElem('episode-view');
+const container = document.body;
+
+const goBackBtn = getElem('go-back-btn');
+const showTitle = episodeView.querySelector('.show-title a');
 
 const showElemTemplate = getElem('show-element');
 const episodeElemTemplate = getElem('episode-element');
 
+const showsInfo = {};
 
-function renderShowRow({ show }, onClick) {
+function renderShowRow(showRecord, onClick) {
+    const { totalEpisodes, watchedEpisodes, show } = showRecord;
+    const unwatchedEpNumber = totalEpisodes - watchedEpisodes;
     const listElem = showElemTemplate.content.cloneNode(true);
     const link = listElem.querySelector('a');
+    const unwatchedElem = listElem.querySelector('.unwatched-ep');
+
     link.dataset.id = show.id;
     link.title = show.title;
     link.href = `https://myshows.me/view/${show.id}/`;
@@ -23,6 +32,18 @@ function renderShowRow({ show }, onClick) {
         const { id } = e.target.dataset;
         onClick(id);
     });
+
+    if (unwatchedEpNumber > 0) {
+        unwatchedElem.hidden = false;
+        unwatchedElem.dataset.id = show.id;
+        unwatchedElem.textContent = unwatchedEpNumber;
+        unwatchedElem.addEventListener('click', (e) => {
+            e.preventDefault();
+            const { id } = e.target.dataset;
+            onClick(id);
+        });
+    }
+
     return listElem;
 }
 
@@ -34,7 +55,7 @@ function renderEpisodeRow({
     const link = ep.querySelector('.ep-title a');
     const epNumber = ep.querySelector('.ep-number');
     const epDate = ep.querySelector('.ep-date');
-    const epComments = ep.querySelector('.ep-comments');
+    const epComments = ep.querySelector('.ep-comments a');
     const date = airDateUTC ? new Date(airDateUTC) : null;
     link.href = `https://myshows.me/view/episode/${id}/`;
     link.title = title;
@@ -46,8 +67,12 @@ function renderEpisodeRow({
         epDate.title = date.toLocaleString();
     }
 
-    epComments.textContent = commentsCount;
-    epComments.title = `${commentsCount} comments`;
+    if (commentsCount) {
+        ep.querySelector('.ep-comments').hidden = false;
+        epComments.textContent = commentsCount;
+        epComments.title = `${commentsCount} comments`;
+        epComments.href = `https://en.myshows.me/view/episode/${id}/#comments`;
+    }
 
     return ep;
 }
@@ -64,8 +89,17 @@ const nav = {
                 const shows = await storage.getWatchingShows();
                 if (!shows || !shows.length) break;
 
+                // save info for easy access to it in the episode view
+                shows.reduce((acc, { show: { id, image, title } }) => {
+                    acc[id] = { image, title };
+                    return acc;
+                }, showsInfo);
+
+                container.style.background = '#FFFFFF';
+
                 mainView.hidden = false;
                 episodeView.hidden = true;
+                goBackBtn.hidden = true;
                 showList.innerHTML = '';
 
                 const clickHandler = id => this.navigate(this.places.episodeList, { id });
@@ -78,8 +112,16 @@ const nav = {
                 const episodes = allEpisodes ? allEpisodes[params.id] : null;
                 if (!episodes) break;
 
+                const show = showsInfo[params.id];
+                showTitle.textContent = show.title;
+                showTitle.href = `https://myshows.me/view/${params.id}/`;
+                container.style.background = `url(${show.image}) no-repeat`;
+                container.style.backgroundSize = 'cover';
+                container.style.backgroundAttachment = 'fixed';
+
                 mainView.hidden = true;
                 episodeView.hidden = false;
+                goBackBtn.hidden = false;
                 episodeList.innerHTML = '';
 
                 episodeList.append(...episodes.map(ep => renderEpisodeRow(ep)));
@@ -92,7 +134,7 @@ const nav = {
 };
 
 async function init() {
-    getElem('go-back').addEventListener('click', () => {
+    goBackBtn.addEventListener('click', () => {
         nav.navigate(nav.places.showList);
     });
 
