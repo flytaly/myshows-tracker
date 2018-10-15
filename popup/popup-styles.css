@@ -109,6 +109,10 @@ a, a:visited {
     background-color: white;
 }
 
+.tabs .tab:hover {
+    box-shadow: 0 -2px 2px #cc0000;
+}
+
 
 #main-view ul.show-list {
     display: flex;
