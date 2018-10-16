@@ -9,6 +9,7 @@
   "permissions": [
     "identity",
     "storage",
+    "alarms",
     "https://*.myshows.me/*"
   ],
   "background": {
@@ -18,7 +19,6 @@
       "scripts/types.js",
       "scripts/storage.js",
       "scripts/rpc-handler.js",
-      "scripts/ports.js",
       "scripts/state.js",
       "scripts/background.js"
     ]

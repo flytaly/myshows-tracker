@@ -31,6 +31,7 @@ const rpcHandler = {
                 id: 1,
             }),
         });
+        if (res.status !== 200) throw new Error(`Couldn't connect to server. ${res.status}: ${res.statusText}`);
         const result = await res.json();
         if (result.error) {
             throw new Error(result.error.message);
