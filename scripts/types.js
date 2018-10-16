@@ -2,5 +2,6 @@
 
 // message types
 const types = {
-    LOGIN: 'login',
+    LOGIN: 'LOGIN',
+    INFO_UPDATED: 'INFO_UPDATED',
 };

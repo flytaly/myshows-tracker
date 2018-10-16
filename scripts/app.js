@@ -55,53 +55,49 @@ const app = {
             redirect_uri: redirectUri,
             code,
         };
-        try {
-            const response = await fetch(this.tokenURL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    Accept: 'application/json',
-                },
-                body: mapObjToQueryStr(params),
-            });
-            if (response.status !== 200) {
-                throw response;
-            }
-            return await response.json();
-        } catch (e) {
-            console.error(e);
+        const response = await fetch(this.tokenURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                Accept: 'application/json',
+            },
+            body: mapObjToQueryStr(params),
+        });
+        if (response.status !== 200) {
+            throw response;
         }
-        return false;
+        return response.json();
     },
 
     async login() {
         const state = this.generateAuthState();
         const code = await this.getAuthCode(state);
-        if (!code) return false;
-        try {
-            const {
-                access_token: accessToken,
-                expires_in: expiresIn,
-                refresh_token: refreshToken,
-            } = await this.getTokens(code);
-            await storage.saveAuthData({ accessToken, expiresIn, refreshToken });
-            return true;
-        } catch (e) {
-            console.error(e);
-        }
-        return false;
+        if (!code) throw new Error('Couldn\'t get auth code');
+        const {
+            access_token: accessToken,
+            expires_in: expiresIn,
+            refresh_token: refreshToken,
+        } = await this.getTokens(code);
+        await storage.saveAuthData({ accessToken, expiresIn, refreshToken });
+        return true;
     },
 
-    // initiate authentication next time user click badge
+    // Initiate authentication next time user click badge.
+    // Returns promise that will be fulfilled only after a successful login
     setAuth() {
         browser.browserAction.setPopup({ popup: '' });
         browser.browserAction.setBadgeText({ text: '...' });
-        browser.browserAction.onClicked.addListener(async () => {
-            if (await this.login()) {
-                browser.browserAction.setPopup({ popup: browser.extension.getURL('popup/popup.html') });
-                browser.browserAction.setBadgeText({ text: '' });
-                return true;
-            }
+        return new Promise((resolve) => {
+            browser.browserAction.onClicked.addListener(async () => {
+                try {
+                    await this.login();
+                    browser.browserAction.setPopup({ popup: browser.extension.getURL('popup/popup.html') });
+                    browser.browserAction.setBadgeText({ text: '' });
+                    resolve();
+                } catch (e) {
+                    console.error(`${e.name}:${e.message}`);
+                }
+            });
         });
     },
 
@@ -139,6 +135,5 @@ const app = {
         const unwatchedEps = await this.episodesToWatch(showIds);
         await storage.saveWatchingShows(shows.length ? shows : []);
         await storage.saveEpisodesToWatch(unwatchedEps);
-        return true;
     },
 };

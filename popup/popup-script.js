@@ -1,6 +1,4 @@
-/* global storage */
-
-// browser.runtime.sendMessage({ type: types.LOGIN });
+/* global storage, browser, types */
 
 const getElem = document.getElementById.bind(document);
 
@@ -81,10 +79,12 @@ const nav = {
     places: {
         showList: 'showList',
         episodeList: 'episodeList',
+        current: 'showList',
     },
     async navigate(location, params) {
         switch (location) {
             case this.places.showList: {
+                this.places.current = location;
                 const showList = mainView.querySelector('.show-list');
                 const shows = await storage.getWatchingShows();
                 if (!shows || !shows.length) break;
@@ -107,6 +107,7 @@ const nav = {
                 break;
             }
             case this.places.episodeList: {
+                this.places.current = location;
                 const episodeList = episodeView.querySelector('.episode-list');
                 const allEpisodes = await storage.getEpisodes();
                 const episodes = allEpisodes ? allEpisodes[params.id] : null;
@@ -115,7 +116,7 @@ const nav = {
                 const show = showsInfo[params.id];
                 showTitle.textContent = show.title;
                 showTitle.href = `https://myshows.me/view/${params.id}/`;
-                container.style.background = `url(${show.image}) no-repeat`;
+                container.style.background = `white url(${show.image}) no-repeat`;
                 container.style.backgroundSize = 'cover';
                 container.style.backgroundAttachment = 'fixed';
 
@@ -136,6 +137,20 @@ const nav = {
 async function init() {
     goBackBtn.addEventListener('click', () => {
         nav.navigate(nav.places.showList);
+    });
+
+    const bgScriptPort = browser.runtime.connect();
+
+    bgScriptPort.onMessage.addListener((message) => {
+        const { type } = message;
+        switch (type) {
+            case types.INFO_UPDATED: {
+                // upon receiving a new information update the current view
+                nav.navigate(nav.places.current);
+                break;
+            }
+            default:
+        }
     });
 
     try {
