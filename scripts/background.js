@@ -1,14 +1,11 @@
-/* global browser, types, app, storage */
-
-let popupPort;
-const state = { updating: false };
+/* eslint-disable no-unused-expressions */
+/* global state, app, storage */
 
 async function update() {
+    state.updating = true;
     try {
-        state.updating = true;
         await app.updateData();
-        if (popupPort) popupPort.postMessage({ type: types.INFO_UPDATED });
-        console.log(`Successfully updated at ${new Date()}`);
+        state.lastUpdate = new Date();
     } catch (e) {
         console.error(`${e.name}:${e.message}`);
     }
@@ -25,15 +22,3 @@ window.requestIdleCallback(async () => {
     await update();
 });
 
-browser.runtime.onConnect.addListener(async (port) => {
-    popupPort = port;
-    popupPort.onMessage.addListener(async (message) => {
-        const { type } = message;
-        switch (type) {
-            default:
-        }
-    });
-    popupPort.onDisconnect.addListener(() => { popupPort = null; });
-    // force update if popup has been opened
-    if (!state.updating) await update();
-});

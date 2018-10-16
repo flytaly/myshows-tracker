@@ -2,13 +2,14 @@
     box-sizing: border-box;
 }
 
+
 html {
-    font-size: 62.5%;
+    font-size: 62.5%; /* ==10px if default font size is 16px */
     font-family: "PT Sans", "Trebuchet MS", Arial, sans-serif;
 }
 
 body {
-    width: 350px;
+    width: 35rem;
     height: 400px;
     overflow: hidden auto;
 }
@@ -275,6 +276,58 @@ a, a:visited {
 
 .episode-list .ep-info {
 
+}
+
+/* http://tobiasahlin.com/spinkit/ */
+.spinner {
+    display: flex;
+    flex-direction: row;
+    margin: auto 1rem auto auto;
+    text-align: center;
+}
+
+.spinner[hidden]{
+    display: none;
+}
+
+.spinner > div {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid white;
+    margin-left: 4px;
+    border-radius: 100%;
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+    0%, 80%, 100% {
+        -webkit-transform: scale(0)
+    }
+    40% {
+        -webkit-transform: scale(1.0)
+    }
+}
+
+@keyframes sk-bouncedelay {
+    0%, 80%, 100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+    40% {
+        -webkit-transform: scale(1.0);
+        transform: scale(1.0);
+    }
 }
 
 

@@ -1,12 +1,13 @@
 /* global storage, browser, types */
 
 const getElem = document.getElementById.bind(document);
+const { body } = document;
 
 const mainView = getElem('main-view');
 const episodeView = getElem('episode-view');
-const container = document.body;
 
 const goBackBtn = getElem('go-back-btn');
+const loadingSpinner = getElem('loading');
 const showTitle = episodeView.querySelector('.show-title a');
 
 const showElemTemplate = getElem('show-element');
@@ -47,8 +48,8 @@ function renderShowRow(showRecord, onClick) {
 
 
 function renderEpisodeRow({
-    id, title, shortName, airDateUTC, commentsCount,
-}) {
+                              id, title, shortName, airDateUTC, commentsCount,
+                          }) {
     const ep = episodeElemTemplate.content.cloneNode(true);
     const link = ep.querySelector('.ep-title a');
     const epNumber = ep.querySelector('.ep-number');
@@ -95,7 +96,7 @@ const nav = {
                     return acc;
                 }, showsInfo);
 
-                container.style.background = '#FFFFFF';
+                body.style.background = '#FFFFFF';
 
                 mainView.hidden = false;
                 episodeView.hidden = true;
@@ -116,9 +117,9 @@ const nav = {
                 const show = showsInfo[params.id];
                 showTitle.textContent = show.title;
                 showTitle.href = `https://myshows.me/view/${params.id}/`;
-                container.style.background = `white url(${show.image}) no-repeat`;
-                container.style.backgroundSize = 'cover';
-                container.style.backgroundAttachment = 'fixed';
+                body.style.background = `white url(${show.image}) no-repeat`;
+                body.style.backgroundSize = 'cover';
+                body.style.backgroundAttachment = 'fixed';
 
                 mainView.hidden = true;
                 episodeView.hidden = false;
@@ -144,11 +145,16 @@ async function init() {
     bgScriptPort.onMessage.addListener((message) => {
         const { type } = message;
         switch (type) {
-            case types.INFO_UPDATED: {
+            case types.INFO_UPDATED:
                 // upon receiving a new information update the current view
                 nav.navigate(nav.places.current);
                 break;
-            }
+            case types.LOADING_START:
+                loadingSpinner.hidden = false;
+                break;
+            case types.LOADING_ENDED:
+                loadingSpinner.hidden = true;
+                break;
             default:
         }
     });

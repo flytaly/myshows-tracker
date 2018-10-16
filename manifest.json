@@ -18,6 +18,8 @@
       "scripts/types.js",
       "scripts/storage.js",
       "scripts/rpc-handler.js",
+      "scripts/ports.js",
+      "scripts/state.js",
       "scripts/background.js"
     ]
   },
