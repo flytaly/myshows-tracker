@@ -14,7 +14,7 @@ window.requestIdleCallback(async () => {
     const { accessToken } = await storage.getAuthData();
 
     if (!accessToken) {
-        if(!app.setAuth()) return; // TODO: try auth again after some time
+        if (!app.setAuth()) return; // TODO: try auth again after some time
     }
 
     try {
