@@ -31,6 +31,16 @@ window.requestIdleCallback(async () => {
 
 browser.runtime.onConnect.addListener(async (port) => {
     popupPort = port;
+
+    popupPort.onMessage.addListener(async (message) => {
+        if (message.type === types.SIGN_OUT) {
+            await browser.alarms.clearAll();
+            await storage.clear();
+            await app.setAuth();
+            await update();
+        }
+    });
+
     popupPort.onDisconnect.addListener(() => {
         popupPort = null;
     });

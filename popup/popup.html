@@ -10,7 +10,17 @@
 
 <body>
   <div id="container">
+
+    <!-- Loading spinner -->
+    <div id="loading" class="spinner" title="Loading">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+
+    <!-- Header -->
     <header class="header">
+
       <div class="button-container">
         <button id="go-back-btn" hidden>
           <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg"
@@ -20,25 +30,31 @@
           </svg>
         </button>
       </div>
+
       <div class="logo">
         <a href="https://myshows.me">
           <img src="images/logo.png" alt="MyShows.me">
         </a>
       </div>
-      <div id="loading" class="spinner" title="Loading" hidden>
-        <div class="bounce1"></div>
-        <div class="bounce2"></div>
-        <div class="bounce3"></div>
+
+      <div class="user">
+        <div id="loginname"></div>
+        <div class="menu">
+          <a href="#" class="menu-option" id="sign-out">
+            <object class="sign-out-sign" type="image/svg+xml" data="images/sign-out-alt-solid.svg"></object>
+            Sign out
+          </a>
+          </ul>
+        </div>
       </div>
     </header>
 
+    <!-- Main View -->
     <div id="main-view">
-
       <div class="tabs">
         <div class="tab active">Shows</div>
         <div class="tab">Calendar</div>
       </div>
-
       <ul class="show-list">
         <template id="show-element">
           <li>
@@ -47,13 +63,11 @@
           </li>
         </template>
       </ul>
-
     </div>
 
+    <!-- Episode View -->
     <div id="episode-view" hidden>
-
       <div class="show-title"><a href=""></a></div>
-
       <ul class="episode-list">
         <template id="episode-element">
           <li>
@@ -70,7 +84,6 @@
         </template>
       </ul>
     </div>
-
   </div>
 
   <script src="popup-script.js"></script>

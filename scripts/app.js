@@ -99,7 +99,13 @@ const app = {
             refresh_token: refreshToken,
         } = await this.getTokens(code);
         await storage.saveAuthData({ accessToken, expiresIn, refreshToken });
+        await this.getProfileData();
         return true;
+    },
+
+    async getProfileData() {
+        const { result: { user } } = await rpcHandler.profileGet();
+        await storage.saveProfile(user);
     },
 
     // Initiate authentication next time user click badge.

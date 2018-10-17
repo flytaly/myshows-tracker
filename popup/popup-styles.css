@@ -2,14 +2,14 @@
     box-sizing: border-box;
 }
 
-
 html {
     font-size: 62.5%; /* ==10px if default font size is 16px */
     font-family: "PT Sans", "Trebuchet MS", Arial, sans-serif;
 }
 
 body {
-    width: 35rem;
+    width: 37rem;
+    min-width: 350px;
     height: 400px;
     overflow: hidden auto;
 }
@@ -33,7 +33,7 @@ a, a:visited {
     justify-content: flex-start;
     align-items: center;
     padding: 5px 10px;
-    color: aliceblue;
+    color: white;
     background: rgba(37, 37, 37, 0.95);
     border-bottom: solid #c00 3px;
 }
@@ -41,11 +41,56 @@ a, a:visited {
 .logo {
     height: 27px;
     margin-left: 20px;
+    flex: 1;
+}
+
+.user {
+    position: relative;
+    font-size: 1.5rem;
+    margin: 0 1rem;
+    word-break: break-all;
+    cursor: pointer;
+}
+
+.user .menu {
+    display: none;
+    position: absolute;
+    background-color: rgba(37, 37, 37, 0.95);
+    right: 0;
+    overflow: auto;
+    min-width: 10rem;
+    z-index: 1;
+}
+
+.user .menu.open {
+    display: block;
+}
+
+.user .menu a {
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    color: white;
+    padding: 1rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.user .menu a:hover,
+.user .menu a:focus {
+    background-color: #cc0000;
+}
+
+.menu a .sign-out-sign {
+    height: 1em;
+    width: 1em;
+    margin-right: 0.5em;
 }
 
 .button-container {
     width: 13px;
     height: 26px;
+    flex-shrink: 0;
 }
 
 #go-back-btn {
@@ -280,20 +325,23 @@ a, a:visited {
 
 /* http://tobiasahlin.com/spinkit/ */
 .spinner {
+    position: absolute;
+    bottom: 1rem;
+    right: 2rem;
     display: flex;
     flex-direction: row;
-    margin: auto 1rem auto auto;
     text-align: center;
+    z-index: 2;
 }
 
-.spinner[hidden]{
+.spinner[hidden] {
     display: none;
 }
 
 .spinner > div {
     width: 1rem;
     height: 1rem;
-    border: 2px solid white;
+    border: 2px solid black;
     margin-left: 4px;
     border-radius: 100%;
     -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;

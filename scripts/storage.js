@@ -6,14 +6,19 @@ const storage = {
         return browser.storage.local.get(['accessToken', 'expiresIn', 'refreshToken']);
     },
 
-    async getWatchingShows() {
-        const { watchingShows } = await browser.storage.local.get(['watchingShows']);
-        return watchingShows;
-    },
-
     async getEpisodes() {
         const { episodes } = await browser.storage.local.get(['episodes']);
         return episodes;
+    },
+
+    async getProfile() {
+        const { login } = await browser.storage.local.get(['login']);
+        return login;
+    },
+
+    async getWatchingShows() {
+        const { watchingShows } = await browser.storage.local.get(['watchingShows']);
+        return watchingShows;
     },
 
     async saveAuthData(data) {
@@ -24,6 +29,11 @@ const storage = {
         return browser.storage.local.set({ ...data, expiresIn });
     },
 
+    async saveProfile(user) {
+        const { login } = user;
+        return browser.storage.local.set({ login });
+    },
+
     async saveWatchingShows(watchingShows) {
         return browser.storage.local.set({ watchingShows });
     },
@@ -31,5 +41,9 @@ const storage = {
     /* {obj} episodes - example: {showId: [{episodeInfo...}, {...}],...} */
     async saveEpisodesToWatch(episodes) {
         return browser.storage.local.set({ episodes });
+    },
+
+    async clear() {
+        return browser.storage.local.clear();
     },
 };

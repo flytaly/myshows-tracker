@@ -8,11 +8,13 @@ const episodeView = getElem('episode-view');
 
 const goBackBtn = getElem('go-back-btn');
 const loadingSpinner = getElem('loading');
+const loginName = getElem('loginname');
 const showTitle = episodeView.querySelector('.show-title a');
 
 const showElemTemplate = getElem('show-element');
 const episodeElemTemplate = getElem('episode-element');
 
+const bgScriptPort = browser.runtime.connect();
 const showsInfo = {};
 
 function renderShowRow(showRecord, onClick) {
@@ -137,12 +139,33 @@ const nav = {
     },
 };
 
+const initDropdownMenu = () => {
+    const menu = document.querySelector('.user .menu');
+
+    getElem('sign-out').addEventListener('click', async () => {
+        bgScriptPort.postMessage({ type: types.SIGN_OUT });
+        window.close();
+    });
+
+    loginName.addEventListener('click', () => menu.classList.toggle('open'));
+
+    window.onclick = (event) => {
+        if (event.target !== loginName) {
+            if (menu.classList.contains('open')) {
+                menu.classList.remove('open');
+            }
+        }
+    };
+};
+
 async function init() {
     goBackBtn.addEventListener('click', () => {
         nav.navigate(nav.places.showList);
     });
 
-    const bgScriptPort = browser.runtime.connect();
+    loginName.textContent = await storage.getProfile();
+
+    initDropdownMenu();
 
     bgScriptPort.onMessage.addListener((message) => {
         const { type } = message;
