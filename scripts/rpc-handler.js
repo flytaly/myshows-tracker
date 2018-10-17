@@ -54,7 +54,11 @@ const rpcHandler = {
         if (res.status !== 200) throw new Error(`Couldn't connect to server. ${res.status}: ${res.statusText}`);
         const result = await res.json();
         if (result.error) {
-            throw new Error(`${result.error.code}: ${result.error.message}. ${result.error.data}`);
+            if (result.error.code === 401) {
+                throw new AuthError(`${result.error.code}: ${result.error.message}. ${result.error.data}`);
+            } else {
+                throw new Error(`${result.error.code}: ${result.error.message}. ${result.error.data}`);
+            }
         }
         return result;
     },

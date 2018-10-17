@@ -13,9 +13,8 @@ async function update() {
         console.error(`${e.name}: ${e.message}`);
         if (e.name === 'AuthError' && e.needAuth) {
             await app.setAuth();
-        } else {
-            browser.alarms.create(types.ALARM_UPDATE, { delayInMinutes: 0.5 });
         }
+        browser.alarms.create(types.ALARM_UPDATE, { delayInMinutes: 0.5 });
     }
     state.updating = false;
 }
