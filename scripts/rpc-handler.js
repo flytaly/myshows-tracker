@@ -1,12 +1,32 @@
 /* eslint-disable no-unused-vars */
+
 /* global storage, app */
+
+class AuthError extends Error {
+    constructor(message, needAuth = true) {
+        super();
+        this.name = 'AuthError';
+        this.message = message;
+        this.needAuth = needAuth;
+    }
+}
 
 const rpcHandler = {
     rpcUrl: 'https://api.myshows.me/v2/rpc/',
 
     async getAccessToken() {
-        const { accessToken } = await storage.getAuthData();
-        if (!accessToken) throw new Error('Access tokens wasn\'t found');
+        const { accessToken, refreshToken, expiresIn } = await storage.getAuthData();
+        if (!refreshToken) throw new AuthError('Couldn\'t get refresh token');
+        if (!accessToken) {
+            const { accessToken: newAccessToken } = await app.renewAccessToken(refreshToken);
+            if (newAccessToken) return newAccessToken;
+            throw new AuthError('Couldn\'t get access token');
+        }
+        if (expiresIn - Date.now() < 24 * 60 * 60 * 1000) { // update token if less than one day left
+            const { accessToken: newAccessToken } = await app.renewAccessToken(refreshToken);
+            if (newAccessToken) return newAccessToken;
+        }
+
         return accessToken;
     },
 
@@ -34,10 +54,11 @@ const rpcHandler = {
         if (res.status !== 200) throw new Error(`Couldn't connect to server. ${res.status}: ${res.statusText}`);
         const result = await res.json();
         if (result.error) {
-            throw new Error(result.error.message);
+            throw new Error(`${result.error.code}: ${result.error.message}. ${result.error.data}`);
         }
         return result;
     },
+
 
     // List of RPC methods: https://api.myshows.me/shared/doc/
 

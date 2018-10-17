@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-/* global browser, clientId, clientSecret, redirectUri, storage, rpcHandler */
+/* global browser, clientId, clientSecret, redirectUri, storage, rpcHandler, AuthError */
 
 const mapObjToQueryStr = params => Object.entries(params).map(pair => pair.join('=')).join('&');
 
@@ -26,25 +26,30 @@ const app = {
     },
 
     async getAuthCode(state) {
-        let responseURL;
-        try {
-            const response = await browser.identity.launchWebAuthFlow({
-                url: this.getAuthURL(state),
-                interactive: true,
-            });
-            responseURL = new URL(response);
-        } catch (e) {
-            console.error(e);
-            return false;
-        }
+        const response = await browser.identity.launchWebAuthFlow({
+            url: this.getAuthURL(state),
+            interactive: true,
+        });
+        const responseURL = new URL(response);
+
         if (responseURL.searchParams.has('error')) {
-            console.error(responseURL.searchParams.get('error'));
-            return false;
+            throw new AuthError(responseURL.searchParams.get('error'));
         }
         if (responseURL.searchParams.get('state') === state) {
             return responseURL.searchParams.get('code');
         }
         return false;
+    },
+
+    fetchAuthInit(params) {
+        return {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                Accept: 'application/json',
+            },
+            body: mapObjToQueryStr(params),
+        };
     },
 
     async getTokens(code) {
@@ -55,18 +60,33 @@ const app = {
             redirect_uri: redirectUri,
             code,
         };
-        const response = await fetch(this.tokenURL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                Accept: 'application/json',
-            },
-            body: mapObjToQueryStr(params),
-        });
+        const response = await fetch(this.tokenURL, this.fetchAuthInit(params));
         if (response.status !== 200) {
-            throw response;
+            throw new AuthError(`Couldn't receive tokens. ${response.status}: ${response.statusText}`);
         }
         return response.json();
+    },
+
+    async renewAccessToken(token) {
+        const params = {
+            grant_type: 'refresh_token',
+            refresh_token: token,
+            client_id: clientId,
+            client_secret: clientSecret,
+            // redirect_uri: redirectUri,
+        };
+        const response = await fetch(this.tokenURL, this.fetchAuthInit(params));
+
+        if (response.status !== 200) {
+            throw new AuthError(`Couldn't receive refreshed tokens. ${response.status}: ${response.statusText}`);
+        }
+        const {
+            access_token: accessToken,
+            expires_in: expiresIn,
+            refresh_token: refreshToken,
+        } = await response.json();
+        await storage.saveAuthData({ accessToken, expiresIn, refreshToken });
+        return { accessToken };
     },
 
     async login() {
@@ -88,16 +108,18 @@ const app = {
         browser.browserAction.setPopup({ popup: '' });
         browser.browserAction.setBadgeText({ text: '...' });
         return new Promise((resolve) => {
-            browser.browserAction.onClicked.addListener(async () => {
+            const listener = async () => {
                 try {
                     await this.login();
                     browser.browserAction.setPopup({ popup: browser.extension.getURL('popup/popup.html') });
                     browser.browserAction.setBadgeText({ text: '' });
+                    browser.browserAction.onClicked.removeListener(listener);
                     resolve();
                 } catch (e) {
-                    console.error(`${e.name}:${e.message}`);
+                    console.error(`${e.name}: ${e.message}`);
                 }
-            });
+            };
+            browser.browserAction.onClicked.addListener(listener);
         });
     },
 
@@ -110,6 +132,7 @@ const app = {
     },
 
     async episodesToWatch(showIds) {
+        // TODO: rewrite using JSON BATCH https://jsonrpc.org/specification#batch
         const allEpisodes = await Promise.all(showIds.map(async (id) => {
             const { result } = await rpcHandler.showsGetById(id);
             return result.episodes;

@@ -48,8 +48,8 @@ function renderShowRow(showRecord, onClick) {
 
 
 function renderEpisodeRow({
-                              id, title, shortName, airDateUTC, commentsCount,
-                          }) {
+    id, title, shortName, airDateUTC, commentsCount,
+}) {
     const ep = episodeElemTemplate.content.cloneNode(true);
     const link = ep.querySelector('.ep-title a');
     const epNumber = ep.querySelector('.ep-number');

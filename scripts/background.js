@@ -11,8 +11,11 @@ async function update() {
         browser.alarms.create(types.ALARM_UPDATE, { delayInMinutes: 30 });
     } catch (e) {
         console.error(`${e.name}: ${e.message}`);
-        // TODO: if need auth call setAuth() instead of alarms
-        browser.alarms.create(types.ALARM_UPDATE, { delayInMinutes: 0.5 });
+        if (e.name === 'AuthError' && e.needAuth) {
+            await app.setAuth();
+        } else {
+            browser.alarms.create(types.ALARM_UPDATE, { delayInMinutes: 0.5 });
+        }
     }
     state.updating = false;
 }

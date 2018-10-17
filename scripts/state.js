@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars,no-unused-expressions */
+/* eslint-disable no-unused-vars,no-unused-expressions,no-param-reassign */
 /* global popupPort, types */
 
 /* Proxy object that sends messages to the popup upon changes */
@@ -19,6 +19,7 @@ const state = new Proxy({
                 break;
             default:
         }
+        obj[prop] = value;
         return true;
     },
 }));
