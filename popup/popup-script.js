@@ -109,14 +109,16 @@ const nav = {
             }
             case this.places.episodeList: {
                 this.places.current = location;
+                // save showId in the object to retrieve it after reloading
+                this.showId = params ? params.id : this.showId;
                 const episodeList = episodeView.querySelector('.episode-list');
                 const allEpisodes = await storage.getEpisodes();
-                const episodes = allEpisodes ? allEpisodes[params.id] : null;
+                const episodes = allEpisodes ? allEpisodes[this.showId] : null;
                 if (!episodes) break;
 
-                const show = showsInfo[params.id];
+                const show = showsInfo[this.showId];
                 showTitle.textContent = show.title;
-                showTitle.href = `https://myshows.me/view/${params.id}/`;
+                showTitle.href = `https://myshows.me/view/${this.showId}/`;
                 body.style.background = `white url(${show.image}) no-repeat`;
                 body.style.backgroundSize = 'cover';
                 body.style.backgroundAttachment = 'fixed';
