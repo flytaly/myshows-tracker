@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars,no-unused-expressions,no-param-reassign */
-/* global popupPort, types */
+/* global popupPort, types, browser */
 
 /* Proxy object that sends messages to the popup upon changes */
 const state = new Proxy({
     updating: false,
     lastUpdate: null,
+    totalEpisodes: null,
 }, ({
     set: (obj, prop, value) => {
         switch (prop) {
@@ -16,6 +17,10 @@ const state = new Proxy({
             case 'lastUpdate':
                 popupPort && popupPort.postMessage({ type: types.INFO_UPDATED });
                 console.log(`Successfully updated at ${value}`);
+                break;
+            case 'totalEpisodes':
+                browser.browserAction.setBadgeBackgroundColor({ color: '#252525' });
+                browser.browserAction.setBadgeText({ text: value ? value.toString() : null });
                 break;
             default:
         }

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-/* global browser, clientId, clientSecret, redirectUri, storage, rpcHandler, AuthError */
+/* global browser, clientId, clientSecret, redirectUri, storage, rpcHandler, AuthError, state */
 
 const mapObjToQueryStr = params => Object.entries(params).map(pair => pair.join('=')).join('&');
 
@@ -112,6 +112,7 @@ const app = {
     // Returns promise that will be fulfilled only after a successful login
     setAuth() {
         browser.browserAction.setPopup({ popup: '' });
+        browser.browserAction.setBadgeBackgroundColor({ color: 'red' });
         browser.browserAction.setBadgeText({ text: '...' });
         return new Promise((resolve) => {
             const listener = async () => {
@@ -185,6 +186,8 @@ const app = {
 
         // count how many aired episodes left to watch
         watchingShows = watchingShows.map(entry => ({ ...entry, unwatchedEpisodes: pastEps[entry.show.id].length }));
+
+        state.totalEpisodes = watchingShows.reduce((acc, { unwatchedEpisodes }) => acc + unwatchedEpisodes, 0);
 
         await Promise.all([
             storage.saveWatchingShows(watchingShows),
