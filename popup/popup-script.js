@@ -18,8 +18,8 @@ const bgScriptPort = browser.runtime.connect();
 const showsInfo = {};
 
 function renderShowRow(showRecord, onClick) {
-    const { totalEpisodes, watchedEpisodes, show } = showRecord;
-    const unwatchedEpNumber = totalEpisodes - watchedEpisodes;
+    const { unwatchedEpisodes, show } = showRecord;
+    // const unwatchedEpNumber = totalEpisodes - watchedEpisodes;
     const listElem = showElemTemplate.content.cloneNode(true);
     const link = listElem.querySelector('a');
     const unwatchedElem = listElem.querySelector('.unwatched-ep');
@@ -34,10 +34,10 @@ function renderShowRow(showRecord, onClick) {
         onClick(id);
     });
 
-    if (unwatchedEpNumber > 0) {
+    if (unwatchedEpisodes > 0) {
         unwatchedElem.hidden = false;
         unwatchedElem.dataset.id = show.id;
-        unwatchedElem.textContent = unwatchedEpNumber;
+        unwatchedElem.textContent = unwatchedEpisodes;
         unwatchedElem.addEventListener('click', (e) => {
             e.preventDefault();
             const { id } = e.target.dataset;
@@ -93,10 +93,7 @@ const nav = {
                 if (!shows || !shows.length) break;
 
                 // save info for easy access to it in the episode view
-                shows.reduce((acc, { show: { id, image, title } }) => {
-                    acc[id] = { image, title };
-                    return acc;
-                }, showsInfo);
+                shows.forEach(({ show: { id, image, title } }) => { showsInfo[id] = { image, title }; });
 
                 body.style.background = '#FFFFFF';
 
@@ -106,7 +103,9 @@ const nav = {
                 showList.innerHTML = '';
 
                 const clickHandler = id => this.navigate(this.places.episodeList, { id });
-                showList.append(...shows.map(show => renderShowRow(show, clickHandler)));
+                showList.append(...shows
+                    .filter(show => show.unwatchedEpisodes)
+                    .map(show => renderShowRow(show, clickHandler)));
                 break;
             }
             case this.places.episodeList: {

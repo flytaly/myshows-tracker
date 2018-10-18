@@ -17,8 +17,8 @@ const storage = {
     },
 
     async getWatchingShows() {
-        const { watchingShows } = await browser.storage.local.get(['watchingShows']);
-        return watchingShows;
+        const { shows } = await browser.storage.local.get(['shows']);
+        return shows;
     },
 
     async saveAuthData(data) {
@@ -34,13 +34,18 @@ const storage = {
         return browser.storage.local.set({ login });
     },
 
-    async saveWatchingShows(watchingShows) {
-        return browser.storage.local.set({ watchingShows });
+    async saveWatchingShows(shows) {
+        return browser.storage.local.set({ shows });
     },
 
-    /* {obj} episodes - example: {showId: [{episodeInfo...}, {...}],...} */
+    /** @param {obj} episodes - example: {showId: [{episodeInfo...}, {...}],...} */
     async saveEpisodesToWatch(episodes) {
         return browser.storage.local.set({ episodes });
+    },
+
+    /** @param {array} episodes */
+    async saveUpcomingEpisodes(upcomingEpisodes) {
+        return browser.storage.local.set({ upcomingEpisodes });
     },
 
     async clear() {

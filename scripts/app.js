@@ -130,39 +130,66 @@ const app = {
     },
 
     /* Return shows that are being watched and have unwatched episodes */
-    leftToWatch(showRecords) {
-        const watchingShows = showRecords.filter(s => s.watchStatus === 'watching');
-        return watchingShows.filter(
-            ({ totalEpisodes, watchedEpisodes }) => totalEpisodes !== watchedEpisodes,
-        );
-    },
+    async fetchEpisodes(showIds) {
+        let shows = await rpcHandler.showsGetById(showIds);
+        shows = shows.map(({ result }) => result);
 
-    async episodesToWatch(showIds) {
-        // TODO: rewrite using JSON BATCH https://jsonrpc.org/specification#batch
-        const allEpisodes = await Promise.all(showIds.map(async (id) => {
-            const { result } = await rpcHandler.showsGetById(id);
-            return result.episodes;
-        }));
-        const watchedEpisodes = await Promise.all(showIds.map(async (id) => {
-            const { result } = await rpcHandler.profileEpisodes(id);
-            const episodeIds = result.map(e => e.id);
-            return episodeIds;
-        }));
+        const profileEps = await rpcHandler.profileEpisodes(showIds);
 
-        const unwatchedEps = showIds.reduce((acc, showId, index) => {
-            acc[showId] = allEpisodes[index].filter(({ id }) => !watchedEpisodes[index].includes(id));
+        /** Normalize array of responses by id */
+        const watchedEps = profileEps.reduce((acc, { id, result }) => ({ ...acc, [id]: result }), {});
+
+        const unwatchedEps = shows.reduce((acc, show) => {
+            const { episodes, id: showId } = show;
+
+            acc[showId] = episodes.filter(({ id, episodeNumber }) => {
+                if (!watchedEps[showId]) return true;
+                // TODO: add option to not ignore special episodes with 0 episodeNumber
+                return !watchedEps[showId].some(ep => ep.id === id) && episodeNumber !== 0;
+            });
+
             return acc;
         }, {});
 
         return unwatchedEps;
     },
 
+    /** Returns episodes that was already aired */
+    pastEpisodes(episodes, time = new Date()) {
+        return Object.keys(episodes).reduce((acc, showId) => ({
+            ...acc,
+            [showId]: episodes[showId].filter(({ airDateUTC }) => Date.parse(airDateUTC) <= time),
+        }), {});
+    },
+
+    /** Returns array of future episodes in time order */
+    futureEpisodes(episodes, time = new Date()) {
+        let result = Object.keys(episodes).reduce((acc, showId) => {
+            acc.push(...episodes[showId].filter(({ airDateUTC }) => Date.parse(airDateUTC) > time));
+            return acc;
+        }, []);
+        result = result.sort(({ airDateUTC: a }, { airDateUTC: b }) => Date.parse(a) - Date.parse(b));
+        return result;
+    },
+
     async updateData() {
         const { result: allShows } = await rpcHandler.profileShows();
-        const shows = this.leftToWatch(allShows);
-        const showIds = shows.map(({ show }) => show.id);
-        const unwatchedEps = await this.episodesToWatch(showIds);
-        await storage.saveWatchingShows(shows.length ? shows : []);
-        await storage.saveEpisodesToWatch(unwatchedEps);
+        let watchingShows = allShows.filter(({ watchStatus }) => watchStatus === 'watching');
+        const showIds = watchingShows.map(({ show }) => show.id);
+
+        const unwatchedEps = await this.fetchEpisodes(showIds);
+
+        const time = new Date();
+        const pastEps = this.pastEpisodes(unwatchedEps, time);
+        const futureEps = this.futureEpisodes(unwatchedEps, time);
+
+        // count how many aired episodes left to watch
+        watchingShows = watchingShows.map(entry => ({ ...entry, unwatchedEpisodes: pastEps[entry.show.id].length }));
+
+        await Promise.all([
+            storage.saveWatchingShows(watchingShows),
+            storage.saveEpisodesToWatch(pastEps),
+            storage.saveUpcomingEpisodes(futureEps),
+        ]);
     },
 };

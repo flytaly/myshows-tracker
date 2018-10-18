@@ -41,15 +41,10 @@ const rpcHandler = {
         };
     },
 
-    async request(method, params = {}) {
+    async request(body) {
         const res = await fetch('https://api.myshows.me/v2/rpc/', {
             ...await this.fetchInit(),
-            body: JSON.stringify({
-                jsonrpc: '2.0',
-                method,
-                params,
-                id: 1,
-            }),
+            body: JSON.stringify(body),
         });
         if (res.status !== 200) throw new Error(`Couldn't connect to server. ${res.status}: ${res.statusText}`);
         const result = await res.json();
@@ -63,34 +58,79 @@ const rpcHandler = {
         return result;
     },
 
+    async singleRequest(method, params = {}) {
+        return this.request({
+            jsonrpc: '2.0',
+            method,
+            params,
+            id: 1,
+        });
+    },
+
+    /* Combines requests in batches by N requests per batch https://jsonrpc.org/specification#batch
+    *  Returns array of successful results */
+    async batchRequest(reqObjects = [], N = 10) {
+        const results = [];
+        const body = reqObjects.map(({ method, params, id }, idx) => ({
+            jsonrpc: '2.0',
+            method,
+            params,
+            id: id !== undefined ? id : idx,
+        }));
+
+        // Intentionally sending requests sequentially (not concurrently with Promise.All)
+        // to prevent triggering server's DDOS protection if the batch contains too many requests
+        for (let i = 0; i < body.length; i += N) {
+            results.push(...await this.request(body.slice(i, i + N))); // eslint-disable-line no-await-in-loop
+        }
+
+        return results.filter(({ error, id }) => {
+            if (!error) return true;
+            console.error(`Batch contains failed request ${id}. Error: ${error.code}: ${error.message}. ${error.data}`);
+            return false;
+        });
+    },
 
     // List of RPC methods: https://api.myshows.me/shared/doc/
 
     // ========== Profile Methods ==========
     async profileGet() {
-        return this.request('profile.Get');
+        return this.singleRequest('profile.Get');
     },
 
     async profileFeed() {
-        return this.request('profile.Feed');
+        return this.singleRequest('profile.Feed');
     },
 
     async profileShows() {
-        return this.request('profile.Shows');
+        return this.singleRequest('profile.Shows');
     },
 
-    async profileEpisodes(showId) {
-        return this.request('profile.Episodes', { showId });
+    /**
+     * Return user information about episodes to given show.
+     * @param {array} showIds */
+    async profileEpisodes(showIds) {
+        return this.batchRequest(showIds.map(showId => ({
+            method: 'profile.Episodes',
+            params: { showId },
+            id: showId,
+        })));
     },
 
     // ========== Shows Methods ==========
-    /*  Get show's info */
-    async showsGetById(showId, withEpisodes = true) {
-        return this.request('shows.GetById', { showId, withEpisodes });
+    /**
+     * Return information about shows.
+     * @param {array} showIds */
+    async showsGetById(showIds, withEpisodes = true) {
+        return this.batchRequest(showIds.map(showId => ({
+            method: 'shows.GetById',
+            params: { showId, withEpisodes },
+            id: showId,
+        })));
     },
 
     async showsEpisode(id) {
-        return this.request('shows.Episode', { id });
+        return this.singleRequest('shows.Episode', { id });
     },
 
 
