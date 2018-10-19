@@ -15,6 +15,7 @@ const loginName = getElem('loginname');
 
 const templates = {
     showRow: getElem('show-row-tmp').content,
+    seasonBlock: getElem('season-block-tmp').content,
     episodeRow: getElem('episode-row-tmp').content,
     calendar: getElem('calendar-tmp').content,
     calendarRow: getElem('calendar-row-tmp').content,
@@ -147,6 +148,26 @@ function renderEpisodeRow({
     return ep;
 }
 
+function renderSeasonBlocks(episodes) {
+    const groupedBySeasons = episodes.reduce((acc, ep) => {
+        const { seasonNumber: N } = ep;
+        acc[N] ? acc[N].push(ep) : acc[N] = [ep]; // eslint-disable-line no-unused-expressions
+        return acc;
+    }, {});
+    const blocks = Object.keys(groupedBySeasons)
+        .sort((a, b) => b - a)
+        .map((season) => {
+            const seasonBlock = templates.seasonBlock.cloneNode(true);
+            const seasonTitle = seasonBlock.querySelector('.season-title');
+            const episodeList = seasonBlock.querySelector('.episode-list');
+            seasonTitle.textContent = `${season} season`;
+            const seasonEps = groupedBySeasons[season];
+            episodeList.append(...seasonEps.map(ep => renderEpisodeRow(ep)));
+            return seasonBlock;
+        });
+    return blocks;
+}
+
 const toggleHidden = (toHide, toShow) => {
     /* eslint-disable no-param-reassign */
     toHide.forEach((elem) => { elem.hidden = true; });
@@ -206,7 +227,7 @@ const nav = {
                 this.places.current = location;
                 // save showId in the object to retrieve it after reloading
                 this.showId = params ? params.id : this.showId;
-                const episodeList = episodeView.querySelector('.episode-list');
+                const container = episodeView.querySelector('.episodes-container');
                 const showTitle = episodeView.querySelector('.show-title a');
                 const allEpisodes = await storage.getEpisodes();
                 const episodes = allEpisodes ? allEpisodes[this.showId] : null;
@@ -220,9 +241,9 @@ const nav = {
                 body.style.backgroundAttachment = 'fixed';
 
                 toggleHidden([mainView], [episodeView, goBackBtn]);
-                episodeList.innerHTML = '';
+                container.innerHTML = '';
 
-                episodeList.append(...episodes.map(ep => renderEpisodeRow(ep)));
+                container.append(...renderSeasonBlocks(episodes));
                 break;
             }
             default:

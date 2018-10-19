@@ -95,7 +95,15 @@
     <!-- Episode View -->
     <div id="episode-view" hidden>
       <div class="show-title"><a href=""></a></div>
-      <ul class="episode-list">
+      <div class="episodes-container">
+        <template id="season-block-tmp">
+          <div class="season-header">
+            <span class="season-title"></span>
+            <span class="episodes-in-season"></span>
+          </div>
+          <ul class="episode-list">
+          </ul>
+        </template>
         <template id="episode-row-tmp">
           <li>
             <div class="ep-check"></div>
@@ -109,7 +117,7 @@
             <div class="ep-comments" hidden><a href="#"></a></div>
           </li>
         </template>
-      </ul>
+      </div>
     </div>
   </div>
 
