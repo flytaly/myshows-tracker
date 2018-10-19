@@ -112,7 +112,7 @@ function renderCalendars(upcomingEpisodes) {
         const totalNumber = calendarElem.querySelector('.month-total');
         const calendarList = calendarElem.querySelector('ul.calendar');
         name.textContent = `${monthName} ${year === currentYear ? '' : year}`;
-        totalNumber.textContent = episodes.length;
+        totalNumber.textContent = `${episodes.length} episodes`;
         calendarList.append(...episodes.map(ep => renderCalendarRow(ep)));
         return calendarElem;
     });
@@ -193,6 +193,8 @@ const nav = {
                     [episodeView, goBackBtn, showList],
                     [mainView, calendarContainer],
                 );
+
+                calendarContainer.innerHTML = '';
 
                 if (!episodes || !episodes.length) break;
 

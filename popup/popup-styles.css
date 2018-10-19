@@ -8,7 +8,7 @@ html {
 }
 
 body {
-    width: 37rem;
+    width: 40rem;
     min-width: 350px;
     height: 400px;
     overflow: hidden auto;
@@ -260,24 +260,20 @@ a, a:visited {
     padding: 0.5rem 0;
 }
 
-.ep-info div:nth-child(2) {
-    display: inline-block;
-}
-
 .ep-title a {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: bold;
 }
 
 .ep-number {
     display: inline-block;
     color: #cc0000;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 }
 
 .ep-date {
     display: inline-block;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 }
 
 .ep-comments {
@@ -386,7 +382,7 @@ a, a:visited {
 }
 
 .calendar-container {
-
+    padding: 1rem;
 }
 
 .calendar-container .calendar-month {
@@ -395,37 +391,79 @@ a, a:visited {
 
 .calendar-container .month-name {
     text-transform: capitalize;
+    font-size: 1.8rem;
+    font-weight: bold;
 }
 
 .calendar-container .month-total {
-
+    color: #676767;
+    font-size: 1.6rem;
 }
 
 .calendar-container ul.calendar {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    list-style-type: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+}
 
+.calendar li {
+    display: flex;
+    flex-direction: row;
+    font-size: 1.5rem;
+    padding: 0.4rem 0;
+}
+
+.calendar li:nth-child(2n) {
+    background-color: #EEEEEE;
 }
 
 .calendar .calendar-date {
     text-transform: capitalize;
+    align-self: center;
+    text-align: center;
+    width: 4rem;
+    padding: 0 4px;
 }
 
 .calendar .calendar-ep {
-
+    flex: 1;
+    padding: 0 1rem;
+    overflow-x: hidden;
+    align-self: center;
 }
 
 .calendar .calendar-show-title {
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 
+.calendar .calendar-show-title a {
+    font-weight: bold;
+    color: black;
+}
+
+.calendar .calendar-ep-info {
+    font-size: 1.2rem;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .calendar .calendar-ep-number {
-
+    color: #cc0000;
 }
 
-.calendar .calendar-ep-title {
-
+.calendar .calendar-ep-title a{
+    color: #676767;
 }
 
 .calendar .calendar-days-left {
-
+    align-self: center;
+    text-align: center;
+    width: 4rem;
 }
 
