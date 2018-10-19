@@ -21,6 +21,11 @@ const storage = {
         return shows;
     },
 
+    async getUpcomingEpisodes() {
+        const { upcomingEpisodes } = await browser.storage.local.get(['upcomingEpisodes']);
+        return upcomingEpisodes;
+    },
+
     async saveAuthData(data) {
         let expiresIn;
         if (data.expiresIn) {

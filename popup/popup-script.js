@@ -1,5 +1,7 @@
 /* global storage, browser, types */
 
+const dateLocale = 'en-GB';
+
 const getElem = document.getElementById.bind(document);
 const { body } = document;
 
@@ -7,27 +9,30 @@ const mainView = getElem('main-view');
 const episodeView = getElem('episode-view');
 
 const goBackBtn = getElem('go-back-btn');
-const loadingSpinner = getElem('loading');
+const showList = mainView.querySelector('.show-list');
+const calendarContainer = mainView.querySelector('.calendar-container');
 const loginName = getElem('loginname');
-const showTitle = episodeView.querySelector('.show-title a');
 
-const showElemTemplate = getElem('show-element');
-const episodeElemTemplate = getElem('episode-element');
+const templates = {
+    showRow: getElem('show-row-tmp').content,
+    episodeRow: getElem('episode-row-tmp').content,
+    calendar: getElem('calendar-tmp').content,
+    calendarRow: getElem('calendar-row-tmp').content,
+};
 
 const bgScriptPort = browser.runtime.connect();
-const showsInfo = {};
+const showsInfo = {}; // show's info for easy access to it in the episode view
 
 function renderShowRow(showRecord, onClick) {
     const { unwatchedEpisodes, show } = showRecord;
-    // const unwatchedEpNumber = totalEpisodes - watchedEpisodes;
-    const listElem = showElemTemplate.content.cloneNode(true);
+    const listElem = templates.showRow.cloneNode(true);
     const link = listElem.querySelector('a');
     const unwatchedElem = listElem.querySelector('.unwatched-ep');
 
     link.dataset.id = show.id;
     link.title = show.title;
     link.href = `https://myshows.me/view/${show.id}/`;
-    link.innerText = show.title;
+    link.textContent = show.title;
     link.addEventListener('click', (e) => {
         e.preventDefault();
         const { id } = e.target.dataset;
@@ -48,11 +53,75 @@ function renderShowRow(showRecord, onClick) {
     return listElem;
 }
 
+function renderCalendarRow({
+    id, showId, title, airDateUTC, shortName,
+}) {
+    const airDate = new Date(airDateUTC);
+    const now = new Date();
+
+    const calendarRowElem = templates.calendarRow.cloneNode(true);
+    const dateElem = calendarRowElem.querySelector('.calendar-date');
+    const showTitle = calendarRowElem.querySelector('.calendar-show-title a');
+    const epNumber = calendarRowElem.querySelector('.calendar-ep-number');
+    const epTitle = calendarRowElem.querySelector('.calendar-ep-title a');
+    const daysLeft = calendarRowElem.querySelector('.calendar-days-left');
+
+    dateElem.innerHTML = `${airDate.getDate()}<br>${airDate.toLocaleDateString(dateLocale, { weekday: 'short' })}`;
+    dateElem.title = airDate.toLocaleString(dateLocale);
+
+    showTitle.title = showsInfo[showId].title;
+    showTitle.href = `https://myshows.me/view/${showsInfo[showId].id}/`;
+    showTitle.textContent = showsInfo[showId].title;
+
+    epNumber.textContent = shortName;
+
+    epTitle.textContent = title;
+    epTitle.title = title;
+    epTitle.href = `https://myshows.me/view/episode/${id}/`;
+
+    const countDays = Math.ceil((airDate - now) / 1000 / 60 / 60 / 24);
+    daysLeft.innerHTML = `${countDays}<br>days`;
+    daysLeft.title = airDate.toLocaleString(dateLocale);
+    return calendarRowElem;
+}
+
+function renderCalendars(upcomingEpisodes) {
+    // group episodes by month, episodes have to be sorted in time order beforehand
+    const groupByMonth = upcomingEpisodes.reduce((acc, ep) => {
+        const date = new Date(ep.airDateUTC);
+        const [month, year] = [date.getMonth(), date.getFullYear()];
+        const last = acc[acc.length - 1];
+        if (!last || last.month !== month || last.year !== year) {
+            acc.push({
+                month,
+                year,
+                episodes: [ep],
+                monthName: date.toLocaleDateString(dateLocale, { month: 'long' }),
+            });
+        } else {
+            last.episodes.push(ep);
+        }
+        return acc;
+    }, []);
+
+    const currentYear = new Date().getFullYear();
+
+    return groupByMonth.map(({ monthName, year, episodes }) => {
+        const calendarElem = templates.calendar.cloneNode(true);
+        const name = calendarElem.querySelector('.month-name');
+        const totalNumber = calendarElem.querySelector('.month-total');
+        const calendarList = calendarElem.querySelector('ul.calendar');
+        name.textContent = `${monthName} ${year === currentYear ? '' : year}`;
+        totalNumber.textContent = episodes.length;
+        calendarList.append(...episodes.map(ep => renderCalendarRow(ep)));
+        return calendarElem;
+    });
+}
 
 function renderEpisodeRow({
     id, title, shortName, airDateUTC, commentsCount,
 }) {
-    const ep = episodeElemTemplate.content.cloneNode(true);
+    const ep = templates.episodeRow.cloneNode(true);
     const link = ep.querySelector('.ep-title a');
     const epNumber = ep.querySelector('.ep-number');
     const epDate = ep.querySelector('.ep-date');
@@ -60,12 +129,12 @@ function renderEpisodeRow({
     const date = airDateUTC ? new Date(airDateUTC) : null;
     link.href = `https://myshows.me/view/episode/${id}/`;
     link.title = title;
-    link.innerText = title;
+    link.textContent = title;
     epNumber.textContent = shortName;
 
     if (date) {
-        epDate.textContent = date.toLocaleDateString();
-        epDate.title = date.toLocaleString();
+        epDate.textContent = date.toLocaleDateString(dateLocale);
+        epDate.title = date.toLocaleString(dateLocale);
     }
 
     if (commentsCount) {
@@ -78,41 +147,65 @@ function renderEpisodeRow({
     return ep;
 }
 
+const toggleHidden = (toHide, toShow) => {
+    /* eslint-disable no-param-reassign */
+    toHide.forEach((elem) => { elem.hidden = true; });
+    toShow.forEach((elem) => { elem.hidden = false; });
+};
+
 const nav = {
     places: {
         showList: 'showList',
         episodeList: 'episodeList',
+        upcomingList: 'upcomingList',
         current: 'showList',
     },
     async navigate(location, params) {
         switch (location) {
             case this.places.showList: {
                 this.places.current = location;
-                const showList = mainView.querySelector('.show-list');
                 const shows = await storage.getWatchingShows();
-                if (!shows || !shows.length) break;
-
-                // save info for easy access to it in the episode view
-                shows.forEach(({ show: { id, image, title } }) => { showsInfo[id] = { image, title }; });
-
                 body.style.background = '#FFFFFF';
 
-                mainView.hidden = false;
-                episodeView.hidden = true;
-                goBackBtn.hidden = true;
+                toggleHidden(
+                    [goBackBtn, episodeView, calendarContainer],
+                    [mainView, showList],
+                );
                 showList.innerHTML = '';
 
+                if (!shows || !shows.length) break;
+
+                shows.forEach(({ show: { id, image, title } }) => { showsInfo[id] = { image, title }; });
+
                 const clickHandler = id => this.navigate(this.places.episodeList, { id });
+
                 showList.append(...shows
                     .filter(show => show.unwatchedEpisodes)
                     .map(show => renderShowRow(show, clickHandler)));
                 break;
             }
+
+            case this.places.upcomingList: {
+                this.places.current = location;
+                const episodes = await storage.getUpcomingEpisodes();
+
+                toggleHidden(
+                    [episodeView, goBackBtn, showList],
+                    [mainView, calendarContainer],
+                );
+
+                if (!episodes || !episodes.length) break;
+
+                calendarContainer.append(...renderCalendars(episodes));
+                break;
+            }
+
             case this.places.episodeList: {
                 this.places.current = location;
                 // save showId in the object to retrieve it after reloading
                 this.showId = params ? params.id : this.showId;
                 const episodeList = episodeView.querySelector('.episode-list');
+                const showTitle = episodeView.querySelector('.show-title a');
                 const allEpisodes = await storage.getEpisodes();
                 const episodes = allEpisodes ? allEpisodes[this.showId] : null;
                 if (!episodes) break;
@@ -124,15 +217,12 @@ const nav = {
                 body.style.backgroundSize = 'cover';
                 body.style.backgroundAttachment = 'fixed';
 
-                mainView.hidden = true;
-                episodeView.hidden = false;
-                goBackBtn.hidden = false;
+                toggleHidden([mainView], [episodeView, goBackBtn]);
                 episodeList.innerHTML = '';
 
                 episodeList.append(...episodes.map(ep => renderEpisodeRow(ep)));
                 break;
             }
-
             default:
         }
     },
@@ -157,7 +247,26 @@ const initDropdownMenu = () => {
     };
 };
 
+function initTabs() {
+    const tabShows = getElem('tab-shows');
+    const tabCalendar = getElem('tab-calendar');
+
+    tabShows.addEventListener('click', () => {
+        nav.navigate(nav.places.showList);
+        tabShows.classList.add('active');
+        tabCalendar.classList.remove('active');
+    });
+
+    tabCalendar.addEventListener('click', () => {
+        nav.navigate(nav.places.upcomingList);
+        tabCalendar.classList.add('active');
+        tabShows.classList.remove('active');
+    });
+}
+
 async function init() {
+    const loadingSpinner = getElem('loading');
+
     goBackBtn.addEventListener('click', () => {
         nav.navigate(nav.places.showList);
     });
@@ -165,14 +274,18 @@ async function init() {
     loginName.textContent = await storage.getProfile();
 
     initDropdownMenu();
+    initTabs();
 
-    bgScriptPort.onMessage.addListener((message) => {
+    bgScriptPort.onMessage.addListener(async (message) => {
         const { type } = message;
         switch (type) {
-            case types.INFO_UPDATED:
+            case types.INFO_UPDATED: {
                 // upon receiving a new information update the current view
+                const shows = await storage.getWatchingShows();
+                shows.forEach(({ show: { id, image, title } }) => { showsInfo[id] = { image, title }; });
                 nav.navigate(nav.places.current);
                 break;
+            }
             case types.LOADING_START:
                 loadingSpinner.hidden = false;
                 break;
@@ -183,11 +296,8 @@ async function init() {
         }
     });
 
-    try {
-        await nav.navigate(nav.places.showList);
-    } catch (e) {
-        console.error(e);
-    }
+    await nav.navigate(nav.places.showList);
 }
 
-init();
+init()
+    .catch(e => console.error(e));

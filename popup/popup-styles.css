@@ -147,6 +147,8 @@ a, a:visited {
     border-radius: 5px 5px 0 0;
     border: 1px solid black;
     border-bottom: 1px solid #999999;
+    font-size: 1.5rem;
+    cursor: pointer;
 }
 
 .tabs .tab:first-child {
@@ -167,6 +169,10 @@ a, a:visited {
     flex-direction: column;
     list-style-type: none;
     padding: 1rem;
+}
+
+#main-view ul.show-list[hidden] {
+    display: none;
 }
 
 #main-view .show-list li {
@@ -379,6 +385,47 @@ a, a:visited {
     }
 }
 
+.calendar-container {
 
+}
 
+.calendar-container .calendar-month {
+
+}
+
+.calendar-container .month-name {
+    text-transform: capitalize;
+}
+
+.calendar-container .month-total {
+
+}
+
+.calendar-container ul.calendar {
+
+}
+
+.calendar .calendar-date {
+    text-transform: capitalize;
+}
+
+.calendar .calendar-ep {
+
+}
+
+.calendar .calendar-show-title {
+
+}
+
+.calendar .calendar-ep-number {
+
+}
+
+.calendar .calendar-ep-title {
+
+}
+
+.calendar .calendar-days-left {
+
+}
 

@@ -51,25 +51,52 @@
 
     <!-- Main View -->
     <div id="main-view">
+
       <div class="tabs">
-        <div class="tab active">Shows</div>
-        <div class="tab">Calendar</div>
+        <button id="tab-shows" class="tab active">Shows</button>
+        <button id="tab-calendar" class="tab">Calendar</button>
       </div>
+
       <ul class="show-list">
-        <template id="show-element">
+        <template id="show-row-tmp">
           <li>
             <div class="show-title"><a href="#"></a></div>
             <div class="unwatched-ep" hidden></div>
           </li>
         </template>
       </ul>
+
+      <div class="calendar-container" hidden>
+        <template id="calendar-tmp">
+          <div class="calendar-month">
+            <span class="month-name"></span>
+            <span class="month-total"></span>
+          </div>
+          <ul class="calendar">
+          </ul>
+        </template>
+        <template id="calendar-row-tmp">
+          <li>
+            <div class="calendar-date"></div>
+            <div class="calendar-ep">
+              <div class="calendar-show-title"><a href="#"></a></div>
+              <div>
+                <span class="calendar-ep-number"></span>
+                <span class="calendar-ep-title"><a href="#"></a></span>
+              </div>
+            </div>
+            <div class="calendar-days-left"></div>
+          </li>
+        </template>
+      </div>
+
     </div>
 
     <!-- Episode View -->
     <div id="episode-view" hidden>
       <div class="show-title"><a href=""></a></div>
       <ul class="episode-list">
-        <template id="episode-element">
+        <template id="episode-row-tmp">
           <li>
             <div class="ep-check"></div>
             <div class="ep-info">
