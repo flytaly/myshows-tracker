@@ -163,7 +163,7 @@ function renderSeasonBlocks(episodes) {
             const seasonEpisodesNumber = seasonBlock.querySelector('.episodes-in-season');
             const episodeList = seasonBlock.querySelector('.episode-list');
             seasonTitle.textContent = `${season} season`;
-            seasonEpisodesNumber.textContent = `${season.length} episodes`;
+            seasonEpisodesNumber.textContent = `${groupedBySeasons[season].length} episodes`;
 
             seasonHeader.addEventListener('click', function () {
                 this.classList.toggle('expanded');
