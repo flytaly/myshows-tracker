@@ -156,11 +156,27 @@ function renderSeasonBlocks(episodes) {
     }, {});
     const blocks = Object.keys(groupedBySeasons)
         .sort((a, b) => b - a)
-        .map((season) => {
+        .map((season, idx, seasons) => {
             const seasonBlock = templates.seasonBlock.cloneNode(true);
+            const seasonHeader = seasonBlock.querySelector('.season-header');
             const seasonTitle = seasonBlock.querySelector('.season-title');
+            const seasonEpisodesNumber = seasonBlock.querySelector('.episodes-in-season');
             const episodeList = seasonBlock.querySelector('.episode-list');
             seasonTitle.textContent = `${season} season`;
+            seasonEpisodesNumber.textContent = `${season.length} episodes`;
+
+            seasonHeader.addEventListener('click', function () {
+                this.classList.toggle('expanded');
+                const panel = this.nextElementSibling;
+                panel.hidden = !panel.hidden;
+            });
+
+            if (idx < seasons.length - 1) {
+                episodeList.hidden = true;
+            } else {
+                seasonHeader.classList.add('expanded');
+            }
+
             const seasonEps = groupedBySeasons[season];
             episodeList.append(...seasonEps.map(ep => renderEpisodeRow(ep)));
             return seasonBlock;
