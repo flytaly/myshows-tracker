@@ -9,6 +9,15 @@
 </head>
 
 <body>
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" style="display: none">
+    <path id="rating-star-path"
+          d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"/>
+  </svg>
+  <!--
+  Font Awesome Free 5.4.1 by @fontawesome - https://fontawesome.com
+  License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+  -->
   <div id="container">
 
     <!-- Loading spinner -->
@@ -23,11 +32,15 @@
 
       <div class="button-container">
         <button id="go-back-btn" hidden>
-          <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg"
-               viewBox="0 0 256 512">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
             <path
-                d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"></path>
+                d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/>
           </svg>
+          <!--
+          Icon: https://fontawesome.com/icons/angle-left
+          Font Awesome Free 5.4.1 by @fontawesome - https://fontawesome.com
+          License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+          -->
         </button>
       </div>
 
@@ -41,7 +54,7 @@
         <div id="loginname"></div>
         <div class="menu">
           <a href="#" class="menu-option" id="sign-out">
-            <object class="sign-out-sign" type="image/svg+xml" data="images/sign-out-alt-solid.svg"></object>
+            <object class="sign-out-sign" type="image/svg+xml" data="images/sign-out-alt.svg"></object>
             Sign out
           </a>
           </ul>
@@ -106,7 +119,35 @@
         </template>
         <template id="episode-row-tmp">
           <li>
-            <div class="ep-check"></div>
+            <div class="rating-container">
+              <div class="ep-rating">
+                <a href="#" title="Great!" data-rating="5">
+                  <svg class="rating-star" viewBox="0 0 576 512">
+                    <use href="#rating-star-path"></use>
+                  </svg>
+                </a>
+                <a href="#" title="Good one" data-rating="4">
+                  <svg class="rating-star" viewBox="0 0 576 512">
+                    <use href="#rating-star-path"></use></svg>
+                </a>
+                <a href="#" title="Give it a watch" data-rating="3">
+                  <svg class="rating-star" viewBox="0 0 576 512">
+                    <use href="#rating-star-path"></use>
+                  </svg>
+                    </a>
+                <a title="Meh" data-rating="2">
+                  <svg class="rating-star" viewBox="0 0 576 512">
+                    <use href="#rating-star-path"></use>
+                  </svg>
+                </a>
+                <a href="#" title="Not worth it" data-rating="1">
+                  <svg class="rating-star" viewBox="0 0 576 512">
+                    <use href="#rating-star-path"></use>
+                  </svg>
+                </a>
+              </div>
+              <a class="ep-check" title="No rating" data-rating="4"></a>
+            </div>
             <div class="ep-info">
               <div class="ep-title"><a href="#"></a></div>
               <div>
