@@ -195,6 +195,10 @@ a, a:visited {
     overflow-x: hidden;
 }
 
+#main-view .show-title a{
+    font-weight: bold;
+}
+
 #main-view .unwatched-ep {
     background-color: #A80303;
     border-radius: 5px;

@@ -12,6 +12,7 @@ const goBackBtn = getElem('go-back-btn');
 const showList = mainView.querySelector('.show-list');
 const calendarContainer = mainView.querySelector('.calendar-container');
 const loginName = getElem('loginname');
+const logoLink = document.querySelector('.logo > a');
 
 const templates = {
     showRow: getElem('show-row-tmp').content,
@@ -186,8 +187,12 @@ function renderSeasonBlocks(episodes) {
 
 const toggleHidden = (toHide, toShow) => {
     /* eslint-disable no-param-reassign */
-    toHide.forEach((elem) => { elem.hidden = true; });
-    toShow.forEach((elem) => { elem.hidden = false; });
+    toHide.forEach((elem) => {
+        elem.hidden = true;
+    });
+    toShow.forEach((elem) => {
+        elem.hidden = false;
+    });
 };
 
 const nav = {
@@ -208,11 +213,14 @@ const nav = {
                     [goBackBtn, episodeView, calendarContainer],
                     [mainView, showList],
                 );
+                this.updateLogoNav();
                 showList.innerHTML = '';
 
                 if (!shows || !shows.length) break;
 
-                shows.forEach(({ show: { id, image, title } }) => { showsInfo[id] = { image, title }; });
+                shows.forEach(({ show: { id, image, title } }) => {
+                    showsInfo[id] = { image, title };
+                });
 
                 const clickHandler = id => this.navigate(this.places.episodeList, { id });
 
@@ -257,12 +265,27 @@ const nav = {
                 body.style.backgroundAttachment = 'fixed';
 
                 toggleHidden([mainView], [episodeView, goBackBtn]);
+
+                this.updateLogoNav();
                 container.innerHTML = '';
 
                 container.append(...renderSeasonBlocks(episodes));
                 break;
             }
             default:
+        }
+    },
+    updateLogoNav() {
+        const handleClick = (e) => {
+            e.preventDefault();
+            nav.navigate(nav.places.showList);
+        };
+        if (this.places.current === this.places.showList) {
+            logoLink.title = 'Open myshows.me';
+            logoLink.removeEventListener('click', handleClick);
+        } else {
+            logoLink.title = 'Return to main page';
+            logoLink.addEventListener('click', handleClick);
         }
     },
 };
@@ -306,6 +329,7 @@ function initTabs() {
 async function init() {
     const loadingSpinner = getElem('loading');
 
+    goBackBtn.title = 'Return to main page';
     goBackBtn.addEventListener('click', () => {
         nav.navigate(nav.places.showList);
     });
@@ -321,7 +345,9 @@ async function init() {
             case types.INFO_UPDATED: {
                 // upon receiving a new information update the current view
                 const shows = await storage.getWatchingShows();
-                shows.forEach(({ show: { id, image, title } }) => { showsInfo[id] = { image, title }; });
+                shows.forEach(({ show: { id, image, title } }) => {
+                    showsInfo[id] = { image, title };
+                });
                 nav.navigate(nav.places.current);
                 break;
             }
