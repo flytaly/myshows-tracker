@@ -103,6 +103,11 @@ a, a:visited {
     margin: 0;
     background: none;
     border: none;
+    cursor: pointer;
+}
+
+#go-back-btn:active {
+    transform: scale(0.90);
 }
 
 #go-back-btn svg {
