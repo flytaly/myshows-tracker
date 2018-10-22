@@ -133,5 +133,18 @@ const rpcHandler = {
         return this.singleRequest('shows.Episode', { id });
     },
 
+    // ========== Manage Methods ==========
+
+    async manageCheckEpisode(episodeId) {
+        return this.singleRequest('manage.CheckEpisode', { id: episodeId });
+    },
+
+    async manageUnCheckEpisode(episodeId) {
+        return this.singleRequest('manage.UnCheckEpisode', { id: episodeId });
+    },
+
+    async manageRateEpisode(episodeId, rating = 0) {
+        return this.singleRequest('manage.RateEpisode', { id: episodeId, rating });
+    },
 
 };

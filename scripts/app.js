@@ -195,4 +195,31 @@ const app = {
             storage.saveUpcomingEpisodes(futureEps),
         ]);
     },
+
+    async rateEpisode(episodeId, rating, showId) {
+        try {
+            await rpcHandler.manageRateEpisode(episodeId, rating);
+
+            state.episodeWasRated = episodeId;
+
+            // Delete episode from storage and re-count number of episodes left to watch
+            let [shows, episodes] = await Promise.all([
+                storage.getWatchingShows(),
+                storage.getEpisodes(),
+            ]);
+
+            if (!episodes[showId].some(ep => ep.id === episodeId)) return; // already deleted from storage
+
+            episodes = { ...episodes, [showId]: episodes[showId].filter(e => e.id !== episodeId) };
+            shows = shows.map(
+                show => (show.show.id === showId ? ({ ...show, unwatchedEpisodes: show.unwatchedEpisodes - 1 }) : show),
+            );
+            state.totalEpisodes -= 1;
+            await Promise.all([
+                storage.saveEpisodesToWatch(episodes),
+                storage.saveWatchingShows(shows)]);
+        } catch (e) {
+            console.error(`Error occured during episode rating. ${e.name}: ${e.message}`);
+        }
+    },
 };

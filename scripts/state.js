@@ -6,6 +6,7 @@ const state = new Proxy({
     updating: false,
     lastUpdate: null,
     totalEpisodes: null,
+    episodeWasRated: null,
 }, ({
     set: (obj, prop, value) => {
         switch (prop) {
@@ -21,6 +22,9 @@ const state = new Proxy({
             case 'totalEpisodes':
                 browser.browserAction.setBadgeBackgroundColor({ color: '#252525' });
                 browser.browserAction.setBadgeText({ text: value ? value.toString() : null });
+                break;
+            case 'episodeWasRated':
+                popupPort && popupPort.postMessage({ type: types.EPISODE_WAS_RATED, payload: { episodeId: value } });
                 break;
             default:
         }

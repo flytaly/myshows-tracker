@@ -24,6 +24,41 @@ const templates = {
 
 const bgScriptPort = browser.runtime.connect();
 const showsInfo = {}; // show's info for easy access to it in the episode view
+const episodeRemoved = new Event('episoderemoved');
+
+function handleRatingClicks(ratingBlock, episodeId, showId) {
+    const ratingElems = ratingBlock.querySelectorAll('a.rating-star, a.ep-check');
+    const handler = async (e) => {
+        const rateElem = e.target.closest('a.rating-star, a.ep-check');
+        const CHECKED = 'checked';
+        e.preventDefault();
+
+        if (rateElem) {
+            const listElem = rateElem.closest('li');
+            const { rating } = rateElem.dataset;
+            /*
+            if (rating === '0' && rateElem.classList.contains(CHECKED)) {
+                bgScriptPort.postMessage({ type: types.UNCHECK_EPISODE, payload: { episodeId } });
+                listElem.classList.remove(CHECKED);
+                ratingElems.forEach(el => el.classList.remove(CHECKED));
+                return;
+            }
+            */
+            bgScriptPort.postMessage({ type: types.RATE_EPISODE, payload: { episodeId, rating, showId } });
+            listElem.classList.add(CHECKED);
+            ratingElems.forEach((el) => {
+                if (el.dataset.rating <= rating) {
+                    el.classList.add(CHECKED);
+                    return;
+                }
+                el.classList.remove(CHECKED);
+            });
+        }
+    };
+
+    ratingBlock.addEventListener('click', handler);
+}
+
 
 function renderShowRow(showRecord, onClick) {
     const { unwatchedEpisodes, show } = showRecord;
@@ -72,7 +107,7 @@ function renderCalendarRow({
     dateElem.title = airDate.toLocaleString(dateLocale);
 
     showTitle.title = showsInfo[showId].title;
-    showTitle.href = `https://myshows.me/view/${showsInfo[showId].id}/`;
+    showTitle.href = `https://myshows.me/view/${showId}/`;
     showTitle.textContent = showsInfo[showId].title;
 
     epNumber.textContent = shortName;
@@ -121,19 +156,23 @@ function renderCalendars(upcomingEpisodes) {
 }
 
 function renderEpisodeRow({
-    id, title, shortName, airDateUTC, commentsCount,
+    id, title, shortName, airDateUTC, commentsCount, showId, seasonNumber,
 }) {
     const ep = templates.episodeRow.cloneNode(true);
     const link = ep.querySelector('.ep-title a');
+    const epListElem = ep.querySelector('.episode-row');
     const epNumber = ep.querySelector('.ep-number');
     const epDate = ep.querySelector('.ep-date');
     const epComments = ep.querySelector('.ep-comments a');
+    const epRatingBlock = ep.querySelector('.rating-block');
     const date = airDateUTC ? new Date(airDateUTC) : null;
+    epListElem.dataset.id = id;
+    epListElem.dataset.season = seasonNumber;
     link.href = `https://myshows.me/view/episode/${id}/`;
     link.title = title;
     link.textContent = title;
     epNumber.textContent = shortName;
-
+    handleRatingClicks(epRatingBlock, id, showId);
     if (date) {
         epDate.textContent = date.toLocaleDateString(dateLocale);
         epDate.title = date.toLocaleString(dateLocale);
@@ -155,7 +194,8 @@ function renderSeasonBlocks(episodes) {
         acc[N] ? acc[N].push(ep) : acc[N] = [ep]; // eslint-disable-line no-unused-expressions
         return acc;
     }, {});
-    const blocks = Object.keys(groupedBySeasons)
+
+    return Object.keys(groupedBySeasons)
         .sort((a, b) => b - a)
         .map((season, idx, seasons) => {
             const seasonBlock = templates.seasonBlock.cloneNode(true);
@@ -163,13 +203,23 @@ function renderSeasonBlocks(episodes) {
             const seasonTitle = seasonBlock.querySelector('.season-title');
             const seasonEpisodesNumber = seasonBlock.querySelector('.episodes-in-season');
             const episodeList = seasonBlock.querySelector('.episode-list');
-            seasonTitle.textContent = `${season} season`;
-            seasonEpisodesNumber.textContent = `${groupedBySeasons[season].length} episodes`;
+            let episodesInSeason = groupedBySeasons[season].length;
 
-            seasonHeader.addEventListener('click', function () {
+            seasonTitle.textContent = `${season} season`;
+            seasonEpisodesNumber.textContent = `${episodesInSeason} episodes`;
+
+            seasonHeader.dataset.season = season;
+            seasonHeader.addEventListener('click', () => {
                 this.classList.toggle('expanded');
                 const panel = this.nextElementSibling;
                 panel.hidden = !panel.hidden;
+            });
+            seasonHeader.addEventListener('episoderemoved', () => {
+                episodesInSeason -= 1;
+                seasonEpisodesNumber.textContent = `${episodesInSeason} episodes`;
+                if (episodesInSeason === 0) {
+                    seasonHeader.parentNode.removeChild(seasonHeader);
+                }
             });
 
             if (idx < seasons.length - 1) {
@@ -182,7 +232,6 @@ function renderSeasonBlocks(episodes) {
             episodeList.append(...seasonEps.map(ep => renderEpisodeRow(ep)));
             return seasonBlock;
         });
-    return blocks;
 }
 
 const toggleHidden = (toHide, toShow) => {
@@ -339,8 +388,9 @@ async function init() {
     initDropdownMenu();
     initTabs();
 
+    const episodesToRemove = new Set();
     bgScriptPort.onMessage.addListener(async (message) => {
-        const { type } = message;
+        const { type, payload } = message;
         switch (type) {
             case types.INFO_UPDATED: {
                 // upon receiving a new information update the current view
@@ -348,7 +398,7 @@ async function init() {
                 shows.forEach(({ show: { id, image, title } }) => {
                     showsInfo[id] = { image, title };
                 });
-                nav.navigate(nav.places.current);
+                if (nav.places.current !== nav.places.episodeList) nav.navigate(nav.places.current);
                 break;
             }
             case types.LOADING_START:
@@ -357,6 +407,38 @@ async function init() {
             case types.LOADING_ENDED:
                 loadingSpinner.hidden = true;
                 break;
+            case types.EPISODE_WAS_RATED: {
+                if (episodesToRemove.has(payload.episodeId)) return; // to prevent double removing from DOM
+                episodesToRemove.add(payload.episodeId);
+
+                const episodeElem = document.querySelector(`.episode-row[data-id="${payload.episodeId}"]`);
+                const { season } = episodeElem.dataset;
+                const seasonHeader = document.querySelector(`.season-header[data-season="${season}"]`);
+
+                episodeElem.addEventListener('mouseleave', () => {
+                    episodeElem.classList.add('remove');
+                    const tm = setTimeout(() => {
+                        episodeElem.parentNode.removeChild(episodeElem);
+                        episodesToRemove.delete(payload.episodeId);
+                        seasonHeader.dispatchEvent(episodeRemoved);
+                    }, 1000);
+
+                    episodeElem.addEventListener('mouseover', () => {
+                        episodeElem.classList.remove('remove');
+                        clearTimeout(tm);
+                    }, { once: true });
+                });
+
+                // forcefully trigger 'mouseleave' if mouse already leaved episode before the event was added
+                document.addEventListener('mousemove', ({ clientX, clientY }) => {
+                    const {
+                        top, left, bottom, right,
+                    } = episodeElem.getBoundingClientRect();
+                    if (clientX < left || clientX > right
+                        || clientY < top || clientY > bottom) episodeElem.dispatchEvent(new Event('mouseleave'));
+                }, { once: true });
+                break;
+            }
             default:
         }
     });

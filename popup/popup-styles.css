@@ -293,6 +293,11 @@ ul.episode-list {
         display: flex;
         flex-direction: row;
         align-items: center;
+        transition: opacity 1s ease-out;
+    }
+
+    .episode-list li:hover {
+        transition: opacity 0s;
     }
 
     .episode-list li:nth-child(2n) {
@@ -305,6 +310,14 @@ ul.episode-list {
 
     .episode-list li > div:last-child {
         margin-right: 1rem;
+    }
+
+    .episode-list li.checked {
+        background-color: #dcffe0;
+    }
+
+    .episode-list  li.remove {
+        opacity: 0;
     }
 
     .ep-info {
@@ -355,13 +368,13 @@ ul.episode-list {
         color: white;
     }
 
-.rating-container {
+.rating-block {
     position: relative;
     height: 3.2rem;
     padding: 0.5rem;
 }
 
-    .rating-container:hover {
+    .rating-block:hover {
         background-color: white;
         outline: 1px solid #CCCCCC;
     }
@@ -386,24 +399,28 @@ ul.episode-list {
         transition: max-width 0.2s ease-out;
     }
 
-    .rating-container:hover .ep-rating {
+    .rating-block:hover .ep-rating {
         max-width: 14rem;
     }
 
     .ep-rating a {
         height: 2.2rem;
         margin-right: 0.2rem;
-        /*cursor: pointer;*/
     }
 
-    .ep-rating a:active {
+    .ep-rating a.rating-star:active svg {
         transform: scale(0.90);
     }
 
-    .ep-rating .rating-star {
+    .ep-rating a.rating-star svg {
         height: 100%;
         width: auto;
         fill: #CCCCCC;
+        pointer-events: none;
+    }
+
+    .ep-rating > a.rating-star.checked > svg {
+        fill: #cc0000;
     }
 
     .ep-check {
@@ -434,7 +451,6 @@ ul.episode-list {
     .ep-check:hover:after {
         content: "";
         position: absolute;
-        cursor: pointer;
         background: url(images/check.svg) center center no-repeat;
         background-size: 1.5rem 1.5rem;
         width: 2.2rem;
@@ -443,33 +459,33 @@ ul.episode-list {
         left: -1px;
     }
 
-    .ep-rating > :nth-child(1):hover .rating-star,
-    .ep-rating > :nth-child(1):hover  + * .rating-star,
-    .ep-rating > :nth-child(1):hover  + * + * .rating-star,
-    .ep-rating > :nth-child(1):hover  + * + * + * .rating-star,
-    .ep-rating > :nth-child(1):hover  + * + * + * + * .rating-star {
+    .ep-rating > a:nth-child(1):hover > svg,
+    .ep-rating > a:nth-child(1):hover  + * > svg,
+    .ep-rating > a:nth-child(1):hover  + * + * > svg,
+    .ep-rating > a:nth-child(1):hover  + * + * + * > svg,
+    .ep-rating > a:nth-child(1):hover  + * + * + * + *  >svg {
         fill: #cc0000;
     }
 
-    .ep-rating > :nth-child(2):hover > .rating-star,
-    .ep-rating > :nth-child(2):hover  + * > .rating-star,
-    .ep-rating > :nth-child(2):hover  + * + * > .rating-star,
-    .ep-rating > :nth-child(2):hover  + * + * + * > .rating-star {
+    .ep-rating > a:nth-child(2):hover > svg,
+    .ep-rating > a:nth-child(2):hover  + * > svg,
+    .ep-rating > a:nth-child(2):hover  + * + * > svg,
+    .ep-rating > a:nth-child(2):hover  + * + * + * > svg {
         fill: #cc0000;
     }
 
-    .ep-rating > :nth-child(3):hover > .rating-star,
-    .ep-rating > :nth-child(3):hover  + * > .rating-star,
-    .ep-rating > :nth-child(3):hover  + * + * > .rating-star {
+    .ep-rating > a:nth-child(3):hover > svg,
+    .ep-rating > a:nth-child(3):hover  + * > svg,
+    .ep-rating > a:nth-child(3):hover  + * + * > svg {
         fill: #cc0000;
     }
 
-    .ep-rating > :nth-child(4):hover > .rating-star,
-    .ep-rating > :nth-child(4):hover  + * > .rating-star {
+    .ep-rating > a:nth-child(4):hover > svg,
+    .ep-rating > a:nth-child(4):hover  + * > svg {
         fill: #cc0000;
     }
 
-    .ep-rating > :nth-child(5):hover > .rating-star {
+    .ep-rating > a:nth-child(5):hover > svg {
         fill: #cc0000;
     }
 

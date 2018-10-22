@@ -33,11 +33,17 @@ browser.runtime.onConnect.addListener(async (port) => {
     popupPort = port;
 
     popupPort.onMessage.addListener(async (message) => {
-        if (message.type === types.SIGN_OUT) {
-            await browser.alarms.clearAll();
-            await storage.clear();
-            await app.setAuth();
-            await update();
+        const { type, payload } = message;
+        switch (type) {
+            case types.SIGN_OUT:
+                await browser.alarms.clearAll();
+                await storage.clear();
+                await app.setAuth();
+                await update();
+                break;
+            case types.RATE_EPISODE:
+                await app.rateEpisode(payload.episodeId, payload.rating, payload.showId);
+            default:
         }
     });
 
