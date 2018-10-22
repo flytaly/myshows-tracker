@@ -209,7 +209,7 @@ function renderSeasonBlocks(episodes) {
             seasonEpisodesNumber.textContent = `${episodesInSeason} episodes`;
 
             seasonHeader.dataset.season = season;
-            seasonHeader.addEventListener('click', () => {
+            seasonHeader.addEventListener('click', function () {
                 this.classList.toggle('expanded');
                 const panel = this.nextElementSibling;
                 panel.hidden = !panel.hidden;
