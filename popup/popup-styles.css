@@ -293,7 +293,7 @@ ul.episode-list {
         display: flex;
         flex-direction: row;
         align-items: center;
-        transition: opacity 1s ease-out;
+        transition: opacity 0.4s ease-out;
     }
 
     .episode-list li:hover {

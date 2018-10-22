@@ -1,10 +1,9 @@
-/* eslint-disable no-unused-expressions */
+/* eslint-disable no-unused-expressions,no-underscore-dangle */
 /* global browser, state, app, storage, types */
 
 let popupPort;
 
 async function update() {
-    state.updating = true;
     try {
         await app.updateData();
         state.lastUpdate = new Date();
@@ -16,7 +15,6 @@ async function update() {
         }
         browser.alarms.create(types.ALARM_UPDATE, { delayInMinutes: 0.5 });
     }
-    state.updating = false;
 }
 
 window.requestIdleCallback(async () => {

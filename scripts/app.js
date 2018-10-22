@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars */
-/* global browser, clientId, clientSecret, redirectUri, storage, rpcHandler, AuthError, state */
+/* eslint-disable no-unused-vars,no-underscore-dangle */
+/* global browser, clientId, clientSecret, redirectUri, storage, rpcHandler, AuthError, state, types */
 
 const mapObjToQueryStr = params => Object.entries(params).map(pair => pair.join('=')).join('&');
 
@@ -174,6 +174,7 @@ const app = {
     },
 
     async updateData() {
+        state.updating = true;
         const { result: allShows } = await rpcHandler.profileShows();
         let watchingShows = allShows.filter(({ watchStatus }) => watchStatus === 'watching');
         const showIds = watchingShows.map(({ show }) => show.id);
@@ -194,9 +195,20 @@ const app = {
             storage.saveEpisodesToWatch(pastEps),
             storage.saveUpcomingEpisodes(futureEps),
         ]);
+
+        while (this.rateEpisodesAgain.length) {
+            const { episodeId, rating, showId } = this.rateEpisodesAgain.pop();
+            await this.rateEpisode(episodeId, rating, showId, false); /* eslint-disable-line no-await-in-loop */
+        }
+        state.updating = false;
     },
 
-    async rateEpisode(episodeId, rating, showId) {
+    rateEpisodesAgain: [],
+    /** Rate episode with given rating. In case of error this function will be called again
+     * after next successful update. Arguments will be saved in episodesWasntRated array.
+     * */
+    async rateEpisode(episodeId, rating, showId, retryIfError = true) {
+        state.updating = true;
         try {
             await rpcHandler.manageRateEpisode(episodeId, rating);
 
@@ -220,6 +232,9 @@ const app = {
                 storage.saveWatchingShows(shows)]);
         } catch (e) {
             console.error(`Error occured during episode rating. ${e.name}: ${e.message}`);
+            if (retryIfError) this.rateEpisodesAgain.push({ episodeId, rating, showId });
+            browser.alarms.create(types.ALARM_UPDATE, { delayInMinutes: 0.1 });
         }
+        state.updating = false;
     },
 };

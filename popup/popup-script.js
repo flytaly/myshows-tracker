@@ -408,10 +408,11 @@ async function init() {
                 loadingSpinner.hidden = true;
                 break;
             case types.EPISODE_WAS_RATED: {
+                const episodeElem = document.querySelector(`.episode-row[data-id="${payload.episodeId}"]`);
+                if (!episodeElem) return;
                 if (episodesToRemove.has(payload.episodeId)) return; // to prevent double removing from DOM
                 episodesToRemove.add(payload.episodeId);
 
-                const episodeElem = document.querySelector(`.episode-row[data-id="${payload.episodeId}"]`);
                 const { season } = episodeElem.dataset;
                 const seasonHeader = document.querySelector(`.season-header[data-season="${season}"]`);
 
@@ -421,7 +422,7 @@ async function init() {
                         episodeElem.parentNode.removeChild(episodeElem);
                         episodesToRemove.delete(payload.episodeId);
                         seasonHeader.dispatchEvent(episodeRemoved);
-                    }, 1000);
+                    }, 400);
 
                     episodeElem.addEventListener('mouseover', () => {
                         episodeElem.classList.remove('remove');
