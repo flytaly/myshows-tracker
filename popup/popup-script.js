@@ -26,7 +26,7 @@ const bgScriptPort = browser.runtime.connect();
 const showsInfo = {}; // show's info for easy access to it in the episode view
 const episodeRemoved = new Event('episoderemoved');
 
-function handleRatingClicks(ratingBlock, episodeId, showId) {
+function handleRatingClicks(ratingBlock, episodeId, showId, epListElem) {
     const ratingElems = ratingBlock.querySelectorAll('a.rating-star, a.ep-check');
     const handler = async (e) => {
         const rateElem = e.target.closest('a.rating-star, a.ep-check');
@@ -53,6 +53,8 @@ function handleRatingClicks(ratingBlock, episodeId, showId) {
                 }
                 el.classList.remove(CHECKED);
             });
+            epListElem.addEventListener('mouseleave', () => { epListElem.dataset.mouseleaved = true; });
+            epListElem.addEventListener('mouseenter', () => { epListElem.dataset.mouseleaved = false; });
         }
     };
 
@@ -172,7 +174,7 @@ function renderEpisodeRow({
     link.title = title;
     link.textContent = title;
     epNumber.textContent = shortName;
-    handleRatingClicks(epRatingBlock, id, showId);
+    handleRatingClicks(epRatingBlock, id, showId, epListElem);
     if (date) {
         epDate.textContent = date.toLocaleDateString(dateLocale);
         epDate.title = date.toLocaleString(dateLocale);
@@ -422,22 +424,23 @@ async function init() {
                         episodeElem.parentNode.removeChild(episodeElem);
                         episodesToRemove.delete(payload.episodeId);
                         seasonHeader.dispatchEvent(episodeRemoved);
-                    }, 400);
+                    }, 500);
 
                     episodeElem.addEventListener('mouseover', () => {
                         episodeElem.classList.remove('remove');
                         clearTimeout(tm);
                     }, { once: true });
                 });
-
                 // forcefully trigger 'mouseleave' if mouse already leaved episode before the event was added
-                document.addEventListener('mousemove', ({ clientX, clientY }) => {
+                if (episodeElem.dataset.mouseleaved) episodeElem.dispatchEvent(new Event('mouseleave'));
+
+                /* document.addEventListener('mousemove', ({ clientX, clientY }) => {
                     const {
                         top, left, bottom, right,
                     } = episodeElem.getBoundingClientRect();
                     if (clientX < left || clientX > right
                         || clientY < top || clientY > bottom) episodeElem.dispatchEvent(new Event('mouseleave'));
-                }, { once: true });
+                }, { once: true }); */
                 break;
             }
             default:
