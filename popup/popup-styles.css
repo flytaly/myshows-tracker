@@ -97,7 +97,7 @@ a, a:visited {
     flex-shrink: 0;
 }
 
-#go-back-btn {
+#back-btn {
     width: 100%;
     padding: 0;
     margin: 0;
@@ -106,24 +106,24 @@ a, a:visited {
     cursor: pointer;
 }
 
-#go-back-btn:active {
+#back-btn:active {
     transform: scale(0.90);
 }
 
-#go-back-btn svg {
+#back-btn svg {
     width: 100%;
     height: auto;
 }
 
-#go-back-btn svg path {
+#back-btn svg path {
     fill: #ffffff;
 }
 
-#go-back-btn:hover svg path {
+#back-btn:hover svg path {
     fill: #999999;
 }
 
-#go-back-btn:focus {
+#back-btn:focus {
     outline: 1px dotted #999999;
 }
 
@@ -554,6 +554,7 @@ ul.episode-list {
         text-transform: capitalize;
         font-size: 1.8rem;
         font-weight: bold;
+        color: #cc0000;
     }
 
     .calendar-container .month-total {

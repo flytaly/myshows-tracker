@@ -1,6 +1,8 @@
-/* global storage, browser, types */
+/* eslint-disable no-param-reassign */
+/* global storage, browser, types, translateElement */
 
-const dateLocale = 'en-GB';
+const UILang = browser.i18n.getUILanguage();
+const dateLocale = UILang; // TODO: add option to chose between GB and US time formats in 'en' locale
 
 const getElem = document.getElementById.bind(document);
 const { body } = document;
@@ -8,23 +10,49 @@ const { body } = document;
 const mainView = getElem('main-view');
 const episodeView = getElem('episode-view');
 
-const goBackBtn = getElem('go-back-btn');
+const backBtn = getElem('back-btn');
 const showList = mainView.querySelector('.show-list');
 const calendarContainer = mainView.querySelector('.calendar-container');
 const loginName = getElem('loginname');
 const logoLink = document.querySelector('.logo > a');
 
+const translateTemplate = ({ content }) => { translateElement(content); return content; };
 const templates = {
-    showRow: getElem('show-row-tmp').content,
-    seasonBlock: getElem('season-block-tmp').content,
-    episodeRow: getElem('episode-row-tmp').content,
-    calendar: getElem('calendar-tmp').content,
-    calendarRow: getElem('calendar-row-tmp').content,
+    showRow: translateTemplate(getElem('show-row-tmp')),
+    seasonBlock: translateTemplate(getElem('season-block-tmp')),
+    episodeRow: translateTemplate(getElem('episode-row-tmp')),
+    calendar: translateTemplate(getElem('calendar-tmp')),
+    calendarRow: translateTemplate(getElem('calendar-row-tmp')),
 };
 
 const bgScriptPort = browser.runtime.connect();
 const showsInfo = {}; // show's info for easy access to it in the episode view
 const episodeRemoved = new Event('episoderemoved');
+
+/** Get plural forms based on given number. The functions uses Intl.PluralRules API if it available,
+ *  and currently supports only russian and english languages. */
+function getPluralForm(i18nMessageName, number) {
+    if (Intl.PluralRules) {
+        const rules = new Intl.PluralRules(UILang === 'ru' ? UILang : 'en');
+        return browser.i18n.getMessage(`${i18nMessageName}_${rules.select(number)}`, number);
+    }
+    let rule;
+
+    if (UILang === 'ru') {
+        // 0, 5..20... - many (дней); 1, 21, 31... - one (день); 2, 3, 4, 22, 23... - few (дня)
+        const l2 = Number(number.toString().slice(-2)); // 2 last digits
+        const l1 = Number(number.toString().slice(-1)); // 1 last digit
+        rule = 'many';
+        if (l1 === 1 && l2 !== 11) {
+            rule = 'one';
+        } else if (l1 > 1 && l1 < 5 && (l2 > 20 || l2 < 10)) {
+            rule = 'few';
+        }
+    } else {
+        rule = number === 1 ? 'one' : 'other';
+    }
+    return browser.i18n.getMessage(`${i18nMessageName}_${rule}`, number);
+}
 
 function handleRatingClicks(ratingBlock, episodeId, showId, epListElem) {
     const ratingElems = ratingBlock.querySelectorAll('a.rating-star, a.ep-check');
@@ -36,14 +64,7 @@ function handleRatingClicks(ratingBlock, episodeId, showId, epListElem) {
         if (rateElem) {
             const listElem = rateElem.closest('li');
             const { rating } = rateElem.dataset;
-            /*
-            if (rating === '0' && rateElem.classList.contains(CHECKED)) {
-                bgScriptPort.postMessage({ type: types.UNCHECK_EPISODE, payload: { episodeId } });
-                listElem.classList.remove(CHECKED);
-                ratingElems.forEach(el => el.classList.remove(CHECKED));
-                return;
-            }
-            */
+
             bgScriptPort.postMessage({ type: types.RATE_EPISODE, payload: { episodeId, rating, showId } });
             listElem.classList.add(CHECKED);
             ratingElems.forEach((el) => {
@@ -53,8 +74,8 @@ function handleRatingClicks(ratingBlock, episodeId, showId, epListElem) {
                 }
                 el.classList.remove(CHECKED);
             });
-            epListElem.addEventListener('mouseleave', () => { epListElem.dataset.mouseleaved = true; });
-            epListElem.addEventListener('mouseenter', () => { epListElem.dataset.mouseleaved = false; });
+            epListElem.addEventListener('mouseleave', () => { epListElem.dataset.mouseleaved = 'true'; });
+            epListElem.addEventListener('mouseenter', () => { epListElem.dataset.mouseleaved = ''; });
         }
     };
 
@@ -119,7 +140,7 @@ function renderCalendarRow({
     epTitle.href = `https://myshows.me/view/episode/${id}/`;
 
     const countDays = Math.ceil((airDate - now) / 1000 / 60 / 60 / 24);
-    daysLeft.innerHTML = `${countDays}<br>days`;
+    daysLeft.innerHTML = `${countDays}<br>${getPluralForm('daysNumber', countDays)}`;
     daysLeft.title = airDate.toLocaleString(dateLocale);
     return calendarRowElem;
 }
@@ -151,7 +172,7 @@ function renderCalendars(upcomingEpisodes) {
         const totalNumber = calendarElem.querySelector('.month-total');
         const calendarList = calendarElem.querySelector('ul.calendar');
         name.textContent = `${monthName} ${year === currentYear ? '' : year}`;
-        totalNumber.textContent = `${episodes.length} episodes`;
+        totalNumber.textContent = getPluralForm('episodesNumber', episodes.length); // `${episodes.length} episodes`
         calendarList.append(...episodes.map(ep => renderCalendarRow(ep)));
         return calendarElem;
     });
@@ -183,7 +204,6 @@ function renderEpisodeRow({
     if (commentsCount) {
         ep.querySelector('.ep-comments').hidden = false;
         epComments.textContent = commentsCount;
-        epComments.title = `${commentsCount} comments`;
         epComments.href = `https://en.myshows.me/view/episode/${id}/#comments`;
     }
 
@@ -207,8 +227,8 @@ function renderSeasonBlocks(episodes) {
             const episodeList = seasonBlock.querySelector('.episode-list');
             let episodesInSeason = groupedBySeasons[season].length;
 
-            seasonTitle.textContent = `${season} season`;
-            seasonEpisodesNumber.textContent = `${episodesInSeason} episodes`;
+            seasonTitle.textContent = `${season} ${browser.i18n.getMessage('season')}`;
+            seasonEpisodesNumber.textContent = getPluralForm('episodesNumber', episodesInSeason);
 
             seasonHeader.dataset.season = season;
             seasonHeader.addEventListener('click', function () {
@@ -218,7 +238,7 @@ function renderSeasonBlocks(episodes) {
             });
             seasonHeader.addEventListener('episoderemoved', () => {
                 episodesInSeason -= 1;
-                seasonEpisodesNumber.textContent = `${episodesInSeason} episodes`;
+                seasonEpisodesNumber.textContent = getPluralForm('episodesNumber', episodesInSeason);
                 if (episodesInSeason === 0) {
                     seasonHeader.parentNode.removeChild(seasonHeader);
                 }
@@ -261,7 +281,7 @@ const nav = {
                 body.style.background = '#FFFFFF';
 
                 toggleHidden(
-                    [goBackBtn, episodeView, calendarContainer],
+                    [backBtn, episodeView, calendarContainer],
                     [mainView, showList],
                 );
                 this.updateLogoNav();
@@ -286,7 +306,7 @@ const nav = {
                 const episodes = await storage.getUpcomingEpisodes();
 
                 toggleHidden(
-                    [episodeView, goBackBtn, showList],
+                    [episodeView, backBtn, showList],
                     [mainView, calendarContainer],
                 );
 
@@ -315,7 +335,7 @@ const nav = {
                 body.style.backgroundSize = 'cover';
                 body.style.backgroundAttachment = 'fixed';
 
-                toggleHidden([mainView], [episodeView, goBackBtn]);
+                toggleHidden([mainView], [episodeView, backBtn]);
 
                 this.updateLogoNav();
                 container.innerHTML = '';
@@ -333,10 +353,10 @@ const nav = {
             this.removeEventListener('click', handleClick);
         };
         if (this.places.current === this.places.episodeList) {
-            logoLink.title = 'Return to main page';
+            logoLink.title = browser.i18n.getMessage('backButton_title');
             logoLink.addEventListener('click', handleClick);
         } else {
-            logoLink.title = 'Open myshows.me';
+            logoLink.title = browser.i18n.getMessage('logoLink_title');
         }
     },
 };
@@ -380,8 +400,7 @@ function initTabs() {
 async function init() {
     const loadingSpinner = getElem('loading');
 
-    goBackBtn.title = 'Return to main page';
-    goBackBtn.addEventListener('click', () => {
+    backBtn.addEventListener('click', () => {
         nav.navigate(nav.places.showList);
     });
 

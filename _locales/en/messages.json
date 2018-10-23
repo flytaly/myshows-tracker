@@ -1,0 +1,102 @@
+{
+  "description": {
+    "message": "Myshows.me extension for tracking TV shows",
+    "description": "Description of the extension"
+  },
+  "name": {
+    "message": "MyShows: TV Show tracker",
+    "description": "Name of the extension"
+  },
+  "extension_title": {
+    "message": "MyShows tracker",
+    "description": "Extension title"
+  },
+  "tabShows": {
+    "message": "Shows",
+    "description": "Name of the tab with list of watching shows"
+  },
+  "tabShows_title": {
+    "message": "TV shows to watch",
+    "description": "Attribute title of the show tab"
+  },
+  "tabCalendar": {
+    "message": "Calendar",
+    "description": "Name of the tab with list of upcoming shows"
+  },
+  "tabCalendar_title": {
+    "message": "Upcoming TV shows",
+    "description": "Attribute title of the calendar tab"
+  },
+  "signOut": {
+    "message": "Sign out",
+    "description": "Sign out menu item"
+  },
+  "settings": {
+    "message": "Settings",
+    "description": "Settings menu item"
+  },
+  "unwatchedNumber_title": {
+    "message": "Number of unwatched episodes",
+    "description": "Attribute title of an element with number of unwatched episodes"
+  },
+  "backButton_title": {
+    "message": "Back to the list of the shows",
+    "description": "Back to main page button title attribute"
+  },
+  "logoLink_title": {
+    "message": "Open myshows.me",
+    "description": "Attribute title of logotype link"
+  },
+  "showLink_title": {
+    "message": "Open the show on myshow",
+    "description": "Attribute title of a show's link"
+  },
+  "season": {
+    "message": "season",
+    "description": "Word season in header of season block"
+  },
+  "commentsNumber_title": {
+    "message": "Comments to episode",
+    "description": "Attribute title of episode's comments number"
+  },
+  "episodesNumber_one": {
+    "message": "$1 episode",
+    "description": "Number of episodes: 1"
+  },
+  "episodesNumber_other": {
+    "message": "$1 episodes",
+    "description": "Number of episodes: 0 or >1"
+  },
+  "daysNumber_one": {
+    "message": "day",
+    "description": "Number of days: 1"
+  },
+  "daysNumber_other": {
+    "message": "days",
+    "description": "Number of days: 0 or >1"
+  },
+  "rate0_title": {
+    "message": "No rating",
+    "description": "Attribute title rating: no stars"
+  },
+  "rate1_title": {
+    "message": "Not worth it",
+    "description": "Attribute title rating: 1 star"
+  },
+  "rate2_title": {
+    "message": "Meh",
+    "description": "Attribute title rating: 2 stars"
+  },
+  "rate3_title": {
+    "message": "Give it a watch",
+    "description": "Attribute title rating: 3 stars"
+  },
+  "rate4_title": {
+    "message": "Good one",
+    "description": "Attribute title rating: 4 stars"
+  },
+  "rate5_title": {
+    "message": "Great!",
+    "description": "Attribute title rating: 5 stars"
+  }
+}

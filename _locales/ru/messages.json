@@ -1,0 +1,110 @@
+{
+  "description": {
+    "message": "Myshows.me расширение для отслеживания вышедших и грядущих сериалов.",
+    "description": "Description of the extension"
+  },
+  "name": {
+    "message": "MyShows Отмечай сериалы",
+    "description": "Name of the extension"
+  },
+  "extension_title": {
+    "message": "MyShows сериалы",
+    "description": "Extension title"
+  },
+  "tabShows": {
+    "message": "Сериалы",
+    "description": "Name of the tab with list of watching shows"
+  },
+  "tabShows_title": {
+    "message": "Сериалы к просмотру",
+    "description": "Attribute title of the show tab"
+  },
+  "tabCalendar": {
+    "message": "Календарь",
+    "description": "Name of the tab with list of upcoming shows"
+  },
+  "tabCalendar_title": {
+    "message": "Список градущих сериалов",
+    "description": "Attribute title of the calendar tab"
+  },
+  "signOut": {
+    "message": "Выход",
+    "description": "Sign out menu item"
+  },
+  "settings": {
+    "message": "Настройки",
+    "description": "Settings menu item"
+  },
+  "unwatchedNumber_title": {
+    "message": "Число непросмотренных серий",
+    "description": "Attribute title of an element with number of unwatched episodes"
+  },
+  "backButton_title": {
+    "message": "Назад к списку сериалов",
+    "description": "Back to main page button title attribute"
+  },
+  "logoLink_title": {
+    "message": "Открыть myshows.me",
+    "description": "Attribute title of logotype link"
+  },
+  "showLink_title": {
+    "message": "Открыть сериал на myshow",
+    "description": "Attribute title of a show's link"
+  },
+  "season": {
+    "message": "сезон",
+    "description": "Word season in header of season block"
+  },
+  "commentsNumber_title": {
+    "message": "Комментарии к серии",
+    "description": "Attribute title of episode's comments number"
+  },
+  "episodesNumber_one": {
+    "message": "$1 серия",
+    "description": "Number of episodes: 1, 21, 31..."
+  },
+  "episodesNumber_few": {
+    "message": "$1 серии",
+    "description": "Number of episodes: 2,3,4,22.."
+  },
+  "episodesNumber_many": {
+    "message": "$1 серий",
+    "description": "Number of episodes: 5,6,7,25.."
+  },
+  "daysNumber_one": {
+    "message": "день",
+    "description": "Number of days: 1, 21, 31..."
+  },
+  "daysNumber_few": {
+    "message": "дня",
+    "description": "Number of days: 2,3,4,22.."
+  },
+  "daysNumber_many": {
+    "message": "дней",
+    "description": "Number of days: 5,6,7,25.."
+  },
+  "rate0_title": {
+    "message": "Нет оценки",
+    "description": "Attribute title rating: no stars"
+  },
+  "rate1_title": {
+    "message": "Не стоит смотреть",
+    "description": "Attribute title rating: 1 star"
+  },
+  "rate2_title": {
+    "message": "Так себе",
+    "description": "Attribute title rating: 2 stars"
+  },
+  "rate3_title": {
+    "message": "Можно посмотреть",
+    "description": "Attribute title rating: 3 stars"
+  },
+  "rate4_title": {
+    "message": "Хорошая серия",
+    "description": "Attribute title rating: 4 stars"
+  },
+  "rate5_title": {
+    "message": "Отличная серия",
+    "description": "Attribute title rating: 5 stars"
+  }
+}

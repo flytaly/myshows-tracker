@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="popup-styles.css">
   <script src="../scripts/types.js"></script>
   <script src="../scripts/storage.js"></script>
+  <script src="../scripts/l10n.js"></script>
 </head>
 
 <body>
@@ -31,7 +32,7 @@
     <header class="header">
 
       <div class="button-container">
-        <button id="go-back-btn" hidden>
+        <button id="back-btn" data-l10n-id="backButton" data-l10n-nocontent="true" data-l10n-attrs="title" hidden>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
             <path
                 d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/>
@@ -55,7 +56,7 @@
         <div class="menu">
           <a href="#" class="menu-option" id="sign-out">
             <object class="sign-out-sign" type="image/svg+xml" data="images/sign-out-alt.svg"></object>
-            Sign out
+            <span data-l10n-id="signOut">Sign out</span>
           </a>
           </ul>
         </div>
@@ -66,15 +67,21 @@
     <div id="main-view">
 
       <div class="tabs">
-        <button id="tab-shows" class="tab active">Shows</button>
-        <button id="tab-calendar" class="tab">Calendar</button>
+        <button id="tab-shows" class="tab active" data-l10n-id="tabShows" data-l10n-attrs="title"
+                title="TV shows to watch">Shows
+        </button>
+        <button id="tab-calendar" class="tab" data-l10n-id="tabCalendar" data-l10n-attrs="title"
+                title="Upcoming TV shows">
+          Calendar
+        </button>
       </div>
 
       <ul class="show-list">
         <template id="show-row-tmp">
           <li>
             <div class="show-title"><a href="#"></a></div>
-            <div class="unwatched-ep" hidden></div>
+            <div class="unwatched-ep" data-l10n-id="unwatchedNumber" data-l10n-nocontent="true" data-l10n-attrs="title"
+                 hidden></div>
           </li>
         </template>
       </ul>
@@ -107,7 +114,8 @@
 
     <!-- Episode View -->
     <div id="episode-view" hidden>
-      <div class="show-title"><a href=""></a></div>
+      <div class="show-title"><a href="#" data-l10n-id="showLink" data-l10n-nocontent="true"
+                                 data-l10n-attrs="title"></a></div>
       <div class="episodes-container">
         <template id="season-block-tmp">
           <div class="season-header">
@@ -121,32 +129,39 @@
           <li class="episode-row">
             <div class="rating-block">
               <div class="ep-rating">
-                <a class="rating-star" href="#" title="Great!" data-rating="5">
+                <a class="rating-star" href="#" title="Great!" data-rating="5" data-l10n-id="rate5"
+                   data-l10n-nocontent="true" data-l10n-attrs="title">
                   <svg viewBox="0 0 576 512">
                     <use href="#rating-star-path"></use>
                   </svg>
                 </a>
-                <a class="rating-star" href="#" title="Good one" data-rating="4">
-                  <svg viewBox="0 0 576 512">
-                    <use href="#rating-star-path"></use></svg>
-                </a>
-                <a class="rating-star" href="#" title="Give it a watch" data-rating="3">
-                  <svg viewBox="0 0 576 512">
-                    <use href="#rating-star-path"></use>
-                  </svg>
-                    </a>
-                <a class="rating-star" href="#" title="Meh" data-rating="2">
+                <a class="rating-star" href="#" title="Good one" data-rating="4" data-l10n-id="rate4"
+                   data-l10n-nocontent="true" data-l10n-attrs="title">
                   <svg viewBox="0 0 576 512">
                     <use href="#rating-star-path"></use>
                   </svg>
                 </a>
-                <a class="rating-star" href="#" title="Not worth it" data-rating="1">
+                <a class="rating-star" href="#" title="Give it a watch" data-rating="3" data-l10n-id="rate3"
+                   data-l10n-nocontent="true" data-l10n-attrs="title">
+                  <svg viewBox="0 0 576 512">
+                    <use href="#rating-star-path"></use>
+                  </svg>
+                </a>
+                <a class="rating-star" href="#" title="Meh" data-rating="2" data-l10n-id="rate2"
+                   data-l10n-nocontent="true" data-l10n-attrs="title">
+                  <svg viewBox="0 0 576 512">
+                    <use href="#rating-star-path"></use>
+                  </svg>
+                </a>
+                <a class="rating-star" href="#" title="Not worth it" data-rating="1" data-l10n-id="rate1"
+                   data-l10n-nocontent="true" data-l10n-attrs="title">
                   <svg viewBox="0 0 576 512">
                     <use href="#rating-star-path"></use>
                   </svg>
                 </a>
               </div>
-              <a class="ep-check" href="#" title="No rating" data-rating="0"></a>
+              <a class="ep-check" href="#" title="No rating" data-rating="0" data-l10n-id="rate0"
+                   data-l10n-nocontent="true" data-l10n-attrs="title"></a>
             </div>
             <div class="ep-info">
               <div class="ep-title"><a href="#"></a></div>
@@ -155,7 +170,8 @@
                 <time class="ep-date"></time>
               </div>
             </div>
-            <div class="ep-comments" hidden><a href="#"></a></div>
+            <div class="ep-comments" hidden><a href="#" title="Comments to episode" data-l10n-id="commentsNumber"
+                                               data-l10n-nocontent="true" data-l10n-attrs="title"></a></div>
           </li>
         </template>
       </div>
