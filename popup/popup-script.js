@@ -325,16 +325,16 @@ const nav = {
         }
     },
     updateLogoNav() {
-        const handleClick = (e) => {
+        const handleClick = function (e) {
             e.preventDefault();
             nav.navigate(nav.places.showList);
+            this.removeEventListener('click', handleClick);
         };
-        if (this.places.current === this.places.showList) {
-            logoLink.title = 'Open myshows.me';
-            logoLink.removeEventListener('click', handleClick);
-        } else {
+        if (this.places.current === this.places.episodeList) {
             logoLink.title = 'Return to main page';
             logoLink.addEventListener('click', handleClick);
+        } else {
+            logoLink.title = 'Open myshows.me';
         }
     },
 };
