@@ -94,11 +94,7 @@ function renderShowRow(showRecord, onClick) {
     link.title = show.title;
     link.href = `https://myshows.me/view/${show.id}/`;
     link.textContent = localShowTitles[show.id] || show.title;
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const { id } = e.target.dataset;
-        onClick(id);
-    });
+    link.addEventListener('click', onClick);
 
     if (unwatchedEpisodes > 0) {
         unwatchedElem.hidden = false;
