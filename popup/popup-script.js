@@ -27,8 +27,17 @@ const templates = {
 
 const bgScriptPort = browser.runtime.connect();
 const showsInfo = {}; // show's info for easy access to it in the episode view
-const localShowTitles = {};
 const episodeRemoved = new Event('episoderemoved');
+const localShowTitles = {};
+
+async function updateLocalShowTitles() {
+    if (UILang === 'ru') {
+        const titles = await storage.getRuTitles();
+        Object.keys(titles).forEach((id) => {
+            localShowTitles[id] = titles[id];
+        });
+    }
+}
 
 /** Get plural forms based on given number. The functions uses Intl.PluralRules API if it available,
  *  and currently supports only russian and english languages. */
@@ -83,18 +92,20 @@ function handleRatingClicks(ratingBlock, episodeId, showId, epListElem) {
     ratingBlock.addEventListener('click', handler);
 }
 
-
 function renderShowRow(showRecord, onClick) {
     const { unwatchedEpisodes, show } = showRecord;
     const listElem = templates.showRow.cloneNode(true);
-    const link = listElem.querySelector('a');
+    const titleLink = listElem.querySelector('.show-title a');
+    const title1 = titleLink.querySelector('.show-title-1');
+    const title2 = titleLink.querySelector('.show-title-2');
     const unwatchedElem = listElem.querySelector('.unwatched-ep');
 
-    link.dataset.id = show.id;
-    link.title = show.title;
-    link.href = `https://myshows.me/view/${show.id}/`;
-    link.textContent = localShowTitles[show.id] || show.title;
-    link.addEventListener('click', onClick);
+    titleLink.dataset.id = show.id;
+    titleLink.title = show.title;
+    titleLink.href = `https://myshows.me/view/${show.id}/`;
+    title1.textContent = localShowTitles[show.id] || show.title;
+    title2.textContent = localShowTitles[show.id] ? show.title : '';
+    titleLink.addEventListener('click', onClick);
 
     if (unwatchedEpisodes > 0) {
         unwatchedElem.hidden = false;
@@ -282,17 +293,14 @@ const nav = {
 
                 if (!shows || !shows.length) break;
 
-                if (UILang === 'ru') {
-                    const titles = await storage.getRuTitles();
-                    Object.keys(titles).forEach((id) => { localShowTitles[id] = titles[id]; });
-                }
+                await updateLocalShowTitles();
 
                 shows.forEach(({ show: { id, image, title } }) => {
                     showsInfo[id] = { image, title };
                 });
 
                 const clickHandler = (e) => {
-                    const { id } = e.target.dataset;
+                    const { id } = e.currentTarget.dataset;
                     e.preventDefault();
                     this.navigate(this.places.episodeList, { id });
                 };
@@ -326,13 +334,16 @@ const nav = {
                 this.showId = params ? params.id : this.showId;
                 const container = episodeView.querySelector('.episodes-container');
                 const showTitle = episodeView.querySelector('.show-title a');
+                const title1 = showTitle.querySelector('.show-title-1');
+                const title2 = showTitle.querySelector('.show-title-2');
                 const allEpisodes = await storage.getEpisodes();
                 const episodes = allEpisodes ? allEpisodes[this.showId] : null;
                 if (!episodes) break;
 
                 const show = showsInfo[this.showId];
-                showTitle.textContent = show.title;
                 showTitle.href = `https://myshows.me/view/${this.showId}/`;
+                title1.textContent = localShowTitles[this.showId] || show.title;
+                title2.textContent = localShowTitles[this.showId] ? show.title : '';
                 body.style.background = `white url(${show.image}) no-repeat`;
                 body.style.backgroundSize = 'cover';
                 body.style.backgroundAttachment = 'fixed';
@@ -464,11 +475,9 @@ async function init() {
                 }, { once: true }); */
                 break;
             }
-            case types.RU_TITLES_UPDATE: {
-                const titles = await storage.getRuTitles();
-                Object.keys(titles).forEach((id) => { localShowTitles[id] = titles[id]; });
+            case types.RU_TITLES_UPDATE:
+                updateLocalShowTitles();
                 break;
-            }
             default:
         }
     });
