@@ -7,6 +7,7 @@ const state = new Proxy({
     lastUpdate: null,
     totalEpisodes: null,
     episodeWasRated: null,
+    newRuTitlesRecieved: [],
 }, ({
     set: (obj, prop, value) => {
         switch (prop) {
@@ -26,6 +27,8 @@ const state = new Proxy({
             case 'episodeWasRated':
                 popupPort && popupPort.postMessage({ type: types.EPISODE_WAS_RATED, payload: { episodeId: value } });
                 break;
+            case 'newRuTitlesRecieved':
+                popupPort && popupPort.postMessage({ type: types.RU_TITLES_UPDATE, payload: { showIds: value } });
             default:
         }
         obj[prop] = value;

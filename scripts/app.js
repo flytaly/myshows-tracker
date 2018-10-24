@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars,no-underscore-dangle */
-/* global browser, clientId, clientSecret, redirectUri, storage, rpcHandler, AuthError, state, types */
+/* global browser, clientId, clientSecret, redirectUri, storage, rpcHandler, restAPIHandler, AuthError, state, types */
 
 const mapObjToQueryStr = params => Object.entries(params).map(pair => pair.join('=')).join('&');
 
@@ -181,6 +181,9 @@ const app = {
 
         const unwatchedEps = await this.fetchEpisodes(showIds);
 
+        // run without await to not block this function
+        if (browser.i18n.getUILanguage() === 'ru') this.getRuTitles(showIds);
+
         const time = new Date();
         const pastEps = this.pastEpisodes(unwatchedEps, time);
         const futureEps = this.futureEpisodes(unwatchedEps, time);
@@ -204,8 +207,9 @@ const app = {
     },
 
     rateEpisodesAgain: [],
+
     /** Rate episode with given rating. In case of error this function will be called again
-     * after next successful update. Arguments will be saved in episodesWasntRated array.
+     * after next successful update. Arguments will be saved in *rateEpisodesAgain* array.
      * */
     async rateEpisode(episodeId, rating, showId, retryIfError = true) {
         state.updating = true;
@@ -236,5 +240,30 @@ const app = {
             browser.alarms.create(types.ALARM_UPDATE, { delayInMinutes: 0.1 });
         }
         state.updating = false;
+    },
+
+    /** Sequentially get Russian titles and save them in storage */
+    async getRuTitles(showIds) {
+        let results;
+        const updated = [];
+        const alreadySaved = await storage.getRuTitles();
+        try {
+            results = await showIds.reduce(async (acc, showId) => {
+                const titles = await acc;
+                if (alreadySaved[showId]) {
+                    titles[showId] = alreadySaved[showId];
+                } else {
+                    titles[showId] = await restAPIHandler.getRuTitle(showId);
+                    updated.push(showId);
+                }
+                return acc;
+            }, Promise.resolve({}));
+        } catch (e) {
+            console.error(`Couldn't get Russian shows title. ${e.name}: ${e.message}`);
+        }
+        if (results && updated.length) {
+            await storage.saveRuTitles(results);
+            state.newRuTitlesRecieved = updated;
+        }
     },
 };

@@ -11,6 +11,19 @@ class AuthError extends Error {
     }
 }
 
+/* Use old 1.8 api (https://api.myshows.me) to get Russian names of shows */
+const restAPIHandler = {
+    url: 'https://api.myshows.me/shows/',
+    async getRuTitle(showId) {
+        const res = await fetch(`${this.url}${showId}`, {
+            method: 'GET',
+            headers: { Accept: 'application/json' },
+        });
+        const { ruTitle } = await res.json();
+        return ruTitle;
+    },
+};
+
 const rpcHandler = {
     rpcUrl: 'https://api.myshows.me/v2/rpc/',
 

@@ -26,6 +26,11 @@ const storage = {
         return upcomingEpisodes;
     },
 
+    async getRuTitles() {
+        const { ruTitles } = await browser.storage.local.get(['ruTitles']);
+        return ruTitles || {};
+    },
+
     async saveAuthData(data) {
         let expiresIn;
         if (data.expiresIn) {
@@ -51,6 +56,10 @@ const storage = {
     /** @param {array} episodes */
     async saveUpcomingEpisodes(upcomingEpisodes) {
         return browser.storage.local.set({ upcomingEpisodes });
+    },
+
+    async saveRuTitles(ruTitles) {
+        return browser.storage.local.set({ ruTitles });
     },
 
     async clear() {

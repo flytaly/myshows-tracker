@@ -27,6 +27,7 @@ const templates = {
 
 const bgScriptPort = browser.runtime.connect();
 const showsInfo = {}; // show's info for easy access to it in the episode view
+const localShowTitles = {};
 const episodeRemoved = new Event('episoderemoved');
 
 /** Get plural forms based on given number. The functions uses Intl.PluralRules API if it available,
@@ -92,7 +93,7 @@ function renderShowRow(showRecord, onClick) {
     link.dataset.id = show.id;
     link.title = show.title;
     link.href = `https://myshows.me/view/${show.id}/`;
-    link.textContent = show.title;
+    link.textContent = localShowTitles[show.id] || show.title;
     link.addEventListener('click', (e) => {
         e.preventDefault();
         const { id } = e.target.dataset;
@@ -103,11 +104,7 @@ function renderShowRow(showRecord, onClick) {
         unwatchedElem.hidden = false;
         unwatchedElem.dataset.id = show.id;
         unwatchedElem.textContent = unwatchedEpisodes;
-        unwatchedElem.addEventListener('click', (e) => {
-            e.preventDefault();
-            const { id } = e.target.dataset;
-            onClick(id);
-        });
+        unwatchedElem.addEventListener('click', onClick);
     }
 
     return listElem;
@@ -131,7 +128,7 @@ function renderCalendarRow({
 
     showTitle.title = showsInfo[showId].title;
     showTitle.href = `https://myshows.me/view/${showId}/`;
-    showTitle.textContent = showsInfo[showId].title;
+    showTitle.textContent = localShowTitles[showId] || showsInfo[showId].title;
 
     epNumber.textContent = shortName;
 
@@ -289,11 +286,20 @@ const nav = {
 
                 if (!shows || !shows.length) break;
 
+                if (UILang === 'ru') {
+                    const titles = await storage.getRuTitles();
+                    Object.keys(titles).forEach((id) => { localShowTitles[id] = titles[id]; });
+                }
+
                 shows.forEach(({ show: { id, image, title } }) => {
                     showsInfo[id] = { image, title };
                 });
 
-                const clickHandler = id => this.navigate(this.places.episodeList, { id });
+                const clickHandler = (e) => {
+                    const { id } = e.target.dataset;
+                    e.preventDefault();
+                    this.navigate(this.places.episodeList, { id });
+                };
 
                 showList.append(...shows
                     .filter(show => show.unwatchedEpisodes)
@@ -460,6 +466,11 @@ async function init() {
                     if (clientX < left || clientX > right
                         || clientY < top || clientY > bottom) episodeElem.dispatchEvent(new Event('mouseleave'));
                 }, { once: true }); */
+                break;
+            }
+            case types.RU_TITLES_UPDATE: {
+                const titles = await storage.getRuTitles();
+                Object.keys(titles).forEach((id) => { localShowTitles[id] = titles[id]; });
                 break;
             }
             default:
