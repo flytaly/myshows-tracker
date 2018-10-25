@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="options.css">
+  <script src="../scripts/storage.js"></script>
+  <script src="options.js"></script>
+</head>
+
+<body>
+  <section>
+    <span class="browser-style" title="Resize extension by chosen basic font size">Basic font size</span>
+    <button class="browser-style font-size font-12" data-f-size-diff="-4">aA</button>
+    <button class="browser-style font-size font-14" data-f-size-diff="-2">aA</button>
+    <button class="browser-style font-size font-16 default" data-f-size-diff="0">aA</button>
+    <button class="browser-style font-size font-18" data-f-size-diff="+2">aA</button>
+    <button class="browser-style font-size font-20" data-f-size-diff="+4">aA</button>
+  </section>
+
+  <section>
+    <label for="date-format" class="browser-style-label">Date format</label>
+    <select id="date-format" class="browser-style">
+      <optgroup label="English">
+        <option value="en-GB" selected>en-GB</option>
+        <option value="en-US">en-US</option>
+      </optgroup>
+      <optgroup label="Locale">
+        <option value="ru">RU</option>
+      </optgroup>
+    </select>
+    <span>Example: </span><span id="date-example">25/10/2018</span>
+  </section>
+
+  <section>
+    <label for="sort-order" class="browser-style-label">Sort order of episodes</label>
+    <select id="sort-order" class="browser-style">
+      <option selected value="firstOld">from oldest to newest</option>
+      <option value="firstNew">from newest to oldest</option>
+    </select>
+  </section>
+
+  <section>
+    <label for="shows-titles" class="browser-style-label">Display titles of the shows</label>
+    <select id="shows-titles" class="browser-style">
+      <option selected value="original">Only original</option>
+      <optgroup label="Locale">
+        <option value="ru+original">Russian and original</option>
+        <option value="ru">Only Russian</option>
+      </optgroup>
+    </select>
+  </section>
+</body>
+
+</html>

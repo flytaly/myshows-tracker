@@ -1,5 +1,11 @@
 {
   "manifest_version": 2,
+  "applications": {
+    "gecko": {
+      "strict_min_version": "56.0",
+      "id": "myshows@flytaly"
+    }
+  },
   "default_locale": "en",
   "description": "__MSG_description__",
   "name": "__MSG_name__",
@@ -28,5 +34,8 @@
     "default_title": "__MSG_extension_title__",
     "default_popup": "popup/popup.html",
     "browser_style": true
+  },
+  "options_ui": {
+    "page": "options/options.html"
   }
 }

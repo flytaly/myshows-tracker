@@ -31,6 +31,11 @@ const storage = {
         return ruTitles || {};
     },
 
+    /** @param {null|string|string[]|object} [options] */
+    async getOptions(options) {
+        return browser.storage.sync.get(options);
+    },
+
     async saveAuthData(data) {
         let expiresIn;
         if (data.expiresIn) {
@@ -60,6 +65,11 @@ const storage = {
 
     async saveRuTitles(ruTitles) {
         return browser.storage.local.set({ ruTitles });
+    },
+
+    /** @param {object} options */
+    async saveOptions(options) {
+        return browser.storage.sync.set(options);
     },
 
     async clear() {

@@ -1,0 +1,21 @@
+.font-size {
+    font-family: "PT Sans", "Trebuchet MS", Arial, sans-serif;
+    margin-left: 0.5rem;
+}
+.font-12 {
+    font-size: 75%;
+}
+.font-14 {
+    font-size: 87.5%;
+}
+.font-16 {
+    font-size: 100%;
+}
+.font-18 {
+    font-size: 112.5%;
+}
+.font-20 {
+    font-size: 125%;
+}
+
+

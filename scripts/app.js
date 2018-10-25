@@ -181,8 +181,12 @@ const app = {
 
         const unwatchedEps = await this.fetchEpisodes(showIds);
 
-        // run without await to not block this function
-        if (browser.i18n.getUILanguage() === 'ru') this.getRuTitles(showIds);
+        // run task without await to not block this function
+        (async () => {
+            const UILang = browser.i18n.getUILanguage();
+            const { displayShowsTitle: t } = await storage.getOptions();
+            if ((UILang === 'ru' && !t) || t === 'ru' || t === 'ru+original') this.getRuTitles(showIds);
+        })();
 
         const time = new Date();
         const pastEps = this.pastEpisodes(unwatchedEps, time);

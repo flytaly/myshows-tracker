@@ -1,9 +1,15 @@
 /* eslint-disable no-param-reassign */
 /* global storage, browser, types, translateElement */
 const UILang = browser.i18n.getUILanguage();
-const dateLocale = UILang; // TODO: add option to chose between GB and US time formats in 'en' locale
+let dateLocale; // const dateLocale = UILang;
+const initOptions = (async () => {
+    const res = await storage.getOptions();
+    dateLocale = res.dateLocale ? res.dateLocale : UILang;
+    return res;
+})();
 
 const translateTemplate = ({ content }) => { translateElement(content); return content; };
+
 
 /** Get plural forms based on given number. The functions uses Intl.PluralRules API if it available,
  *  and currently supports only russian and english languages. */
@@ -30,7 +36,11 @@ function getPluralForm(i18nMessageName, number) {
     return browser.i18n.getMessage(`${i18nMessageName}_${rule}`, number);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const options = await initOptions;
+    // If browser's standard size is 16px then +2 diff means 12px, -2 means 8px ...
+    if (options.fSizeDiff) document.documentElement.style.fontSize = `${100 / 16 * (10 + Number(options.fSizeDiff))}%`;
     const getElem = document.getElementById.bind(document);
     const mainView = getElem('main-view');
     const episodeView = getElem('episode-view');
@@ -53,7 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const localShowTitles = {};
 
     async function updateLocalShowTitles() {
-        if (UILang === 'ru') {
+        const { displayShowsTitle: t } = options;
+        if ((UILang === 'ru' && !t) || t === 'ru' || t === 'ru+original') {
             const titles = await storage.getRuTitles();
             Object.keys(titles).forEach((id) => {
                 localShowTitles[id] = titles[id];
@@ -96,12 +107,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const title1 = titleLink.querySelector('.show-title-1');
         const title2 = titleLink.querySelector('.show-title-2');
         const unwatchedElem = listElem.querySelector('.unwatched-ep');
+        const { displayShowsTitle: t } = options;
+        const hide2ndRow = (t === 'original') || (t === 'ru') || (UILang !== 'ru');
 
         titleLink.dataset.id = show.id;
         titleLink.title = show.title;
         titleLink.href = `https://myshows.me/view/${show.id}/`;
         title1.textContent = localShowTitles[show.id] || show.title;
-        title2.textContent = localShowTitles[show.id] ? show.title : '';
+        title2.textContent = !hide2ndRow && localShowTitles[show.id] ? show.title : '';
         titleLink.addEventListener('click', onClick);
 
         if (unwatchedEpisodes > 0) {
@@ -213,14 +226,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderSeasonBlocks(episodes) {
-        const groupedBySeasons = episodes.reduce((acc, ep) => {
+        const order = options.episodesSortOrder === 'firstNew' ? 'firstNew' : 'firstOld';
+
+        const groupCb = (acc, ep) => {
             const { seasonNumber: N } = ep;
             acc[N] ? acc[N].push(ep) : acc[N] = [ep]; // eslint-disable-line no-unused-expressions
             return acc;
-        }, {});
+        };
+
+        const groupedBySeasons = order === 'firstNew'
+            ? episodes.reduce(groupCb, {})
+            : episodes.reduceRight(groupCb, {});
+
+        const getSortOrderFunc = () => (order === 'firstNew'
+            ? (a, b) => b - a
+            : (a, b) => a - b);
 
         return Object.keys(groupedBySeasons)
-            .sort((a, b) => b - a)
+            .sort(getSortOrderFunc())
             .map((season, idx, seasons) => {
                 const seasonBlock = templates.seasonBlock.cloneNode(true);
                 const seasonHeader = seasonBlock.querySelector('.season-header');
@@ -243,10 +266,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     seasonEpisodesNumber.textContent = getPluralForm('episodesNumber', episodesInSeason);
                     if (episodesInSeason === 0) {
                         seasonHeader.parentNode.removeChild(seasonHeader);
+                        episodeList.parentNode.removeChild(episodeList);
                     }
                 });
 
-                if (idx < seasons.length - 1) {
+                if ((order === 'firstNew' && idx < seasons.length - 1)
+                    || (order === 'firstOld' && idx !== 0)) {
                     episodeList.hidden = true;
                 } else {
                     seasonHeader.classList.add('expanded');
