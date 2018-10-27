@@ -63,6 +63,9 @@ a, a:visited {
     overflow: auto;
     min-width: 10rem;
     z-index: 1;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }
 
 .user .menu.open {
@@ -84,7 +87,7 @@ a, a:visited {
     background-color: #cc0000;
 }
 
-.menu a .sign-out-sign {
+.menu a .menu-option-sign {
     height: 1em;
     width: 1em;
     margin-right: 0.5em;

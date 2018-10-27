@@ -398,6 +398,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const initDropdownMenu = (loginName) => {
         const menu = document.querySelector('.user .menu');
 
+        getElem('settings').addEventListener('click', async () => {
+            await browser.runtime.openOptionsPage();
+            window.close();
+        });
+
         getElem('sign-out').addEventListener('click', async () => {
             bgScriptPort.postMessage({ type: types.SIGN_OUT });
             window.close();
