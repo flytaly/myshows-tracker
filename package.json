@@ -12,5 +12,5 @@
   "devDependencies": {
     "web-ext": "^2.9.1"
   },
-  "eslintIgnore": ["config.js"]
+  "eslintIgnore": ["config.js", "l10n.js"]
 }

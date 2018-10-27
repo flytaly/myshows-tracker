@@ -29,6 +29,7 @@ const state = new Proxy({
                 break;
             case 'newRuTitlesRecieved':
                 popupPort && popupPort.postMessage({ type: types.RU_TITLES_UPDATE, payload: { showIds: value } });
+                break;
             default:
         }
         obj[prop] = value;

@@ -41,6 +41,7 @@ browser.runtime.onConnect.addListener(async (port) => {
                 break;
             case types.RATE_EPISODE:
                 await app.rateEpisode(payload.episodeId, payload.rating, payload.showId);
+                break;
             default:
         }
     });

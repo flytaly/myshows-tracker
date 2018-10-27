@@ -1,0 +1,23 @@
+{
+    "extends": "airbnb",
+    "parserOptions": {
+        "ecmaVersion": 2017,
+        "sourceType": "module"
+    },
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "rules": {
+        "indent": ["error", 4, {"SwitchCase": 1}],
+        "max-len": ["error", 120, 4, {
+            "ignoreUrls": true,
+            "ignoreComments": false,
+            "ignoreRegExpLiterals": true,
+            "ignoreStrings": true,
+            "ignoreTemplateLiterals": true
+        }],
+        "no-console": "off",
+        "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"]
+    }
+}

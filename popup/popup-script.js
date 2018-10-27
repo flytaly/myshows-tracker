@@ -10,7 +10,6 @@ const initOptions = (async () => {
 
 const translateTemplate = ({ content }) => { translateElement(content); return content; };
 
-
 /** Get plural forms based on given number. The functions uses Intl.PluralRules API if it available,
  *  and currently supports only russian and english languages. */
 function getPluralForm(i18nMessageName, number) {
@@ -256,9 +255,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 seasonEpisodesNumber.textContent = getPluralForm('episodesNumber', episodesInSeason);
 
                 seasonHeader.dataset.season = season;
-                seasonHeader.addEventListener('click', function () {
-                    this.classList.toggle('expanded');
-                    const panel = this.nextElementSibling;
+                seasonHeader.addEventListener('click', () => {
+                    seasonHeader.classList.toggle('expanded');
+                    const panel = seasonHeader.nextElementSibling;
                     panel.hidden = !panel.hidden;
                 });
                 seasonHeader.addEventListener('episoderemoved', () => {
@@ -383,7 +382,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         },
         updateLogoNav() {
-            const handleClick = function (e) {
+            const handleClick = function (e) { /* eslint-disable-line func-names */
                 e.preventDefault();
                 nav.navigate(nav.places.showList);
                 this.removeEventListener('click', handleClick);
