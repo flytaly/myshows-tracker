@@ -106,5 +106,57 @@
   "rate5_title": {
     "message": "Отличная серия",
     "description": "Attribute title rating: 5 stars"
+  },
+  "settingFontSize": {
+    "message": "Базовый размер шрифта",
+    "description": "Settings: set basic font size"
+  },
+  "settingFontSize_title": {
+    "message": "Меняет размеры окна и шрифтов относительно выбранного базового размера",
+    "description": "Attribute title of font size setting"
+  },
+  "settingDateFormat": {
+    "message": "Формат отображения дат",
+    "description": "Setting: set format of the dates"
+  },
+  "settingDateFormatDefault": {
+    "message": "язык интерфейса браузера",
+    "description": "Setting: date format default option"
+  },
+  "settingDateExample": {
+    "message": "Пример:",
+    "description": "Setting: date example"
+  },
+  "settingSortOrder": {
+    "message": "Порядок вывода эпизодов и сезонов:",
+    "description": "Setting: set sort order of episodes"
+  },
+  "settingSortOldToNew": {
+    "message": "от старых к новым",
+    "description": "Setting: sort order option from old to new"
+  },
+  "settingSortNewToOld": {
+    "message": "от новых к старым",
+    "description": "Setting: sort order option from new to old"
+  },
+  "settingDisplayTitles": {
+    "message": "Как показывать названия сериалов",
+    "description": "Setting: set displaying show's title"
+  },
+  "settingTitleOnlyOrig": {
+    "message": "только оригинальные названия",
+    "description": "Setting: display only original show's titles option"
+  },
+  "settingTitleRuAndOrig": {
+    "message": "русские и оригинальные",
+    "description": "Setting: display Russian and original show's titles option"
+  },
+  "settingTitleRu": {
+    "message": "только русские",
+    "description": "Setting: display only Russian show's titles option"
+  },
+  "settingLocaleGroup_label": {
+    "message": "локализованные",
+    "description": "Attribute label for display show's titles option optgroup"
   }
 }

@@ -76,9 +76,9 @@
     "description": "Number of days: 0 or >1"
   },
   "rate0_title": {
-    "message": "No rating",
-    "description": "Attribute title rating: no stars"
-  },
+  "message": "No rating",
+  "description": "Attribute title rating: no stars"
+},
   "rate1_title": {
     "message": "Not worth it",
     "description": "Attribute title rating: 1 star"
@@ -98,5 +98,57 @@
   "rate5_title": {
     "message": "Great!",
     "description": "Attribute title rating: 5 stars"
+  },
+  "settingFontSize": {
+  "message": "Basic font size",
+  "description": "Settings: set basic font size"
+},
+  "settingFontSize_title": {
+    "message": "Scale extension's window and font sizes by chosen basic font size",
+    "description": "Attribute title of font size setting"
+  },
+  "settingDateFormat": {
+    "message": "Date format",
+    "description": "Setting: set format of the dates"
+  },
+  "settingDateFormatDefault": {
+    "message": "browser's default language",
+    "description": "Setting: date format default option"
+  },
+  "settingDateExample": {
+    "message": "Example:",
+    "description": "Setting: date example"
+  },
+  "settingSortOrder": {
+    "message": "Sort order of episodes and seasons:",
+    "description": "Setting: set sort order of episodes"
+  },
+  "settingSortOldToNew": {
+    "message": "from oldest to newest",
+    "description": "Setting: sort order option from old to new"
+  },
+  "settingSortNewToOld": {
+    "message": "from newest to oldest",
+    "description": "Setting: sort order option from new to old"
+  },
+  "settingDisplayTitles": {
+    "message": "Display titles of the shows",
+    "description": "Setting: set displaying show's title"
+  },
+  "settingTitleOnlyOrig": {
+    "message": "only original",
+    "description": "Setting: display only original show's titles option"
+  },
+  "settingTitleRuAndOrig": {
+    "message": "Russian and original",
+    "description": "Setting: display Russian and original show's titles option"
+  },
+  "settingTitleRu": {
+    "message": "only Russian",
+    "description": "Setting: display only Russian show's titles option"
+  },
+  "settingLocaleGroup_label": {
+    "message": "Locale",
+    "description": "Attribute label for display show's titles option optgroup"
   }
 }
