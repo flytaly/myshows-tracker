@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const mainView = getElem('main-view');
     const episodeView = getElem('episode-view');
     const backBtn = getElem('back-btn');
-    const showList = mainView.querySelector('.show-list');
+    const showContainer = mainView.querySelector('.show-container');
     const calendarContainer = mainView.querySelector('.calendar-container');
     const logoLink = document.querySelector('.logo > a');
 
@@ -54,6 +54,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         episodeRow: translateTemplate(getElem('episode-row-tmp')),
         calendar: translateTemplate(getElem('calendar-tmp')),
         calendarRow: translateTemplate(getElem('calendar-row-tmp')),
+        blankPage: translateTemplate(getElem('blank-page-tmp')),
+        showListBlock: translateTemplate(getElem('show-list-block-tmp')),
     };
 
     const bgScriptPort = browser.runtime.connect();
@@ -159,7 +161,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function renderCalendars(upcomingEpisodes) {
     // TODO: show shows that will air today on top of the list in different category
-    // group episodes by month, episodes have to be sorted in time order beforehand
+
+        // group episodes by month, episodes have to be sorted in time order beforehand
         const groupByMonth = upcomingEpisodes.reduce((acc, ep) => {
             const date = new Date(ep.airDateUTC);
             const [month, year] = [date.getMonth(), date.getFullYear()];
@@ -281,6 +284,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
     }
 
+    function renderShowListBlock(shows, nav) {
+        const showListBlock = templates.showListBlock.cloneNode(true);
+        const showList = showListBlock.querySelector('.show-list');
+
+        const clickHandler = (e) => {
+            const { id } = e.currentTarget.dataset;
+            e.preventDefault();
+            nav.navigate(nav.places.episodeList, { id });
+        };
+
+        showList.append(...shows
+            .map(show => renderShowRow(show, clickHandler)));
+        return showListBlock;
+    }
+
     const toggleHidden = (toHide, toShow) => {
     /* eslint-disable no-param-reassign */
         toHide.forEach((elem) => {
@@ -307,28 +325,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     toggleHidden(
                         [backBtn, episodeView, calendarContainer],
-                        [mainView, showList],
+                        [mainView, showContainer],
                     );
                     this.updateLogoNav();
-                    showList.innerHTML = '';
-
-                    if (!shows || !shows.length) break;
-
-                    await updateLocalShowTitles();
+                    showContainer.innerHTML = '';
 
                     shows.forEach(({ show: { id, image, title } }) => {
                         showsInfo[id] = { image, title };
                     });
 
-                    const clickHandler = (e) => {
-                        const { id } = e.currentTarget.dataset;
-                        e.preventDefault();
-                        this.navigate(this.places.episodeList, { id });
-                    };
+                    const showsWithEp = shows ? shows.filter(show => show.unwatchedEpisodes) : null;
 
-                    showList.append(...shows
-                        .filter(show => show.unwatchedEpisodes)
-                        .map(show => renderShowRow(show, clickHandler)));
+                    await updateLocalShowTitles();
+                    if (!showsWithEp || !showsWithEp.length) {
+                        showContainer.appendChild(templates.blankPage.cloneNode(true));
+                    } else {
+                        showContainer.appendChild(renderShowListBlock(showsWithEp, nav));
+                    }
                     break;
                 }
 
@@ -337,15 +350,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const episodes = await storage.getUpcomingEpisodes();
 
                     toggleHidden(
-                        [episodeView, backBtn, showList],
+                        [episodeView, backBtn, showContainer],
                         [mainView, calendarContainer],
                     );
 
                     calendarContainer.innerHTML = '';
 
-                    if (!episodes || !episodes.length) break;
-
-                    calendarContainer.append(...renderCalendars(episodes));
+                    if (!episodes || !episodes.length) {
+                        calendarContainer.appendChild(templates.blankPage.cloneNode(true));
+                    } else {
+                        calendarContainer.append(...renderCalendars(episodes));
+                    }
                     break;
                 }
 

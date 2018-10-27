@@ -85,7 +85,13 @@
         </button>
       </div>
 
-      <ul class="show-list">
+      <div class="show-container">
+
+        <template id="show-list-block-tmp">
+          <ul class="show-list">
+          </ul>
+        </template>
+
         <template id="show-row-tmp">
           <li>
             <div class="show-title"><a href="#"><span class="show-title-1"></span><br><span class="show-title-2"></span></a></div>
@@ -93,7 +99,7 @@
                  hidden></div>
           </li>
         </template>
-      </ul>
+      </div>
 
       <div class="calendar-container" hidden>
         <template id="calendar-tmp">
@@ -119,6 +125,13 @@
         </template>
       </div>
 
+      <template id="blank-page-tmp">
+        <div class="blank-page">
+          <span data-l10n-id="noNewEpisodes">No new episodes.</span>
+          &nbsp
+          <a href="https://myshows.me/ratings/top/" data-l10n-id="findNewShows">Find new shows to watch</a>
+        </div>
+      </template>
     </div>
 
     <!-- Episode View -->
