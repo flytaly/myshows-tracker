@@ -107,8 +107,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const title2 = titleLink.querySelector('.show-title-2');
         const unwatchedElem = listElem.querySelector('.unwatched-ep');
         const { displayShowsTitle: t } = options;
-        const hide2ndRow = (t === 'original') || (t === 'ru') || (UILang !== 'ru');
-
+        const hide2ndRow = (t === 'original') || (t === 'ru') || (UILang !== 'ru' && t !== 'ru+original');
         titleLink.dataset.id = show.id;
         titleLink.title = show.title;
         titleLink.href = `https://myshows.me/view/${show.id}/`;
@@ -492,6 +491,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
                 case types.RU_TITLES_UPDATE:
                     await updateLocalShowTitles();
+                    if (nav.places.current === nav.places.showList) nav.navigate(nav.places.showList);
                     break;
                 default:
             }
