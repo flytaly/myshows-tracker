@@ -1,7 +1,8 @@
-/* global storage */
+/* global storage, browser */
 
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
+const UILang = browser.i18n.getUILanguage();
 
 const setCurrentFontSize = (fSizeDiff) => {
     if (fSizeDiff) {
@@ -18,13 +19,25 @@ const restoreData = async () => {
     const {
         fSizeDiff, dateLocale, episodesSortOrder, displayShowsTitle,
     } = await storage.getOptions();
+
     setCurrentFontSize(fSizeDiff);
-    if (dateLocale) {
+
+    const d = new Date();
+    if (['ru', 'en-GB', 'en-US'].includes(dateLocale)) {
         $('#date-format').value = dateLocale;
-        $('#date-example').textContent = new Date().toLocaleDateString(dateLocale);
+    } else {
+        $('#date-format').value = '';
     }
+    $('#date-example').textContent = `${d.toLocaleDateString(dateLocale || UILang)} `
+            + `${d.toLocaleDateString(dateLocale || UILang, { month: 'long' })}`;
+
     if (episodesSortOrder) $('#sort-order').value = episodesSortOrder;
-    if (displayShowsTitle) $('#shows-titles').value = displayShowsTitle;
+
+    if (displayShowsTitle) {
+        $('#shows-titles').value = displayShowsTitle;
+    } else {
+        $('#shows-titles').value = UILang === 'ru' ? 'ru+original' : 'original';
+    }
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -42,7 +55,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const dateFormat = $('#date-format');
     dateFormat.addEventListener('change', async () => {
         const dateLocale = dateFormat.value;
-        $('#date-example').textContent = new Date().toLocaleDateString(dateLocale);
+        const d = new Date();
+        $('#date-example').textContent = `${d.toLocaleDateString(dateLocale || UILang)} `
+            + `${d.toLocaleDateString(dateLocale || UILang, { month: 'long' })}`;
         await storage.saveOptions({ dateLocale });
     });
 
