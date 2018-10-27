@@ -396,16 +396,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         },
         updateLogoNav() {
-            const handleClick = function (e) { /* eslint-disable-line func-names */
-                e.preventDefault();
-                nav.navigate(nav.places.showList);
-                this.removeEventListener('click', handleClick);
-            };
-            if (this.places.current === this.places.episodeList) {
+            if (nav.places.current === nav.places.episodeList) {
                 logoLink.title = browser.i18n.getMessage('backButton_title');
-                logoLink.addEventListener('click', handleClick);
+                logoLink.onclick = (e) => {
+                    e.preventDefault();
+                    nav.navigate(nav.places.showList);
+                };
             } else {
                 logoLink.title = browser.i18n.getMessage('logoLink_title');
+                logoLink.onclick = null;
             }
         },
     };
