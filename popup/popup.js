@@ -135,12 +135,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const calendarRowElem = templates.calendarRow.cloneNode(true);
         const dateElem = calendarRowElem.querySelector('.calendar-date');
+        const dateElems = dateElem.querySelectorAll('span');
         const showTitle = calendarRowElem.querySelector('.calendar-show-title a');
         const epNumber = calendarRowElem.querySelector('.calendar-ep-number');
         const epTitle = calendarRowElem.querySelector('.calendar-ep-title a');
-        const daysLeft = calendarRowElem.querySelector('.calendar-days-left');
+        const daysLeftElem = calendarRowElem.querySelector('.calendar-days-left');
+        const daysLeftElems = daysLeftElem.querySelectorAll('span');
 
-        dateElem.innerHTML = `${airDate.getDate()}<br>${airDate.toLocaleDateString(dateLocale, { weekday: 'short' })}`;
+        dateElems[0].textContent = airDate.getDate().toString();
+        dateElems[1].textContent = airDate.toLocaleDateString(dateLocale, { weekday: 'short' });
         dateElem.title = airDate.toLocaleString(dateLocale);
 
         showTitle.title = showsInfo[showId].title;
@@ -154,8 +157,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         epTitle.href = `https://myshows.me/view/episode/${id}/`;
 
         const countDays = Math.ceil((airDate - now) / 1000 / 60 / 60 / 24);
-        daysLeft.innerHTML = `${countDays}<br>${getPluralForm('daysNumber', countDays)}`;
-        daysLeft.title = airDate.toLocaleString(dateLocale);
+        daysLeftElems[0].textContent = countDays.toString();
+        daysLeftElems[1].textContent = getPluralForm('daysNumber', countDays);
+        daysLeftElem.title = airDate.toLocaleString(dateLocale);
+
         return calendarRowElem;
     }
 
