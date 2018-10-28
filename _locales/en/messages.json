@@ -150,5 +150,13 @@
   "settingLocaleGroup_label": {
     "message": "Locale",
     "description": "Attribute label for display show's titles option optgroup"
+  },
+  "noNewEpisodes": {
+    "message": "No new episodes.",
+    "description": "Blank page message"
+  },
+  "findNewShows": {
+    "message": "Find shows to watch",
+    "description": "Blank page link"
   }
 }

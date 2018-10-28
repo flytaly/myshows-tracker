@@ -158,5 +158,13 @@
   "settingLocaleGroup_label": {
     "message": "локализованные",
     "description": "Attribute label for display show's titles option optgroup"
+  },
+  "noNewEpisodes": {
+    "message": "Нет новых серий.",
+    "description": "Blank page message"
+  },
+  "findNewShows": {
+    "message": "Найти сериалы для просмотра",
+    "description": "Blank page link"
   }
 }
