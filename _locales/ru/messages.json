@@ -1,10 +1,10 @@
 {
   "description": {
-    "message": "Расширение для отслеживания вышедших и грядущих сериалов.",
+    "message": "Расширение для отслеживания вышедших и грядущих сериалов. Позволяет отмечать и оценивать вышедшие серии, а также следить за предстоящими эпизодами.",
     "description": "Description of the extension"
   },
   "name": {
-    "message": "MyShows Отмечай сериалы",
+    "message": "MyShows: следи за сериалами",
     "description": "Name of the extension"
   },
   "extension_title": {

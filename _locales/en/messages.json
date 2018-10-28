@@ -1,6 +1,6 @@
 {
   "description": {
-    "message": "Extension for tracking TV shows",
+    "message": "Extension for tracking TV shows. You can mark watched episodes and track upcoming ones.",
     "description": "Description of the extension"
   },
   "name": {
@@ -8,7 +8,7 @@
     "description": "Name of the extension"
   },
   "extension_title": {
-    "message": "MyShows tracker",
+    "message": "MyShows",
     "description": "Extension title"
   },
   "tabShows": {
