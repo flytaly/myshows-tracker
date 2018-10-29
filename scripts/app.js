@@ -3,6 +3,17 @@
 
 const mapObjToQueryStr = params => Object.entries(params).map(pair => pair.join('=')).join('&');
 
+/** Filter properties in given object */
+const filterShowProperties = (show) => {
+    const props = ['id', 'image', 'title', 'titleOriginal'];
+    return Object.keys(show)
+        .filter(prop => props.includes(prop))
+        .reduce((acc, prop) => {
+            acc[prop] = show[prop];
+            return acc;
+        }, {});
+};
+
 const app = {
     baseURL: 'https://myshows.me/oauth',
 
@@ -130,17 +141,14 @@ const app = {
         });
     },
 
-    /* Return shows that are being watched and have unwatched episodes */
-    async fetchEpisodes(showIds) {
-        let shows = await rpcHandler.showsGetById(showIds);
-        shows = shows.map(({ result }) => result);
-
+    /* Return object with unwatched episodes grouped by show id */
+    async fetchEpisodes(showIds, shows) {
         const profileEps = await rpcHandler.profileEpisodes(showIds);
 
         /** Normalize array of responses by id */
         const watchedEps = profileEps.reduce((acc, { id, result }) => ({ ...acc, [id]: result }), {});
 
-        const unwatchedEps = shows.reduce((acc, show) => {
+        return shows.reduce((acc, show) => {
             const { episodes, id: showId } = show;
 
             acc[showId] = episodes.filter(({ id, episodeNumber }) => {
@@ -151,8 +159,6 @@ const app = {
 
             return acc;
         }, {});
-
-        return unwatchedEps;
     },
 
     /** Returns episodes that was already aired */
@@ -175,39 +181,45 @@ const app = {
 
     async updateData() {
         state.updating = true;
-        const { result: allShows } = await rpcHandler.profileShows();
-        let watchingShows = allShows.filter(({ watchStatus }) => watchStatus === 'watching');
-        const showIds = watchingShows.map(({ show }) => show.id);
+        try {
+            const { result: allShows } = await rpcHandler.profileShows();
+            let watchingShows = allShows.filter(({ watchStatus }) => watchStatus === 'watching');
+            const showIds = watchingShows.map(({ show }) => show.id);
 
-        const unwatchedEps = await this.fetchEpisodes(showIds);
+            let shows = await rpcHandler.showsGetById(showIds);
+            shows = shows.map(({ result }) => result);
 
-        // run task without await to not block this function
-        (async () => {
-            const UILang = browser.i18n.getUILanguage();
-            const { displayShowsTitle: t } = await storage.getOptions();
-            if ((UILang === 'ru' && !t) || t === 'ru' || t === 'ru+original') this.getRuTitles(showIds);
-        })();
+            const unwatchedEps = await this.fetchEpisodes(showIds, shows);
 
-        const time = new Date();
-        const pastEps = this.pastEpisodes(unwatchedEps, time);
-        const futureEps = this.futureEpisodes(unwatchedEps, time);
+            const time = new Date();
+            const pastEps = this.pastEpisodes(unwatchedEps, time);
+            const futureEps = this.futureEpisodes(unwatchedEps, time);
 
-        // count how many aired episodes left to watch
-        watchingShows = watchingShows.map(entry => ({ ...entry, unwatchedEpisodes: pastEps[entry.show.id].length }));
+            watchingShows = watchingShows.map(entry => ({
+                ...entry,
+                unwatchedEpisodes: pastEps[entry.show.id].length,
+                show: filterShowProperties(
+                    shows.find(({ id }) => entry.show.id === id),
+                ),
+            }));
 
-        state.totalEpisodes = watchingShows.reduce((acc, { unwatchedEpisodes }) => acc + unwatchedEpisodes, 0);
+            state.totalEpisodes = watchingShows.reduce((acc, { unwatchedEpisodes }) => acc + unwatchedEpisodes, 0);
 
-        await Promise.all([
-            storage.saveWatchingShows(watchingShows),
-            storage.saveEpisodesToWatch(pastEps),
-            storage.saveUpcomingEpisodes(futureEps),
-        ]);
+            await Promise.all([
+                storage.saveWatchingShows(watchingShows),
+                storage.saveEpisodesToWatch(pastEps),
+                storage.saveUpcomingEpisodes(futureEps),
+            ]);
 
-        while (this.rateEpisodesAgain.length) {
-            const { episodeId, rating, showId } = this.rateEpisodesAgain.pop();
-            await this.rateEpisode(episodeId, rating, showId, false); /* eslint-disable-line no-await-in-loop */
+            while (this.rateEpisodesAgain.length) {
+                const { episodeId, rating, showId } = this.rateEpisodesAgain.pop();
+                await this.rateEpisode(episodeId, rating, showId, false); /* eslint-disable-line no-await-in-loop */
+            }
+        } catch (e) {
+            throw e;
+        } finally {
+            state.updating = false;
         }
-        state.updating = false;
     },
 
     rateEpisodesAgain: [],
@@ -244,30 +256,5 @@ const app = {
             browser.alarms.create(types.ALARM_UPDATE, { delayInMinutes: 0.1 });
         }
         state.updating = false;
-    },
-
-    /** Sequentially get Russian titles and save them in storage */
-    async getRuTitles(showIds) {
-        let results;
-        const updated = [];
-        const alreadySaved = await storage.getRuTitles();
-        try {
-            results = await showIds.reduce(async (acc, showId) => {
-                const titles = await acc;
-                if (alreadySaved[showId]) {
-                    titles[showId] = alreadySaved[showId];
-                } else {
-                    titles[showId] = await restAPIHandler.getRuTitle(showId);
-                    updated.push(showId);
-                }
-                return acc;
-            }, Promise.resolve({}));
-        } catch (e) {
-            console.error(`Couldn't get Russian shows title. ${e.name}: ${e.message}`);
-        }
-        if (results && updated.length) {
-            await storage.saveRuTitles(results);
-            state.newRuTitlesRecieved = updated;
-        }
     },
 };

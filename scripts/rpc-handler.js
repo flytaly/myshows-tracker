@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-/* global storage, app */
+/* global storage, app, browser */
 
 class AuthError extends Error {
     constructor(message, needAuth = true) {
@@ -10,19 +10,6 @@ class AuthError extends Error {
         this.needAuth = needAuth;
     }
 }
-
-/* Use old 1.8 api (https://api.myshows.me) to get Russian names of shows */
-const restAPIHandler = {
-    url: 'https://api.myshows.me/shows/',
-    async getRuTitle(showId) {
-        const res = await fetch(`${this.url}${showId}`, {
-            method: 'GET',
-            headers: { Accept: 'application/json' },
-        });
-        const { ruTitle } = await res.json();
-        return ruTitle;
-    },
-};
 
 const rpcHandler = {
     rpcUrl: 'https://api.myshows.me/v2/rpc/',
@@ -43,20 +30,20 @@ const rpcHandler = {
         return accessToken;
     },
 
-    async fetchInit() {
-        return {
+    async request(body, withAuth) {
+        // const UILang = browser.i18n.getUILanguage();
+        // const { displayShowsTitle: t } = await storage.getOptions();
+        // const lang = ((UILang === 'ru' && !t) || t === 'ru' || t === 'ru+original') ? 'ru' : 'en';
+        const lang = 'ru'; // always request russian title, response will contain original titles too
+
+        const res = await fetch('https://api.myshows.me/v2/rpc/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
-                Authorization: `Bearer ${await this.getAccessToken()}`,
+                'Accept-Language': lang,
+                ...(withAuth && { Authorization: `Bearer ${await this.getAccessToken()}` }),
             },
-        };
-    },
-
-    async request(body) {
-        const res = await fetch('https://api.myshows.me/v2/rpc/', {
-            ...await this.fetchInit(),
             body: JSON.stringify(body),
         });
         if (res.status !== 200) throw new Error(`Couldn't connect to server. ${res.status}: ${res.statusText}`);
@@ -71,18 +58,18 @@ const rpcHandler = {
         return result;
     },
 
-    async singleRequest(method, params = {}) {
+    async singleRequest(method, params = {}, withAuth = false) {
         return this.request({
             jsonrpc: '2.0',
             method,
             params,
             id: 1,
-        });
+        }, withAuth);
     },
 
     /* Combines requests in batches by N requests per batch https://jsonrpc.org/specification#batch
     *  Returns array of successful results */
-    async batchRequest(reqObjects = [], N = 10) {
+    async batchRequest(reqObjects = [], withAuth = false, N = 10) {
         const results = [];
         const body = reqObjects.map(({ method, params, id }, idx) => ({
             jsonrpc: '2.0',
@@ -94,7 +81,7 @@ const rpcHandler = {
         // Intentionally sending requests sequentially (not concurrently with Promise.All)
         // to prevent triggering server's DDOS protection if the batch contains too many requests
         for (let i = 0; i < body.length; i += N) {
-            results.push(...await this.request(body.slice(i, i + N))); // eslint-disable-line no-await-in-loop
+            results.push(...await this.request(body.slice(i, i + N), withAuth)); // eslint-disable-line no-await-in-loop
         }
 
         return results.filter(({ error, id }) => {
@@ -108,15 +95,15 @@ const rpcHandler = {
 
     // ========== Profile Methods ==========
     async profileGet() {
-        return this.singleRequest('profile.Get');
+        return this.singleRequest('profile.Get', {}, true);
     },
 
     async profileFeed() {
-        return this.singleRequest('profile.Feed');
+        return this.singleRequest('profile.Feed', {}, true);
     },
 
     async profileShows() {
-        return this.singleRequest('profile.Shows');
+        return this.singleRequest('profile.Shows', {}, true);
     },
 
     /**
@@ -127,7 +114,7 @@ const rpcHandler = {
             method: 'profile.Episodes',
             params: { showId },
             id: showId,
-        })));
+        })), true);
     },
 
     // ========== Shows Methods ==========
@@ -149,15 +136,15 @@ const rpcHandler = {
     // ========== Manage Methods ==========
 
     async manageCheckEpisode(episodeId) {
-        return this.singleRequest('manage.CheckEpisode', { id: episodeId });
+        return this.singleRequest('manage.CheckEpisode', { id: episodeId }, true);
     },
 
     async manageUnCheckEpisode(episodeId) {
-        return this.singleRequest('manage.UnCheckEpisode', { id: episodeId });
+        return this.singleRequest('manage.UnCheckEpisode', { id: episodeId }, true);
     },
 
     async manageRateEpisode(episodeId, rating = 0) {
-        return this.singleRequest('manage.RateEpisode', { id: episodeId, rating });
+        return this.singleRequest('manage.RateEpisode', { id: episodeId, rating }, true);
     },
 
 };

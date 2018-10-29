@@ -60,18 +60,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const bgScriptPort = browser.runtime.connect();
     const showsInfo = {}; // show's info for easy access to it in the episode view
+    const updateShowsInfo = (shows) => {
+        shows.forEach(({
+            show: {
+                id, image, title, titleOriginal,
+            },
+        }) => {
+            showsInfo[id] = { image, title, titleOriginal };
+        });
+    };
     const customEvents = { episodeRemoved: new Event('episoderemoved') };
-    const localShowTitles = {};
-
-    async function updateLocalShowTitles() {
+    const showLocalTitle = (() => {
         const { displayShowsTitle: t } = options;
-        if ((UILang === 'ru' && !t) || t === 'ru' || t === 'ru+original') {
-            const titles = await storage.getRuTitles();
-            Object.keys(titles).forEach((id) => {
-                localShowTitles[id] = titles[id];
-            });
-        }
-    }
+        return (UILang === 'ru' && !t) || t === 'ru' || t === 'ru+original';
+    })();
+
 
     function handleRatingClicks(ratingBlock, episodeId, showId, epListElem) {
         const ratingElems = ratingBlock.querySelectorAll('a.rating-star, a.ep-check');
@@ -111,10 +114,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         const { displayShowsTitle: t } = options;
         const hide2ndRow = (t === 'original') || (t === 'ru') || (UILang !== 'ru' && t !== 'ru+original');
         titleLink.dataset.id = show.id;
-        titleLink.title = show.title;
+        titleLink.title = show.titleOriginal;
         titleLink.href = `https://myshows.me/view/${show.id}/`;
-        title1.textContent = localShowTitles[show.id] || show.title;
-        title2.textContent = !hide2ndRow && localShowTitles[show.id] ? show.title : '';
+        title1.textContent = showLocalTitle ? show.title : show.titleOriginal;
+        title2.textContent = showLocalTitle && !hide2ndRow ? show.titleOriginal : '';
         titleLink.addEventListener('click', onClick);
 
         if (unwatchedEpisodes > 0) {
@@ -146,9 +149,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         dateElems[1].textContent = airDate.toLocaleDateString(dateLocale, { weekday: 'short' });
         dateElem.title = airDate.toLocaleString(dateLocale);
 
-        showTitle.title = showsInfo[showId].title;
+        showTitle.title = showsInfo[showId].titleOriginal;
         showTitle.href = `https://myshows.me/view/${showId}/`;
-        showTitle.textContent = localShowTitles[showId] || showsInfo[showId].title;
+        showTitle.textContent = showLocalTitle ? showsInfo[showId].title : showsInfo[showId].titleOriginal;
 
         epNumber.textContent = shortName;
 
@@ -335,13 +338,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                     this.updateLogoNav();
                     showContainer.innerHTML = '';
 
-                    shows.forEach(({ show: { id, image, title } }) => {
-                        showsInfo[id] = { image, title };
-                    });
+                    updateShowsInfo(shows);
 
                     const showsWithEp = shows ? shows.filter(show => show.unwatchedEpisodes) : null;
 
-                    await updateLocalShowTitles();
                     if (!showsWithEp || !showsWithEp.length) {
                         showContainer.appendChild(templates.blankPage.cloneNode(true));
                     } else {
@@ -383,8 +383,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     const show = showsInfo[this.showId];
                     showTitle.href = `https://myshows.me/view/${this.showId}/`;
-                    title1.textContent = localShowTitles[this.showId] || show.title;
-                    title2.textContent = localShowTitles[this.showId] ? show.title : '';
+                    title1.textContent = showLocalTitle ? show.title : show.titleOriginal;
+                    title2.textContent = showLocalTitle ? show.titleOriginal : '';
                     document.body.style.background = `white url(${show.image}) no-repeat`;
                     document.body.style.backgroundSize = 'cover';
                     document.body.style.backgroundAttachment = 'fixed';
@@ -473,11 +473,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             const { type, payload } = message;
             switch (type) {
                 case types.INFO_UPDATED: {
-                // upon receiving a new information update the current view
-                    const shows = await storage.getWatchingShows();
-                    shows.forEach(({ show: { id, image, title } }) => {
-                        showsInfo[id] = { image, title };
-                    });
+                    // Upon receiving a new information, update the current view
+                    // but not refresh episode list because a user might rate an episode in the meantime
+                    updateShowsInfo(await storage.getWatchingShows());
                     if (nav.places.current !== nav.places.episodeList) nav.navigate(nav.places.current);
                     break;
                 }
@@ -513,10 +511,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     if (episodeElem.dataset.mouseleaved) episodeElem.dispatchEvent(new Event('mouseleave'));
                     break;
                 }
-                case types.RU_TITLES_UPDATE:
-                    await updateLocalShowTitles();
-                    if (nav.places.current === nav.places.showList) nav.navigate(nav.places.showList);
-                    break;
+
                 default:
             }
         });
