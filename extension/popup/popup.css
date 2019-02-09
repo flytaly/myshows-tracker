@@ -408,7 +408,7 @@ ul.episode-list {
 
     .rating-block:hover {
         background-color: white;
-        outline: 1px solid #CCCCCC;
+        box-shadow: -1px -1px 0px 0px #CCCCCC, 1px 1px 0px 0px #CCCCCC;
     }
 
     .ep-rating {
@@ -433,6 +433,7 @@ ul.episode-list {
 
     .rating-block:hover .ep-rating {
         max-width: 14rem;
+        box-shadow: 1px 1px 0px 0px #CCCCCC, 0px -1px 0px 0px #CCCCCC;
     }
 
     .ep-rating a {
