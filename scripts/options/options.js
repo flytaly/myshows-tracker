@@ -1,5 +1,5 @@
-import storage from '../scripts/storage';
-import '../scripts/l10n'; // translate option page
+import storage from '../storage';
+import '../l10n'; // translate option page
 
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);

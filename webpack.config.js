@@ -2,9 +2,9 @@ const path = require('path');
 
 module.exports = {
     entry: {
-        scripts: './scripts/background.js',
-        popup: './popup/popup.js',
-        options: './options/options.js',
+        background: './scripts/background/background.js',
+        popup: './scripts/popup/popup.js',
+        options: './scripts/options/options.js',
     },
     output: {
         path: path.resolve(__dirname, 'extension'),

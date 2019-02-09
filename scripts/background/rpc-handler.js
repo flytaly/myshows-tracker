@@ -1,4 +1,4 @@
-import storage from './storage';
+import storage from '../storage';
 import app from './app'; // eslint-disable-line import/no-cycle
 import { AuthError } from './errors';
 

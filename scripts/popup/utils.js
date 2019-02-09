@@ -1,10 +1,13 @@
 /* eslint-disable import/prefer-default-export */
 import UILang from './ui-language';
 
+/* displayShowsTitle could be: 'undefined', original','ru', 'ru+original', 'original+ru' */
 export function getTitleOptions({ displayShowsTitle: t }) {
     const locales = ['ru'];
     let options = { showTwoTitles: false, title1: 'original', title2: 'ru' };
-    if (locales.includes(UILang) && !t) return options;
+    if (!locales.includes(UILang) && !t) return options;
+    if (!t) return { ...options, title1: UILang, title2: 'original' };
+
     const [title1, title2] = t.split('+');
     if (!title1) return options;
     if (title2) { options = { ...options, showTwoTitles: true, title2 }; }

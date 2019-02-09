@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
-import types from '../scripts/types';
-import storage from '../scripts/storage';
-import { translateElement } from '../scripts/l10n';
+import types from '../types';
+import storage from '../storage';
+import { translateElement } from '../l10n';
 import UILang from './ui-language';
 import { getTitleOptions, getPluralForm } from './utils';
 

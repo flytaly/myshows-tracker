@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions,no-underscore-dangle */
 import state from './state';
-import storage from './storage';
-import types from './types';
+import storage from '../storage';
+import types from '../types';
 import app from './app';
 
 async function update() {

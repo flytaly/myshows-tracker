@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
-import storage from './storage';
+import storage from '../storage';
+import types from '../types';
 import state from './state';
-import types from './types';
-import { clientId, clientSecret, redirectUri } from './config';
+import { clientId, clientSecret, redirectUri } from '../config';
 import { AuthError } from './errors';
 import rpcHandler from './rpc-handler'; // eslint-disable-line import/no-cycle
 
