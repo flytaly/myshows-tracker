@@ -81,11 +81,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function renderShowRow(showRecord, onClick) {
-        const { unwatchedEpisodes, show } = showRecord;
+        const { unwatchedEpisodes, show, nextEpisode } = showRecord;
         const listElem = templates.showRow.cloneNode(true);
         const titleLink = listElem.querySelector('.show-title a');
         const showTitle1 = titleLink.querySelector('.show-title-1');
         const showTitle2 = titleLink.querySelector('.show-title-2');
+        const nextEpisodeElem = titleLink.querySelector('.next-episode');
         const unwatchedElem = listElem.querySelector('.unwatched-ep');
         titleLink.dataset.id = show.id;
         titleLink.title = show.titleOriginal;
@@ -96,6 +97,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (showTwoTitles) {
             showTitle2.textContent = title2 === 'original' ? show.titleOriginal : show.title;
         }
+        nextEpisodeElem.textContent = nextEpisode.shortName;
         titleLink.addEventListener('click', onClick);
 
         if (unwatchedEpisodes > 0) {

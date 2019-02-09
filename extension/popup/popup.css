@@ -226,6 +226,16 @@ a, a:visited {
     color: #676767;
 }
 
+#main-view .show-list .next-episode{
+    display: none;
+}
+
+#main-view .show-list li:hover .next-episode {
+    display: inline;
+    font-size: 1.1rem;
+    color: #A80303;
+}
+
 #main-view .unwatched-ep {
     background-color: #A80303;
     border-radius: 5px;

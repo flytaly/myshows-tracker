@@ -200,13 +200,16 @@ const app = {
             const pastEps = this.pastEpisodes(unwatchedEps, time);
             const futureEps = this.futureEpisodes(unwatchedEps, time);
 
-            watchingShows = watchingShows.map(entry => ({
-                ...entry,
-                unwatchedEpisodes: pastEps[entry.show.id].length,
-                show: filterShowProperties(
-                    shows.find(({ id }) => entry.show.id === id),
-                ),
-            }));
+            watchingShows = watchingShows.map((entry) => {
+                const len = pastEps[entry.show.id].length;
+                return ({
+                    ...entry,
+                    unwatchedEpisodes: len,
+                    latestEpisode: len && pastEps[entry.show.id][0],
+                    nextEpisode: len && pastEps[entry.show.id][len - 1],
+                    show: filterShowProperties(shows.find(({ id }) => entry.show.id === id)),
+                });
+            });
 
             state.totalEpisodes = watchingShows.reduce((acc, { unwatchedEpisodes }) => acc + unwatchedEpisodes, 0);
 
@@ -256,7 +259,7 @@ const app = {
                 storage.saveEpisodesToWatch(episodes),
                 storage.saveWatchingShows(shows)]);
         } catch (e) {
-            console.error(`Error occured during episode rating. ${e.name}: ${e.message}`);
+            console.error(`Error occurred during episode rating. ${e.name}: ${e.message}`);
             if (retryIfError) this.rateEpisodesAgain.push({ episodeId, rating, showId });
             browser.alarms.create(types.ALARM_UPDATE, { delayInMinutes: 0.1 });
         }
