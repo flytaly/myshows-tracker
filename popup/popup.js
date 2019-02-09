@@ -2,8 +2,8 @@
 import types from '../scripts/types';
 import storage from '../scripts/storage';
 import { translateElement } from '../scripts/l10n';
-import getPluralForm from './get-plural-form';
 import UILang from './ui-language';
+import { getTitleOptions, getPluralForm } from './utils';
 
 
 let dateLocale = UILang;
@@ -49,11 +49,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     };
     const customEvents = { episodeRemoved: new Event('episoderemoved') };
-    const showLocalTitle = (() => {
-        const { displayShowsTitle: t } = options;
-        return (UILang === 'ru' && !t) || t === 'ru' || t === 'ru+original';
-    })();
 
+    const titleOptions = getTitleOptions(options);
 
     function handleRatingClicks(ratingBlock, episodeId, showId, epListElem) {
         const ratingElems = ratingBlock.querySelectorAll('a.rating-star, a.ep-check');
@@ -87,16 +84,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         const { unwatchedEpisodes, show } = showRecord;
         const listElem = templates.showRow.cloneNode(true);
         const titleLink = listElem.querySelector('.show-title a');
-        const title1 = titleLink.querySelector('.show-title-1');
-        const title2 = titleLink.querySelector('.show-title-2');
+        const showTitle1 = titleLink.querySelector('.show-title-1');
+        const showTitle2 = titleLink.querySelector('.show-title-2');
         const unwatchedElem = listElem.querySelector('.unwatched-ep');
-        const { displayShowsTitle: t } = options;
-        const hide2ndRow = (t === 'original') || (t === 'ru') || (UILang !== 'ru' && t !== 'ru+original');
         titleLink.dataset.id = show.id;
         titleLink.title = show.titleOriginal;
         titleLink.href = `https://myshows.me/view/${show.id}/`;
-        title1.textContent = showLocalTitle ? show.title : show.titleOriginal;
-        title2.textContent = showLocalTitle && !hide2ndRow ? show.titleOriginal : '';
+
+        const { showTwoTitles, title1, title2 } = titleOptions;
+        showTitle1.textContent = title1 === 'original' ? show.titleOriginal : show.title;
+        if (showTwoTitles) {
+            showTitle2.textContent = title2 === 'original' ? show.titleOriginal : show.title;
+        }
         titleLink.addEventListener('click', onClick);
 
         if (unwatchedEpisodes > 0) {
@@ -128,9 +127,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         dateElems[1].textContent = airDate.toLocaleDateString(dateLocale, { weekday: 'short' });
         dateElem.title = airDate.toLocaleString(dateLocale);
 
-        showTitle.title = showsInfo[showId].titleOriginal;
         showTitle.href = `https://myshows.me/view/${showId}/`;
-        showTitle.textContent = showLocalTitle ? showsInfo[showId].title : showsInfo[showId].titleOriginal;
+        showTitle.title = (titleOptions.showTwoTitles && titleOptions.title2 !== 'original') ? showsInfo[showId].title : showsInfo[showId].titleOriginal;
+        showTitle.textContent = titleOptions.title1 === 'original' ? showsInfo[showId].titleOriginal : showsInfo[showId].title;
 
         epNumber.textContent = shortName;
 
@@ -362,8 +361,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     const show = showsInfo[this.showId];
                     showTitle.href = `https://myshows.me/view/${this.showId}/`;
-                    title1.textContent = showLocalTitle ? show.title : show.titleOriginal;
-                    title2.textContent = showLocalTitle ? show.titleOriginal : '';
+                    title1.textContent = titleOptions.title1 !== 'original' ? show.title : show.titleOriginal;
+                    if (titleOptions.showTwoTitles) {
+                        title2.textContent = titleOptions.title2 !== 'original' ? show.title : show.titleOriginal;
+                    }
                     document.body.style.background = `white url(${show.image}) no-repeat`;
                     document.body.style.backgroundSize = 'cover';
                     document.body.style.backgroundAttachment = 'fixed';

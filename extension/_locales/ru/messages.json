@@ -151,6 +151,10 @@
     "message": "русские и оригинальные",
     "description": "Setting: display Russian and original show's titles option"
   },
+  "settingTitleOrigAndRu": {
+    "message": "оригинальные и русские",
+    "description": "Setting: display original and Russian show's titles option"
+  },
   "settingTitleRu": {
     "message": "только русские",
     "description": "Setting: display only Russian show's titles option"

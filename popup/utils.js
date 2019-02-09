@@ -1,8 +1,19 @@
+/* eslint-disable import/prefer-default-export */
 import UILang from './ui-language';
+
+export function getTitleOptions({ displayShowsTitle: t }) {
+    const locales = ['ru'];
+    let options = { showTwoTitles: false, title1: 'original', title2: 'ru' };
+    if (locales.includes(UILang) && !t) return options;
+    const [title1, title2] = t.split('+');
+    if (!title1) return options;
+    if (title2) { options = { ...options, showTwoTitles: true, title2 }; }
+    return { ...options, title1 };
+}
 
 /** Get plural forms based on given number. The functions uses Intl.PluralRules API if it available,
  *  and currently supports only russian and english languages. */
-export default function getPluralForm(i18nMessageName, number) {
+export function getPluralForm(i18nMessageName, number) {
     if (Intl.PluralRules) {
         const rules = new Intl.PluralRules(UILang === 'ru' ? UILang : 'en');
         return browser.i18n.getMessage(`${i18nMessageName}_${rules.select(number)}`, number);
