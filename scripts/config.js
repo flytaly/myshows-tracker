@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
-const clientId = '';
-const clientSecret = '';
-const redirectUri = '';
+export const clientId = '';
+export const clientSecret = '';
+export const redirectUri = '';
