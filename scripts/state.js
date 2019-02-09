@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-expressions,no-param-reassign */
-/* global browser */
 import types from './types';
 
 /* Proxy object that sends messages to the popup upon changes */

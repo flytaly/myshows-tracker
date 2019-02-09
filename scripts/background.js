@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-expressions,no-underscore-dangle */
-/* global browser */
 import state from './state';
 import storage from './storage';
 import types from './types';

@@ -2,7 +2,7 @@
 
 [ ![addons.mozilla.org/](https://addons.cdn.mozilla.net/static/img/addons-buttons/AMO-button_2.png)](https://addons.mozilla.org/firefox/addon/myshows-tv-show-tracker/)
 
-Not official Firefox extension for [MyShows.me](https://myshows.me), that allows you to track aired and future episodes
+Unofficial Firefox extension for [MyShows.me](https://myshows.me), that allows you to track aired and future episodes
 of TV shows you watch.
 
 Неофициальное Firefox расширение для сайта [MyShows.me](https://myshows.me), которое позволяет отмечать просмотренные серии и следить

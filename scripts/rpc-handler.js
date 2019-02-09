@@ -1,14 +1,6 @@
 import storage from './storage';
-import app from './app';
-
-class AuthError extends Error {
-    constructor(message, needAuth = true) {
-        super();
-        this.name = 'AuthError';
-        this.message = message;
-        this.needAuth = needAuth;
-    }
-}
+import app from './app'; // eslint-disable-line import/no-cycle
+import { AuthError } from './errors';
 
 const rpcHandler = {
     rpcUrl: 'https://api.myshows.me/v2/rpc/',
@@ -148,7 +140,4 @@ const rpcHandler = {
 
 };
 
-export {
-    rpcHandler,
-    AuthError,
-};
+export default rpcHandler;

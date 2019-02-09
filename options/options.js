@@ -1,4 +1,3 @@
-/* global browser */
 import storage from '../scripts/storage';
 import '../scripts/l10n'; // translate option page
 

@@ -1,5 +1,3 @@
-/* global browser */
-
 const storage = {
     async getAuthData() {
         return browser.storage.local.get(['accessToken', 'expiresIn', 'refreshToken']);

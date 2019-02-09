@@ -1,10 +1,10 @@
 /* eslint-disable no-underscore-dangle */
-/* global browser */
 import storage from './storage';
 import state from './state';
 import types from './types';
 import { clientId, clientSecret, redirectUri } from './config';
-import { rpcHandler, AuthError } from './rpc-handler';
+import { AuthError } from './errors';
+import rpcHandler from './rpc-handler'; // eslint-disable-line import/no-cycle
 
 const mapObjToQueryStr = params => Object.entries(params).map(pair => pair.join('=')).join('&');
 
