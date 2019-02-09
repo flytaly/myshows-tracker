@@ -1,5 +1,6 @@
-/* eslint-disable no-unused-vars,no-unused-expressions,no-param-reassign */
-/* global popupPort, types, browser */
+/* eslint-disable no-unused-expressions,no-param-reassign */
+/* global browser */
+import types from './types';
 
 /* Proxy object that sends messages to the popup upon changes */
 const state = new Proxy({
@@ -7,8 +8,10 @@ const state = new Proxy({
     lastUpdate: null,
     totalEpisodes: null,
     episodeWasRated: null,
+    popupPort: null,
 }, ({
     set: (obj, prop, value) => {
+        const { popupPort } = obj;
         switch (prop) {
             case 'updating':
                 popupPort && popupPort.postMessage({
@@ -32,3 +35,5 @@ const state = new Proxy({
         return true;
     },
 }));
+
+export default state;

@@ -16,22 +16,9 @@
     "64": "/images/icon-64.png",
     "96": "/images/icon-96.png"
   },
-  "permissions": [
-    "identity",
-    "storage",
-    "alarms",
-    "https://*.myshows.me/*"
-  ],
+  "permissions": ["identity", "storage", "alarms", "https://*.myshows.me/*"],
   "background": {
-    "scripts": [
-      "scripts/config.js",
-      "scripts/app.js",
-      "scripts/types.js",
-      "scripts/storage.js",
-      "scripts/rpc-handler.js",
-      "scripts/state.js",
-      "scripts/background.js"
-    ]
+    "scripts": ["scripts/bundle.js"]
   },
   "browser_action": {
     "default_title": "__MSG_extension_title__",

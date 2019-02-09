@@ -11,3 +11,5 @@ const types = {
     UNCHECK_EPISODE: 'UNCHECK_EPISODE',
     EPISODE_WAS_RATED: 'EPISODE_WAS_RATED',
 };
+
+export default types;

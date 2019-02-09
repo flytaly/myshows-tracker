@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* global browser */
 
 const storage = {
@@ -76,3 +75,5 @@ const storage = {
         return browser.storage.local.clear();
     },
 };
+
+export default storage;

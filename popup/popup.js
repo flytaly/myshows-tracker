@@ -1,5 +1,9 @@
 /* eslint-disable no-param-reassign */
-/* global storage, browser, types, translateElement */
+/* global browser */
+import types from '../scripts/types';
+import storage from '../scripts/storage';
+import { translateElement } from '../scripts/l10n';
+
 const UILang = browser.i18n.getUILanguage();
 let dateLocale; // const dateLocale = UILang;
 const initOptions = (async () => {

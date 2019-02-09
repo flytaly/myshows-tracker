@@ -4,3 +4,4 @@ node_modules
 .idea
 scripts/config.js
 web-ext-artifacts
+extension/**/bundle.js

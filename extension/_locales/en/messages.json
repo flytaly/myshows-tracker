@@ -76,9 +76,9 @@
     "description": "Number of days: 0 or >1"
   },
   "rate0_title": {
-  "message": "No rating",
-  "description": "Attribute title rating: no stars"
-},
+    "message": "No rating",
+    "description": "Attribute title rating: no stars"
+  },
   "rate1_title": {
     "message": "Not worth it",
     "description": "Attribute title rating: 1 star"
@@ -100,9 +100,9 @@
     "description": "Attribute title rating: 5 stars"
   },
   "settingFontSize": {
-  "message": "Basic font size",
-  "description": "Settings: set basic font size"
-},
+    "message": "Basic font size",
+    "description": "Settings: set basic font size"
+  },
   "settingFontSize_title": {
     "message": "Scale extension's window and font sizes by chosen basic font size",
     "description": "Attribute title of font size setting"

@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
-
-/* global storage, app, browser */
+import storage from './storage';
+import app from './app';
 
 class AuthError extends Error {
     constructor(message, needAuth = true) {
@@ -147,4 +146,9 @@ const rpcHandler = {
         return this.singleRequest('manage.RateEpisode', { id: episodeId, rating }, true);
     },
 
+};
+
+export {
+    rpcHandler,
+    AuthError,
 };

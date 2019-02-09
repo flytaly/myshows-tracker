@@ -69,3 +69,5 @@ document.addEventListener("DOMContentLoaded", () => translateElement(), {
     passive: true,
     once: true
 });
+
+export { translateElement };

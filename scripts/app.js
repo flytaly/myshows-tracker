@@ -1,5 +1,10 @@
-/* eslint-disable no-unused-vars,no-underscore-dangle */
-/* global browser, clientId, clientSecret, redirectUri, storage, rpcHandler, restAPIHandler, AuthError, state, types */
+/* eslint-disable no-underscore-dangle */
+/* global browser */
+import storage from './storage';
+import state from './state';
+import types from './types';
+import { clientId, clientSecret, redirectUri } from './config';
+import { rpcHandler, AuthError } from './rpc-handler';
 
 const mapObjToQueryStr = params => Object.entries(params).map(pair => pair.join('=')).join('&');
 
@@ -25,20 +30,20 @@ const app = {
         return (Math.random() * Number.MAX_SAFE_INTEGER).toString(36);
     },
 
-    getAuthURL(state) {
+    getAuthURL(authState) {
         const params = {
             response_type: 'code',
             redirect_uri: encodeURIComponent(redirectUri),
             client_id: clientId,
             scope: 'basic',
-            state,
+            state: authState,
         };
         return `${this.baseURL}/authorize?${mapObjToQueryStr(params)}`;
     },
 
-    async getAuthCode(state) {
+    async getAuthCode(authState) {
         const response = await browser.identity.launchWebAuthFlow({
-            url: this.getAuthURL(state),
+            url: this.getAuthURL(authState),
             interactive: true,
         });
         const responseURL = new URL(response);
@@ -46,7 +51,7 @@ const app = {
         if (responseURL.searchParams.has('error')) {
             throw new AuthError(responseURL.searchParams.get('error'));
         }
-        if (responseURL.searchParams.get('state') === state) {
+        if (responseURL.searchParams.get('state') === authState) {
             return responseURL.searchParams.get('code');
         }
         return false;
@@ -101,8 +106,8 @@ const app = {
     },
 
     async login() {
-        const state = this.generateAuthState();
-        const code = await this.getAuthCode(state);
+        const authState = this.generateAuthState();
+        const code = await this.getAuthCode(authState);
         if (!code) throw new Error('Couldn\'t get auth code');
         const {
             access_token: accessToken,
@@ -258,3 +263,5 @@ const app = {
         state.updating = false;
     },
 };
+
+export default app;

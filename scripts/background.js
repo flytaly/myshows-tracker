@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-expressions,no-underscore-dangle */
-/* global browser, state, app, storage, types */
-
-let popupPort;
+/* global browser */
+import state from './state';
+import storage from './storage';
+import types from './types';
+import app from './app';
 
 async function update() {
     try {
@@ -28,9 +30,9 @@ window.requestIdleCallback(async () => {
 });
 
 browser.runtime.onConnect.addListener(async (port) => {
-    popupPort = port;
+    state.popupPort = port;
 
-    popupPort.onMessage.addListener(async (message) => {
+    state.popupPort.onMessage.addListener(async (message) => {
         const { type, payload } = message;
         switch (type) {
             case types.SIGN_OUT:
@@ -46,8 +48,8 @@ browser.runtime.onConnect.addListener(async (port) => {
         }
     });
 
-    popupPort.onDisconnect.addListener(() => {
-        popupPort = null;
+    state.popupPort.onDisconnect.addListener(() => {
+        state.popupPort = null;
     });
     // force update if popup has been opened
     if (!state.updating) await update();
