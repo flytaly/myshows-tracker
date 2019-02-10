@@ -251,9 +251,15 @@ const app = {
             if (!episodes[showId].some(ep => ep.id === episodeId)) return; // already deleted from storage
 
             episodes = { ...episodes, [showId]: episodes[showId].filter(e => e.id !== episodeId) };
-            shows = shows.map(
-                show => (show.show.id === showId ? ({ ...show, unwatchedEpisodes: show.unwatchedEpisodes - 1 }) : show),
-            );
+            shows = shows.map((show) => {
+                const len = episodes[showId].length;
+                return (show.show.id === showId ? ({
+                    ...show,
+                    unwatchedEpisodes: show.unwatchedEpisodes - 1,
+                    latestEpisode: len && episodes[showId][0],
+                    nextEpisode: len && episodes[showId][len - 1],
+                }) : show);
+            });
             state.totalEpisodes -= 1;
             await Promise.all([
                 storage.saveEpisodesToWatch(episodes),

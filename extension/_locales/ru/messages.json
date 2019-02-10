@@ -163,6 +163,10 @@
     "message": "локализованные",
     "description": "Attribute label for display show's titles option optgroup"
   },
+  "settingSortShows": {
+    "message": "Размещать сериалы с новыми эпизодами вверху",
+    "description": "Setting: sort shows by latest episodes or not"
+  },
   "noNewEpisodes": {
     "message": "Нет новых серий.",
     "description": "Blank page message"

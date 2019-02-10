@@ -155,6 +155,10 @@
     "message": "Locale",
     "description": "Attribute label for display show's titles option optgroup"
   },
+  "settingSortShows": {
+    "message": "Place shows with new episodes at the top",
+    "description": "Setting: sort shows by latest episodes or not"
+  },
   "noNewEpisodes": {
     "message": "No new episodes.",
     "description": "Blank page message"

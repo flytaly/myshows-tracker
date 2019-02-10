@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <html>
+
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="options.css">
@@ -9,8 +10,8 @@
 
 <body>
   <section>
-    <span class="browser-style" title="Resize extension by chosen basic font size"
-    data-l10n-id="settingFontSize" data-l10n-attrs="title">Basic font size</span>
+    <span class="browser-style" title="Resize extension by chosen basic font size" data-l10n-id="settingFontSize"
+      data-l10n-attrs="title">Basic font size</span>
     <button class="browser-style font-size font-12" data-f-size-diff="-4">aA</button>
     <button class="browser-style font-size font-14" data-f-size-diff="-2">aA</button>
     <button class="browser-style font-size font-15" data-f-size-diff="-1">aA</button>
@@ -25,11 +26,11 @@
     <select id="date-format" class="browser-style">
       <option value="" data-l10n-id="settingDateFormatDefault" selected>Browser's default language</option>
       <!--<optgroup label="English">-->
-        <option value="en-GB">en-GB (UK English)</option>
-        <option value="en-US">en-US (US English)</option>
+      <option value="en-GB">en-GB (UK English)</option>
+      <option value="en-US">en-US (US English)</option>
       <!--</optgroup>-->
       <!--<optgroup label="Locale" data-l10n-id="settingLocaleGroup" data-l10n-nocontent="true" data-l10n-attrs="label">-->
-        <option value="ru">ru (Русский)</option>
+      <option value="ru">ru (Русский)</option>
       <!--</optgroup>-->
     </select>
     <span data-l10n-id="settingDateExample">Example:</span> <span id="date-example">25/10/2018</span>
@@ -44,7 +45,8 @@
   </section>
 
   <section>
-    <label for="shows-titles" class="browser-style-label" data-l10n-id="settingDisplayTitles">Display titles of the shows</label>
+    <label for="shows-titles" class="browser-style-label" data-l10n-id="settingDisplayTitles">Display titles of the
+      shows</label>
     <select id="shows-titles" class="browser-style">
       <option selected value="original" data-l10n-id="settingTitleOnlyOrig">Only original</option>
       <optgroup label="Locale" data-l10n-id="settingLocaleGroup" data-l10n-nocontent="true" data-l10n-attrs="label">
@@ -53,6 +55,14 @@
         <option value="ru" data-l10n-id="settingTitleRu">Only Russian</option>
       </optgroup>
     </select>
+  </section>
+
+  <section>
+    <label for="sort-shows" class="browser-style-label" data-l10n-id="settingSortShows">Shows with new episodes on top
+    </label>
+    <span class="browser-style">
+      <input type="checkbox" id="sort-shows" checked>
+    </span>
   </section>
 </body>
 

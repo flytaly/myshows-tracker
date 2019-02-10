@@ -18,7 +18,7 @@ const setCurrentFontSize = (fSizeDiff) => {
 
 const restoreData = async () => {
     const {
-        fSizeDiff, dateLocale, episodesSortOrder, displayShowsTitle,
+        fSizeDiff, dateLocale, episodesSortOrder, displayShowsTitle, noShowSorting,
     } = await storage.getOptions();
 
     setCurrentFontSize(fSizeDiff);
@@ -38,6 +38,10 @@ const restoreData = async () => {
         $('#shows-titles').value = displayShowsTitle;
     } else {
         $('#shows-titles').value = UILang === 'ru' ? 'ru+original' : 'original';
+    }
+
+    if (noShowSorting) {
+        $('#sort-shows').checked = false;
     }
 };
 
@@ -72,5 +76,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     showTitles.addEventListener('change', async () => {
         const displayShowsTitle = showTitles.value;
         await storage.saveOptions({ displayShowsTitle });
+    });
+
+    const sortShows = $('#sort-shows');
+    sortShows.addEventListener('change', async () => {
+        await storage.saveOptions({ noShowSorting: !sortShows.checked });
     });
 });

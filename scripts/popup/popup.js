@@ -282,6 +282,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             nav.navigate(nav.places.episodeList, { id });
         };
 
+        if (!options.noShowSorting) {
+            shows.sort((s1, s2) => Date.parse(s2.latestEpisode.airDateUTC) - Date.parse(s1.latestEpisode.airDateUTC));
+        }
+
         showList.append(...shows
             .map(show => renderShowRow(show, clickHandler)));
         return showListBlock;
