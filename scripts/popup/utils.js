@@ -6,7 +6,7 @@ export function getTitleOptions({ displayShowsTitle: t }) {
     const locales = ['ru'];
     let options = { showTwoTitles: false, title1: 'original', title2: 'ru' };
     if (!locales.includes(UILang) && !t) return options;
-    if (!t) return { ...options, title1: UILang, title2: 'original' };
+    if (!t) return { showTwoTitles: true, title1: UILang, title2: 'original' };
 
     const [title1, title2] = t.split('+');
     if (!title1) return options;

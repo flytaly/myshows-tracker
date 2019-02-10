@@ -35,6 +35,10 @@
     "message": "Настройки",
     "description": "Settings menu item"
   },
+  "nextEpisodeToWatch_title": {
+    "message": "Следующая непросмотренная серия",
+    "description": "Attribute title of an element with short name of the next unwatched episode"
+  },
   "unwatchedNumber_title": {
     "message": "Число непросмотренных серий",
     "description": "Attribute title of an element with number of unwatched episodes"
