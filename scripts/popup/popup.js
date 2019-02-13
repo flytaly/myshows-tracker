@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             nav.navigate(nav.places.episodeList, { id });
         };
 
-        if (!options.noShowSorting) {
+        if (options.showsWithNewEpAtTop) {
             shows.sort((s1, s2) => Date.parse(s2.latestEpisode.airDateUTC) - Date.parse(s1.latestEpisode.airDateUTC));
         }
 

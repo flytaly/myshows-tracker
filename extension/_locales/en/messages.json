@@ -116,7 +116,7 @@
     "description": "Setting: set format of the dates"
   },
   "settingDateFormatDefault": {
-    "message": "browser's default language",
+    "message": "browser's UI language",
     "description": "Setting: date format default option"
   },
   "settingDateExample": {

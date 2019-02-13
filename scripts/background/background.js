@@ -3,6 +3,7 @@ import state from './state';
 import storage from '../storage';
 import types from '../types';
 import app from './app';
+import setDefaultSettings from './set-default-settings';
 
 async function update() {
     try {
@@ -26,6 +27,11 @@ window.requestIdleCallback(async () => {
     }
 
     await update();
+});
+
+
+browser.runtime.onInstalled.addListener(async () => {
+    await setDefaultSettings();
 });
 
 browser.runtime.onConnect.addListener(async (port) => {
