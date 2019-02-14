@@ -8,7 +8,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'extension'),
-        filename: '[name]/bundle.js',
+        filename: 'bundles/[name].js',
     },
     mode: 'none',
     watchOptions: {

@@ -180,7 +180,7 @@
     "description": "Attribute label for display show's titles option optgroup"
   },
   "settingSortShows": {
-    "message": "Размещать сериалы с новыми эпизодами вверху",
+    "message": "Размещать сериалы с новыми эпизодами наверху",
     "description": "Setting: sort shows by latest episodes or not"
   },
   "settingExternalLinksLegend": {
@@ -200,7 +200,7 @@
     "description": "Attribute title for remove field button"
   },
   "settingExternalLinksAddField": {
-    "message": "+ добавить поле",
+    "message": "Добавить поле",
     "description": "Add a new filed button"
   },
   "noNewEpisodes": {

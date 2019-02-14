@@ -192,7 +192,7 @@
     "description": "Attribute title for remove field button"
   },
   "settingExternalLinksAddField": {
-    "message": "+ a field",
+    "message": "Add a field",
     "description": "Add a new filed button"
   },
   "noNewEpisodes": {
