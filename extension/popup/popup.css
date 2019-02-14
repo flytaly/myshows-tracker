@@ -208,8 +208,12 @@ a, a:visited {
     padding: 0.5rem;
 }
 
-#main-view .show-list li:nth-child(2n) {
+#main-view .show-list > li:nth-child(2n) {
     background-color: #EEEEEE;
+}
+
+#main-view .show-list > li:hover {
+   box-shadow: inset -1px -1px 1px 0px #CCCCCC, inset 1px 1px 1px 0px #CCCCCC;
 }
 
 #main-view .show-title {
@@ -234,6 +238,70 @@ a, a:visited {
     display: inline;
     font-size: 1.1rem;
     color: #A80303;
+}
+
+#main-view .external-block {
+    position: relative;
+}
+#main-view .show-list li .external {
+    display: none;
+    margin: 0;
+    border: none;
+    background: transparent;
+}
+
+#main-view .external-block.open .external,
+#main-view .show-list li:hover .external {
+    display: block;
+    padding: 0px 1rem 0px 2rem;
+    width: 1.6rem;
+    height: 1.6rem;
+    background: url(../images/external-link-alt.svg) center center no-repeat;
+    cursor: pointer;
+}
+
+#main-view ul.open-external-list {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    display: none;
+    list-style-type: none;
+    padding: 3px 0;
+    margin: 0;
+    z-index: 10;
+    background-color: #EDEEEE;
+    border-radius: 2px;
+    border: 1px solid #AAAAAA;
+    box-shadow: 0px 0px 5px 0px #AAAAAA;
+}
+
+#main-view .external-block.open ul.open-external-list {
+    display: block;
+    /* flex-direction: column; */
+}
+
+#main-view ul.open-external-list li{
+    padding: 0;
+    min-width: 15rem;
+}
+
+#main-view ul.open-external-list a {
+    display: block;
+    width: 100%;
+    font-size: 1.3rem;
+    color: black;
+    padding: 5px 1.3rem;
+    white-space: nowrap;
+}
+#main-view ul.open-external-list li:last-child a{
+    margin-top: 3px;
+    border-top: 1px solid #E5E5E5;
+}
+
+#main-view ul.open-external-list a:focus,
+#main-view ul.open-external-list a:hover {
+    color: white;
+    background-color: #AAAAAA;
 }
 
 #main-view .unwatched-ep {

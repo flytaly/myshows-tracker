@@ -39,6 +39,18 @@
     "message": "Next unwatched episode",
     "description": "Attribute title of an element with short name of the next unwatched episode"
   },
+  "externalSearch_title": {
+    "message": "Search the show on external websites",
+    "description": "Attribute title of a button that opens list with websites"
+  },
+  "externalSearchLink_title": {
+    "message": "Open the show on external website",
+    "description": "Attribute title of a link to external site"
+  },
+  "externalSearchAdd": {
+    "message": "Add a search...",
+    "description": "Open settings to add a new search"
+  },
   "unwatchedNumber_title": {
     "message": "Number of unwatched episodes",
     "description": "Attribute title of an element with number of unwatched episodes"
@@ -162,6 +174,26 @@
   "settingSortShows": {
     "message": "Place shows with new episodes at the top",
     "description": "Setting: sort shows by latest episodes or not"
+  },
+  "settingExternalLinksLegend": {
+    "message": "Search a show on external websites:",
+    "description": "Setting: search a show on external websites:"
+  },
+  "settingExternalLinksInputName_placeholder": {
+    "message": "Name",
+    "description": "Placeholder for input with name"
+  },
+  "settingExternalLinksInputUrl_placeholder": {
+    "message": "URL e.g. https://youtube.com/results?search_query=",
+    "description": "Placeholder for input with search url"
+  },
+  "settingExternalLinksRemoveField_title": {
+    "message": "Remove the field",
+    "description": "Attribute title for remove field button"
+  },
+  "settingExternalLinksAddField": {
+    "message": "+ a field",
+    "description": "Add a new filed button"
   },
   "noNewEpisodes": {
     "message": "No new episodes.",

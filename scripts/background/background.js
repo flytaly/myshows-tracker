@@ -3,7 +3,7 @@ import state from './state';
 import storage from '../storage';
 import types from '../types';
 import app from './app';
-import setDefaultSettings from './set-default-settings';
+import setDefaultSettings from '../set-default-settings';
 
 async function update() {
     try {

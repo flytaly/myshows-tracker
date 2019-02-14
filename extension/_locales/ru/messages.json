@@ -39,6 +39,18 @@
     "message": "Следующая непросмотренная серия",
     "description": "Attribute title of an element with short name of the next unwatched episode"
   },
+  "externalSearch_title": {
+    "message": "Поиск сериала на внешних сайтах",
+    "description": "Attribute title of an button that opens list with websites"
+  },
+  "externalSearchLink_title": {
+    "message": "Поиск сериала на сайте",
+    "description": "Attribute title of a link to external site"
+  },
+  "externalSearchAdd": {
+    "message": "Добавить поиск...",
+    "description": "Open settings to add a new search"
+  },
   "unwatchedNumber_title": {
     "message": "Число непросмотренных серий",
     "description": "Attribute title of an element with number of unwatched episodes"
@@ -170,6 +182,26 @@
   "settingSortShows": {
     "message": "Размещать сериалы с новыми эпизодами вверху",
     "description": "Setting: sort shows by latest episodes or not"
+  },
+  "settingExternalLinksLegend": {
+    "message": "Поиск сериала на внешних ресурсах",
+    "description": "Setting: search a show on external websites:"
+  },
+  "settingExternalLinksInputName_placeholder": {
+    "message": "Название",
+    "description": "Placeholder for input with name"
+  },
+  "settingExternalLinksInputUrl_placeholder": {
+    "message": "URL напр. https://youtube.com/results?search_query=",
+    "description": "Placeholder for input with search url"
+  },
+  "settingExternalLinksRemoveField_title": {
+    "message": "Удалить поле поиска",
+    "description": "Attribute title for remove field button"
+  },
+  "settingExternalLinksAddField": {
+    "message": "+ добавить поле",
+    "description": "Add a new filed button"
   },
   "noNewEpisodes": {
     "message": "Нет новых серий.",

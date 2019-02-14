@@ -35,6 +35,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         calendarRow: translateTemplate(getElem('calendar-row-tmp')),
         blankPage: translateTemplate(getElem('blank-page-tmp')),
         showListBlock: translateTemplate(getElem('show-list-block-tmp')),
+        openExternalList: translateTemplate(getElem('open-external-list-tmp')),
+        openExternalRow: translateTemplate(getElem('open-external-row-tmp')),
+        openExternalAddSearch: translateTemplate(getElem('open-external-add-search')),
     };
 
     const bgScriptPort = browser.runtime.connect();
@@ -80,7 +83,55 @@ document.addEventListener('DOMContentLoaded', async () => {
         ratingBlock.addEventListener('click', handler);
     }
 
+    function renderOpenExternalMenu(showTitle = '') {
+        const listBlock = templates.openExternalList.cloneNode(true);
+        const list = listBlock.querySelector('.open-external-list');
+
+        let externalLinks = [];
+        let externalLinksElements = [];
+        try {
+            externalLinks = JSON.parse(options.externalLinks);
+        } catch (e) {
+            externalLinks = [];
+        }
+        const addNewSearchElem = templates.openExternalAddSearch.cloneNode(true);
+        const addNewSearchLink = addNewSearchElem.querySelector('a');
+        addNewSearchLink.addEventListener('click', async (e) => {
+            e.preventDefault();
+            await browser.runtime.openOptionsPage();
+            window.close();
+        });
+
+        if (externalLinks && externalLinks.length) {
+            externalLinksElements = externalLinks.map(({ name, url }) => {
+                const listElem = templates.openExternalRow.cloneNode(true);
+                const link = listElem.querySelector('a');
+                link.href = `${url}${showTitle}`;
+                link.textContent = name || link.hostname;
+                return listElem;
+            });
+        }
+
+        externalLinksElements.push(addNewSearchElem);
+        list.append(...externalLinksElements);
+        return list;
+    }
+
     function renderShowRow(showRecord, onClick) {
+        const toggleExternalLinksMenu = (btn) => {
+            const container = btn.parentNode;
+            btn.addEventListener('click', () => {
+                container.classList.toggle('open');
+            });
+            window.addEventListener('click', (event) => {
+                if (event.target !== btn) {
+                    if (container.classList.contains('open')) {
+                        container.classList.remove('open');
+                    }
+                }
+            });
+        };
+
         const { unwatchedEpisodes, show, nextEpisode } = showRecord;
         const listElem = templates.showRow.cloneNode(true);
         const titleLink = listElem.querySelector('.show-title a');
@@ -88,6 +139,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const showTitle2 = titleLink.querySelector('.show-title-2');
         const nextEpisodeElem = titleLink.querySelector('.next-episode');
         const unwatchedElem = listElem.querySelector('.unwatched-ep');
+
+        const externalBlock = listElem.querySelector('.external-block');
+        const externalButton = listElem.querySelector('.external');
+        externalBlock.appendChild(renderOpenExternalMenu(show.titleOriginal));
+        toggleExternalLinksMenu(externalButton);
+
         titleLink.dataset.id = show.id;
         titleLink.title = show.titleOriginal;
         titleLink.href = `https://myshows.me/view/${show.id}/`;
@@ -415,13 +472,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         loginName.addEventListener('click', () => menu.classList.toggle('open'));
 
-        window.onclick = (event) => {
+        window.addEventListener('click', (event) => {
             if (event.target !== loginName) {
                 if (menu.classList.contains('open')) {
                     menu.classList.remove('open');
                 }
             }
-        };
+        });
     };
 
     function initTabs() {
