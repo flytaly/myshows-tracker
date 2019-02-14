@@ -17,6 +17,9 @@ of TV shows you watch.
 - `npm run build`
   - create an extension package from source
 
+The extension uses [MyShows JSON-RPC API](https://api.myshows.me/shared/doc/).
+To make it work you need credentials and then add them in `/scripts/config.js`;
+
 ## License
 
 The code of the extension is licensed under the [MPL-2.0](LICENSE). [Font Awesome](https://fontawesome.com) icons is
