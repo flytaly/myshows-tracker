@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return list;
     }
 
-    function renderShowRow(showRecord, onClick) {
+    function renderShowRow(showRecord, onClick, withOpenedMenu = false) {
         const toggleExternalLinksMenu = (btn) => {
             const container = btn.parentNode;
             btn.addEventListener('click', () => {
@@ -144,6 +144,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const externalButton = listElem.querySelector('.external');
         externalBlock.appendChild(renderOpenExternalMenu(show.titleOriginal));
         toggleExternalLinksMenu(externalButton);
+        if (withOpenedMenu) { externalBlock.classList.add('open'); }
 
         titleLink.dataset.id = show.id;
         titleLink.title = show.titleOriginal;
@@ -329,7 +330,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
     }
 
-    function renderShowListBlock(shows, nav) {
+    function renderShowListBlock(shows, nav, showWithOpenedMenu) {
         const showListBlock = templates.showListBlock.cloneNode(true);
         const showList = showListBlock.querySelector('.show-list');
 
@@ -344,7 +345,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         showList.append(...shows
-            .map(show => renderShowRow(show, clickHandler)));
+            .map((show) => {
+                const openMenu = showWithOpenedMenu && (Number(show.show.id) === Number(showWithOpenedMenu));
+                return renderShowRow(show, clickHandler, openMenu);
+            }));
         return showListBlock;
     }
 
@@ -365,7 +369,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             upcomingList: 'upcomingList',
             current: 'showList',
         },
-        async navigate(location, params) {
+        async navigate(location, params = {}) {
             switch (location) {
                 case this.places.showList: {
                     this.places.current = location;
@@ -386,7 +390,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     if (!showsWithEp || !showsWithEp.length) {
                         showContainer.appendChild(templates.blankPage.cloneNode(true));
                     } else {
-                        showContainer.appendChild(renderShowListBlock(showsWithEp, nav));
+                        showContainer.appendChild(renderShowListBlock(showsWithEp, nav, params.showWithOpenedMenu));
                     }
                     break;
                 }
@@ -413,7 +417,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 case this.places.episodeList: {
                     this.places.current = location;
                     // save showId in the object to retrieve it after reloading
-                    this.showId = params ? params.id : this.showId;
+                    this.showId = params.id || this.showId;
                     const container = episodeView.querySelector('.episodes-container');
                     const showTitle = episodeView.querySelector('.show-title a');
                     const title1 = showTitle.querySelector('.show-title-1');
@@ -518,8 +522,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 case types.INFO_UPDATED: {
                     // Upon receiving a new information, update the current view
                     // but not refresh episode list because a user might rate an episode in the meantime
+                    // if there is show with opened search menu, pass id of the show to the next render
+                    const openedSearch = document.querySelector('.external-block.open');
+                    const showElement = openedSearch && openedSearch.previousElementSibling;
+                    const showId = showElement && showElement.querySelector('a').dataset.id;
                     updateShowsInfo(await storage.getWatchingShows());
-                    if (nav.places.current !== nav.places.episodeList) nav.navigate(nav.places.current);
+                    if (nav.places.current !== nav.places.episodeList) {
+                        nav.navigate(nav.places.current, showId ? { showWithOpenedMenu: showId } : {});
+                    }
                     break;
                 }
                 case types.LOADING_START:
