@@ -5,19 +5,7 @@ import state from './state';
 import { clientId, clientSecret, redirectUri } from '../config';
 import { AuthError } from './errors';
 import rpcHandler from './rpc-handler'; // eslint-disable-line import/no-cycle
-
-const mapObjToQueryStr = params => Object.entries(params).map(pair => pair.join('=')).join('&');
-
-/** Filter properties in given object */
-const filterShowProperties = (show) => {
-    const props = ['id', 'image', 'title', 'titleOriginal'];
-    return Object.keys(show)
-        .filter(prop => props.includes(prop))
-        .reduce((acc, prop) => {
-            acc[prop] = show[prop];
-            return acc;
-        }, {});
-};
+import { mapObjToQueryStr, filterShowProperties, composeExtensionTitle } from './helpers';
 
 const app = {
     baseURL: 'https://myshows.me/oauth',
@@ -127,15 +115,12 @@ const app = {
     // Initiate authentication next time user click badge.
     // Returns promise that will be fulfilled only after a successful login
     setAuth() {
-        browser.browserAction.setPopup({ popup: '' });
-        browser.browserAction.setBadgeBackgroundColor({ color: 'red' });
-        browser.browserAction.setBadgeText({ text: '...' });
+        state.needAuth = true;
         return new Promise((resolve) => {
             const listener = async () => {
                 try {
                     await this.login();
-                    browser.browserAction.setPopup({ popup: browser.extension.getURL('popup/popup.html') });
-                    browser.browserAction.setBadgeText({ text: '' });
+                    state.needAuth = false;
                     browser.browserAction.onClicked.removeListener(listener);
                     resolve();
                 } catch (e) {
@@ -211,6 +196,7 @@ const app = {
                 });
             });
 
+            state.extensionTitle = composeExtensionTitle(watchingShows);
             state.totalEpisodes = watchingShows.reduce((acc, { unwatchedEpisodes }) => acc + unwatchedEpisodes, 0);
 
             await Promise.all([

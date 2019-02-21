@@ -30,7 +30,7 @@
   "browser_action": {
     "default_title": "__MSG_extension_title__",
     "default_icon": "/images/icon.svg",
-    "default_popup": "popup/popup.html",
+    "default_popup": "popup.html",
     "browser_style": true
   },
   "options_ui": {
