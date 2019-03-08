@@ -140,13 +140,16 @@ const app = {
 
         return shows.reduce((acc, show) => {
             const { episodes, id: showId } = show;
-
-            acc[showId] = episodes.filter(({ id, episodeNumber }) => {
-                if (!watchedEps[showId]) return true;
-                // TODO: add option to not ignore special episodes with 0 episodeNumber
-                return !watchedEps[showId].some(ep => ep.id === id) && episodeNumber !== 0;
-            });
-
+            if (!episodes || !episodes.length) {
+                // There can be some (upcoming mostly) shows that don't have episodes yet
+                acc[showId] = [];
+            } else {
+                acc[showId] = episodes.filter(({ id, episodeNumber }) => {
+                    if (!watchedEps[showId]) return true;
+                    // TODO: add option to not ignore special episodes with 0 episodeNumber
+                    return !watchedEps[showId].some(ep => ep.id === id) && episodeNumber !== 0;
+                });
+            }
             return acc;
         }, {});
     },

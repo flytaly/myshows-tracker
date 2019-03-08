@@ -11,7 +11,7 @@ async function update() {
         state.lastUpdate = new Date();
         browser.alarms.create(types.ALARM_UPDATE, { delayInMinutes: 30 });
     } catch (e) {
-        console.error(`${e.name}: ${e.message}`);
+        console.error(`${e.name}: ${e.message} \n ${e.stack}`);
         if (e.name === 'AuthError' && e.needAuth) {
             await app.setAuth();
         }

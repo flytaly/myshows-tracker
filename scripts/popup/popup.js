@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const bgScriptPort = browser.runtime.connect();
     const showsInfo = {}; // show's info for easy access to it in the episode view
-    const updateShowsInfo = (shows) => {
+    const updateShowsInfo = (shows = []) => {
         shows.forEach(({
             show: {
                 id, image, title, titleOriginal,
