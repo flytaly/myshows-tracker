@@ -16,7 +16,8 @@ export const filterShowProperties = (show) => {
 
 export const composeExtensionTitle = shows => shows.reduce((acc, show) => {
     if (!show.unwatchedEpisodes) return acc;
+    const { nextEpisode = {} } = show;
     const prevText = acc ? `${acc}\n` : '';
-    const newLine = `${show.show.titleOriginal} [${show.unwatchedEpisodes}]`;
+    const newLine = `${show.show.titleOriginal} [${show.unwatchedEpisodes}] - ${nextEpisode.shortName}`;
     return `${prevText}${newLine}`;
 }, '');
