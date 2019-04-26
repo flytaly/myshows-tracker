@@ -253,6 +253,7 @@ const app = {
             await Promise.all([
                 storage.saveEpisodesToWatch(episodes),
                 storage.saveWatchingShows(shows)]);
+            state.extensionTitle = composeExtensionTitle(shows);
         } catch (e) {
             console.error(`Error occurred during episode rating. ${e.name}: ${e.message}`);
             if (retryIfError) this.rateEpisodesAgain.push({ episodeId, rating, showId });
