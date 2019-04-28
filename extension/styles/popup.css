@@ -230,14 +230,21 @@ a, a:visited {
     color: #676767;
 }
 
+#main-view .show-list .next-episode-date,
 #main-view .show-list .next-episode{
     display: none;
 }
 
+#main-view .show-list li:hover .next-episode-date,
 #main-view .show-list li:hover .next-episode {
     display: inline;
     font-size: 1.1rem;
     color: #A80303;
+}
+
+#main-view .show-list li:hover .next-episode-date{
+    color: #676767;
+    white-space: nowrap;
 }
 
 #main-view .external-block {

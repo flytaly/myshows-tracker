@@ -138,6 +138,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const showTitle1 = titleLink.querySelector('.show-title-1');
         const showTitle2 = titleLink.querySelector('.show-title-2');
         const nextEpisodeElem = titleLink.querySelector('.next-episode');
+        const nextEpisodeDateElem = titleLink.querySelector('.next-episode-date');
         const unwatchedElem = listElem.querySelector('.unwatched-ep');
 
         const externalBlock = listElem.querySelector('.external-block');
@@ -156,6 +157,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             showTitle2.textContent = title2 === 'original' ? show.titleOriginal : show.title;
         }
         nextEpisodeElem.textContent = nextEpisode.shortName;
+        const date = nextEpisode.airDateUTC ? new Date(nextEpisode.airDateUTC) : null;
+        if (date) {
+            nextEpisodeDateElem.textContent = '(' + date.toLocaleDateString(dateLocale) + ')';
+            nextEpisodeDateElem.title = date.toLocaleString(dateLocale);
+        }
         titleLink.addEventListener('click', onClick);
 
         if (unwatchedEpisodes > 0) {
