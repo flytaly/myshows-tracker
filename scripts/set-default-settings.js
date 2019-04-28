@@ -10,6 +10,7 @@ const defaultOptions = {
     fSizeDiff: '0',
     showsWithNewEpAtTop: true,
     externalLinks: JSON.stringify(links),
+    alwaysShowNextEpisode: false,
 };
 
 export default async () => {

@@ -159,8 +159,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         nextEpisodeElem.textContent = nextEpisode.shortName;
         const date = nextEpisode.airDateUTC ? new Date(nextEpisode.airDateUTC) : null;
         if (date) {
-            nextEpisodeDateElem.textContent = '(' + date.toLocaleDateString(dateLocale) + ')';
+            nextEpisodeDateElem.textContent = `(${date.toLocaleDateString(dateLocale)})`;
             nextEpisodeDateElem.title = date.toLocaleString(dateLocale);
+        }
+        if (options.alwaysShowNextEpisode) {
+            nextEpisodeElem.classList.add('no-hide');
+            nextEpisodeDateElem.classList.add('no-hide');
         }
         titleLink.addEventListener('click', onClick);
 

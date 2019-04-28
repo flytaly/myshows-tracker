@@ -24,5 +24,6 @@
     "eslintIgnore": [
         "l10n.js",
         "bundle.js"
-    ]
+    ],
+    "dependencies": {}
 }
