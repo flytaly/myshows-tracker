@@ -6,6 +6,7 @@ import app from './app';
 import setDefaultSettings from '../set-default-settings';
 
 async function update() {
+    state.updating = true;
     try {
         await app.updateData();
         state.lastUpdate = new Date();
@@ -17,6 +18,7 @@ async function update() {
         }
         browser.alarms.create(types.ALARM_UPDATE, { delayInMinutes: 0.5 });
     }
+    state.updating = false;
 }
 
 window.requestIdleCallback(async () => {
