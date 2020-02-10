@@ -147,7 +147,7 @@ const app = {
                 acc[showId] = episodes.filter(({ id, episodeNumber }) => {
                     if (!watchedEps[showId]) return true;
                     // TODO: add option to not ignore special episodes with 0 episodeNumber
-                    return !watchedEps[showId].some(ep => ep.id === id) && episodeNumber !== 0;
+                    return !watchedEps[showId].some((ep) => ep.id === id) && episodeNumber !== 0;
                 });
             }
             return acc;
@@ -237,9 +237,9 @@ const app = {
                 storage.getEpisodes(),
             ]);
 
-            if (!episodes[showId].some(ep => ep.id === episodeId)) return; // already deleted from storage
+            if (!episodes[showId].some((ep) => ep.id === episodeId)) return; // already deleted from storage
 
-            episodes = { ...episodes, [showId]: episodes[showId].filter(e => e.id !== episodeId) };
+            episodes = { ...episodes, [showId]: episodes[showId].filter((e) => e.id !== episodeId) };
             shows = shows.map((show) => {
                 const len = episodes[showId].length;
                 return (show.show.id === showId ? ({

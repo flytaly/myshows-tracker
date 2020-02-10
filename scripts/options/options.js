@@ -117,7 +117,7 @@ const restoreData = async () => {
     } finally {
         links = links && links.length ? links : [];
     }
-    const linkElements = links.map(linkObj => createUrlField(externalLinksTmp, linkObj));
+    const linkElements = links.map((linkObj) => createUrlField(externalLinksTmp, linkObj));
     linkElements.push(createUrlField(externalLinksTmp));
     externalLinksList.append(...linkElements);
 

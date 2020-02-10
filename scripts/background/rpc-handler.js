@@ -101,7 +101,7 @@ const rpcHandler = {
      * Return user information about episodes to given show.
      * @param {array} showIds */
     async profileEpisodes(showIds) {
-        return this.batchRequest(showIds.map(showId => ({
+        return this.batchRequest(showIds.map((showId) => ({
             method: 'profile.Episodes',
             params: { showId },
             id: showId,
@@ -113,7 +113,7 @@ const rpcHandler = {
      * Return information about shows.
      * @param {array} showIds */
     async showsGetById(showIds, withEpisodes = true) {
-        return this.batchRequest(showIds.map(showId => ({
+        return this.batchRequest(showIds.map((showId) => ({
             method: 'shows.GetById',
             params: { showId, withEpisodes },
             id: showId,

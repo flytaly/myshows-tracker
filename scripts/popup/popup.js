@@ -18,7 +18,7 @@ const translateTemplate = ({ content }) => { translateElement(content); return c
 document.addEventListener('DOMContentLoaded', async () => {
     const options = await initOptions;
     // If browser's standard size is 16px then +2 diff means 12px, -2 means 8px ...
-    if (options.fSizeDiff) document.documentElement.style.fontSize = `${100 / 16 * (10 + Number(options.fSizeDiff))}%`;
+    if (options.fSizeDiff) document.documentElement.style.fontSize = `${(100 / 16) * (10 + Number(options.fSizeDiff))}%`;
     const getElem = document.getElementById.bind(document);
     const mainView = getElem('main-view');
     const episodeView = getElem('episode-view');
@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const calendarList = calendarElem.querySelector('ul.calendar');
             name.textContent = `${monthName} ${year === currentYear ? '' : year}`;
             totalNumber.textContent = getPluralForm('episodesNumber', episodes.length); // `${episodes.length} episodes`
-            calendarList.append(...episodes.map(ep => renderCalendarRow(ep)));
+            calendarList.append(...episodes.map((ep) => renderCalendarRow(ep)));
             return calendarElem;
         });
     }
@@ -335,7 +335,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
 
                 const seasonEps = groupedBySeasons[season];
-                episodeList.append(...seasonEps.map(ep => renderEpisodeRow(ep)));
+                episodeList.append(...seasonEps.map((ep) => renderEpisodeRow(ep)));
                 return seasonBlock;
             });
     }
@@ -395,7 +395,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     updateShowsInfo(shows);
 
-                    const showsWithEp = shows ? shows.filter(show => show.unwatchedEpisodes) : null;
+                    const showsWithEp = shows ? shows.filter((show) => show.unwatchedEpisodes) : null;
 
                     if (!showsWithEp || !showsWithEp.length) {
                         showContainer.appendChild(templates.blankPage.cloneNode(true));
@@ -583,7 +583,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     init()
-        .catch(e => console.error(e));
+        .catch((e) => console.error(e));
 }, {
     capture: true,
     passive: true,
