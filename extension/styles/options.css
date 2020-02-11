@@ -1,3 +1,29 @@
+@media (prefers-color-scheme: dark) {
+    html {
+        --bgColor: #202023;
+        --fontColor: #f9f9fa;
+    }
+
+    body, select, option, [label],
+    .browser-style > input[type="url"],
+    .browser-style > input[type="text"] {
+         background-color: var(--bgColor); color: var(--fontColor);
+    }
+
+    button:not(.default) {
+        background-color: var(--bgColor);
+        color: var(--fontColor);
+        border-color: #737373;
+    }
+    button:hover,
+    button:focus {
+        border-color: #fafafb;
+    }
+    button:active {
+        background-color: #737373;
+    }
+}
+
 .font-size {
     font-family: "PT Sans", "Trebuchet MS", Arial, sans-serif;
     margin-left: 0.5rem;
@@ -35,6 +61,7 @@
     margin: 0;
     width: 100%;
 }
+
 .external-search input.name{
     width: 20%;
 }
