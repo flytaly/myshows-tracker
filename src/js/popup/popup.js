@@ -6,6 +6,7 @@ import { getTitleOptions, getPluralForm } from './utils.js';
 import templates from './templates.js';
 import getOptions from './options.js';
 import ExternalSearchList from './components/external-search-list.js';
+import { toggleClassOnClick } from './toggle-class.js';
 
 const runExtension = async () => {
     const options = await getOptions();
@@ -65,20 +66,6 @@ const runExtension = async () => {
     }
 
     function renderShowRow(showRecord, onClick, withOpenedMenu = false) {
-        const toggleExternalLinksMenu = (btn) => {
-            const container = btn.parentNode;
-            btn.addEventListener('click', () => {
-                container.classList.toggle('open');
-            });
-            window.addEventListener('click', (event) => {
-                if (event.target !== btn) {
-                    if (container.classList.contains('open')) {
-                        container.classList.remove('open');
-                    }
-                }
-            });
-        };
-
         const { unwatchedEpisodes, show, nextEpisode } = showRecord;
         const listElem = templates.showRow.cloneNode(true);
         const titleLink = listElem.querySelector('.show-title a');
@@ -97,7 +84,7 @@ const runExtension = async () => {
             externalLinks = [];
         }
         const externalSearchList = new ExternalSearchList(show.titleOriginal, externalLinks);
-        toggleExternalLinksMenu(externalButton);
+        toggleClassOnClick(externalButton, externalBlock);
         externalBlock.appendChild(externalSearchList);
         if (withOpenedMenu) { externalBlock.classList.add('open'); }
 
@@ -437,16 +424,7 @@ const runExtension = async () => {
             bgScriptPort.postMessage({ type: types.SIGN_OUT });
             window.close();
         });
-
-        loginName.addEventListener('click', () => menu.classList.toggle('open'));
-
-        window.addEventListener('click', (event) => {
-            if (event.target !== loginName) {
-                if (menu.classList.contains('open')) {
-                    menu.classList.remove('open');
-                }
-            }
-        });
+        toggleClassOnClick(loginName, menu);
     };
 
     function initTabs() {
