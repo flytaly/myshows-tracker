@@ -1,0 +1,282 @@
+.episode-view .show-title {
+    padding: 1rem 1rem;
+    background: rgba(0, 0, 0, 0.4);
+    width: 100%;
+    color: white;
+    margin: 0;
+}
+
+.episode-view .show-title a,
+.episode-view .show-title a:visited {
+    color: white;
+}
+
+.episode-view .show-title a .show-title-1 {
+    color: white;
+    font-size: 1.9rem;
+    font-weight: bold;
+}
+
+.episode-view .show-title a .show-title-2 {
+    color: #e8e8e8;
+    font-size: 1.3rem;
+}
+
+.episode-view .episodes-container {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.season-header {
+    position: relative;
+    padding: 1rem;
+    margin: 0 1rem;
+    border-bottom: 1px dashed #999999;
+}
+
+    .season-header:hover {
+        border-bottom: 1px solid #999999;
+        cursor: pointer;
+    }
+
+    .season-header:after {
+        content: "";
+        position: absolute;
+        top: calc(50% - 0.2rem);
+        right: 1rem;
+        width: 0.4rem;
+        height: 0.4rem;
+        border: solid #999;
+        border-width: 0 3px 3px 0;
+        transform: rotate(-135deg);
+        transition: 0.25s;
+    }
+
+    .season-header.expanded:after {
+        transform: rotate(45deg);
+    }
+
+    .season-header .season-title {
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+
+    .season-header .episodes-in-season {
+        color: #676767;
+        font-size: 1.4rem;
+        margin-left: 1rem;
+    }
+
+ul.episode-list {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    margin: 0;
+    padding: 1rem 0;
+    font-size: 1.4rem;
+}
+
+    ul.episode-list[hidden] {
+        display: none;
+    }
+
+    .episode-list li {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        transition: opacity 0.4s ease-out;
+    }
+
+    .episode-list li:hover {
+        transition: opacity 0s;
+    }
+
+    .episode-list li:nth-child(2n) {
+        background: #EEEEEE;
+    }
+
+    .episode-list li > div {
+        margin-left: 1rem;
+    }
+
+    .episode-list li > div:last-child {
+        margin-right: 1rem;
+    }
+
+    .episode-list li.checked {
+        background-color: #dcffe0;
+    }
+
+    .episode-list  li.remove {
+        opacity: 0;
+    }
+
+    .ep-info {
+        flex: 1;
+        padding: 0.5rem 0;
+    }
+
+    .ep-title a {
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
+
+    .ep-number {
+        display: inline-block;
+        color: #cc0000;
+        font-size: 1.2rem;
+    }
+
+    .ep-date {
+        display: inline-block;
+        font-size: 1.2rem;
+    }
+
+    .ep-comments {
+        background-color: #999999;
+        position: relative;
+        color: white;
+        font-size: 1rem;
+        padding: 3px;
+        min-width: 2rem;
+        text-align: center;
+    }
+
+    .ep-comments:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 100%;
+        width: 0;
+        height: 0;
+        border: 2px solid transparent;
+        border-top-color: #999999;
+        border-right-color: #999999;
+    }
+
+    .ep-comments a,
+    .ep-comments a:visited {
+        color: white;
+    }
+
+.rating-block {
+    position: relative;
+    height: 3.2rem;
+    padding: 0.5rem;
+}
+
+    .rating-block:hover {
+        background-color: white;
+        box-shadow: -1px -1px 0px 0px #CCCCCC, 1px 1px 0px 0px #CCCCCC;
+    }
+
+    .ep-rating {
+        position: absolute;
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        top: 0;
+        bottom: 0;
+        left: 100%;
+        height: 100%;
+        /*height: 3.2rem;*/
+
+        max-width: 0;
+
+        overflow: hidden;
+        background-color: white;
+        white-space: nowrap;
+        z-index: 10;
+        transition: max-width 0.2s ease-out;
+    }
+
+    .rating-block:hover .ep-rating {
+        max-width: 14rem;
+        box-shadow: 1px 1px 0px 0px #CCCCCC, 0px -1px 0px 0px #CCCCCC;
+    }
+
+    .ep-rating a {
+        height: 2.2rem;
+        margin-right: 0.2rem;
+    }
+
+    .ep-rating a.rating-star:active svg {
+        transform: scale(0.90);
+    }
+
+    .ep-rating a.rating-star svg {
+        height: 100%;
+        width: auto;
+        fill: #CCCCCC;
+        pointer-events: none;
+    }
+
+    .ep-rating > a.rating-star.checked > svg {
+        fill: #cc0000;
+    }
+
+    .ep-check {
+        display: block;
+        position: relative;
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 50%;
+        border: 1px solid black;
+    }
+
+    .ep-check:active:after {
+        transform: scale(0.90);
+    }
+
+    .ep-check:hover {
+        box-shadow: 0 0 2px #cc0000;
+        border: 1px solid #cc0000;
+    }
+
+    .ep-rating:hover + .ep-check,
+    .ep-check.checked {
+        border: 1px solid #cc0000;
+    }
+
+    .ep-rating:hover + .ep-check:after,
+    .ep-check.checked:after,
+    .ep-check:hover:after {
+        content: "";
+        position: absolute;
+        background: url(../../images/check.svg) center center no-repeat;
+        background-size: 1.5rem 1.5rem;
+        width: 2.2rem;
+        height: 2.2rem;
+        top: -1px;
+        left: -1px;
+    }
+
+    .ep-rating > a:nth-child(1):hover > svg,
+    .ep-rating > a:nth-child(1):hover  + * > svg,
+    .ep-rating > a:nth-child(1):hover  + * + * > svg,
+    .ep-rating > a:nth-child(1):hover  + * + * + * > svg,
+    .ep-rating > a:nth-child(1):hover  + * + * + * + *  >svg {
+        fill: #cc0000;
+    }
+
+    .ep-rating > a:nth-child(2):hover > svg,
+    .ep-rating > a:nth-child(2):hover  + * > svg,
+    .ep-rating > a:nth-child(2):hover  + * + * > svg,
+    .ep-rating > a:nth-child(2):hover  + * + * + * > svg {
+        fill: #cc0000;
+    }
+
+    .ep-rating > a:nth-child(3):hover > svg,
+    .ep-rating > a:nth-child(3):hover  + * > svg,
+    .ep-rating > a:nth-child(3):hover  + * + * > svg {
+        fill: #cc0000;
+    }
+
+    .ep-rating > a:nth-child(4):hover > svg,
+    .ep-rating > a:nth-child(4):hover  + * > svg {
+        fill: #cc0000;
+    }
+
+    .ep-rating > a:nth-child(5):hover > svg {
+        fill: #cc0000;
+    }

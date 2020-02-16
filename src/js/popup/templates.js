@@ -12,7 +12,6 @@ const templates = {
     calendarRow: translateTemplate(getElem('calendar-row-tmp')),
     blankPage: translateTemplate(getElem('blank-page-tmp')),
     showListBlock: translateTemplate(getElem('show-list-block-tmp')),
-    openExternalList: translateTemplate(getElem('open-external-list-tmp')),
     openExternalRow: translateTemplate(getElem('open-external-row-tmp')),
     openExternalAddSearch: translateTemplate(getElem('open-external-add-search')),
 };

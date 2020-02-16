@@ -4,16 +4,13 @@ import storage from '../storage.js';
 import UILang from './ui-language.js';
 import { getTitleOptions, getPluralForm } from './utils.js';
 import templates from './templates.js';
-
-let dateLocale = UILang;
-const initOptions = (async () => {
-    const res = await storage.getOptions();
-    dateLocale = res.dateLocale ? res.dateLocale : UILang;
-    return res;
-})();
+import getOptions from './options.js';
+import ExternalSearchList from './components/external-search-list.js';
 
 const runExtension = async () => {
-    const options = await initOptions;
+    const options = await getOptions();
+    const dateLocale = options.dateLocale ? options.dateLocale : UILang;
+
     // If browser's standard size is 16px then +2 diff means 12px, -2 means 8px ...
     if (options.fSizeDiff) document.documentElement.style.fontSize = `${(100 / 16) * (10 + Number(options.fSizeDiff))}%`;
     const getElem = document.getElementById.bind(document);
@@ -67,40 +64,6 @@ const runExtension = async () => {
         ratingBlock.addEventListener('click', handler);
     }
 
-    function renderOpenExternalMenu(showTitle = '') {
-        const listBlock = templates.openExternalList.cloneNode(true);
-        const list = listBlock.querySelector('.open-external-list');
-
-        let externalLinks = [];
-        let externalLinksElements = [];
-        try {
-            externalLinks = JSON.parse(options.externalLinks);
-        } catch (e) {
-            externalLinks = [];
-        }
-        const addNewSearchElem = templates.openExternalAddSearch.cloneNode(true);
-        const addNewSearchLink = addNewSearchElem.querySelector('a');
-        addNewSearchLink.addEventListener('click', async (e) => {
-            e.preventDefault();
-            await browser.runtime.openOptionsPage();
-            window.close();
-        });
-
-        if (externalLinks && externalLinks.length) {
-            externalLinksElements = externalLinks.map(({ name, url }) => {
-                const listElem = templates.openExternalRow.cloneNode(true);
-                const link = listElem.querySelector('a');
-                link.href = `${url}${showTitle}`;
-                link.textContent = name || link.hostname;
-                return listElem;
-            });
-        }
-
-        externalLinksElements.push(addNewSearchElem);
-        list.append(...externalLinksElements);
-        return list;
-    }
-
     function renderShowRow(showRecord, onClick, withOpenedMenu = false) {
         const toggleExternalLinksMenu = (btn) => {
             const container = btn.parentNode;
@@ -126,9 +89,16 @@ const runExtension = async () => {
         const unwatchedElem = listElem.querySelector('.unwatched-ep');
 
         const externalBlock = listElem.querySelector('.external-block');
-        const externalButton = listElem.querySelector('.external');
-        externalBlock.appendChild(renderOpenExternalMenu(show.titleOriginal));
+        const externalButton = listElem.querySelector('button');
+        let externalLinks = [];
+        try {
+            externalLinks = JSON.parse(options.externalLinks);
+        } catch (e) {
+            externalLinks = [];
+        }
+        const externalSearchList = new ExternalSearchList(show.titleOriginal, externalLinks);
         toggleExternalLinksMenu(externalButton);
+        externalBlock.appendChild(externalSearchList);
         if (withOpenedMenu) { externalBlock.classList.add('open'); }
 
         titleLink.dataset.id = show.id;
