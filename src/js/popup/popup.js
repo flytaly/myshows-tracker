@@ -5,8 +5,8 @@ import UILang from './ui-language.js';
 import { getTitleOptions, getPluralForm } from './utils.js';
 import templates from './templates.js';
 import getOptions from './options.js';
-import ExternalSearchList from './components/external-search-list.js';
 import { toggleClassOnClick } from './toggle-class.js';
+import ShowList from './components/show-list.js';
 
 const runExtension = async () => {
     const options = await getOptions();
@@ -63,60 +63,6 @@ const runExtension = async () => {
         };
 
         ratingBlock.addEventListener('click', handler);
-    }
-
-    function renderShowRow(showRecord, onClick, withOpenedMenu = false) {
-        const { unwatchedEpisodes, show, nextEpisode } = showRecord;
-        const listElem = templates.showRow.cloneNode(true);
-        const titleLink = listElem.querySelector('.show-title a');
-        const showTitle1 = titleLink.querySelector('.show-title-1');
-        const showTitle2 = titleLink.querySelector('.show-title-2');
-        const nextEpisodeElem = titleLink.querySelector('.next-episode');
-        const nextEpisodeDateElem = titleLink.querySelector('.next-episode-date');
-        const unwatchedElem = listElem.querySelector('.unwatched-ep');
-
-        const externalBlock = listElem.querySelector('.external-block');
-        const externalButton = listElem.querySelector('button');
-        let externalLinks = [];
-        try {
-            externalLinks = JSON.parse(options.externalLinks);
-        } catch (e) {
-            externalLinks = [];
-        }
-        const externalSearchList = new ExternalSearchList(show.titleOriginal, externalLinks);
-        toggleClassOnClick(externalButton, externalBlock);
-        externalBlock.appendChild(externalSearchList);
-        if (withOpenedMenu) { externalBlock.classList.add('open'); }
-
-        titleLink.dataset.id = show.id;
-        titleLink.title = show.titleOriginal;
-        titleLink.href = `https://myshows.me/view/${show.id}/`;
-
-        const { showTwoTitles, title1, title2 } = titleOptions;
-        showTitle1.textContent = title1 === 'original' ? show.titleOriginal : show.title;
-        if (showTwoTitles) {
-            showTitle2.textContent = title2 === 'original' ? show.titleOriginal : show.title;
-        }
-        nextEpisodeElem.textContent = nextEpisode.shortName;
-        const date = nextEpisode.airDateUTC ? new Date(nextEpisode.airDateUTC) : null;
-        if (date) {
-            nextEpisodeDateElem.textContent = `(${date.toLocaleDateString(dateLocale)})`;
-            nextEpisodeDateElem.title = date.toLocaleString(dateLocale);
-        }
-        if (options.alwaysShowNextEpisode) {
-            nextEpisodeElem.classList.add('no-hide');
-            nextEpisodeDateElem.classList.add('no-hide');
-        }
-        titleLink.addEventListener('click', onClick);
-
-        if (unwatchedEpisodes > 0) {
-            unwatchedElem.hidden = false;
-            unwatchedElem.dataset.id = show.id;
-            unwatchedElem.textContent = unwatchedEpisodes;
-            unwatchedElem.addEventListener('click', onClick);
-        }
-
-        return listElem;
     }
 
     function renderCalendarRow({
@@ -281,26 +227,10 @@ const runExtension = async () => {
             });
     }
 
-    function renderShowListBlock(shows, nav, showWithOpenedMenu) {
-        const showListBlock = templates.showListBlock.cloneNode(true);
-        const showList = showListBlock.querySelector('.show-list');
-
-        const clickHandler = (e) => {
-            const { id } = e.currentTarget.dataset;
-            e.preventDefault();
-            nav.navigate(nav.places.episodeList, { id });
-        };
-
-        if (options.showsWithNewEpAtTop) {
-            shows.sort((s1, s2) => Date.parse(s2.latestEpisode.airDateUTC) - Date.parse(s1.latestEpisode.airDateUTC));
-        }
-
-        showList.append(...shows
-            .map((show) => {
-                const openMenu = showWithOpenedMenu && (Number(show.show.id) === Number(showWithOpenedMenu));
-                return renderShowRow(show, clickHandler, openMenu);
-            }));
-        return showListBlock;
+    function renderShowList(shows, nav, showWithOpenedMenu) {
+        const showList = new ShowList(nav, options, dateLocale);
+        showList.setRows(shows, showWithOpenedMenu);
+        return showList;
     }
 
     const toggleHidden = (toHide, toShow) => {
@@ -341,7 +271,7 @@ const runExtension = async () => {
                     if (!showsWithEp || !showsWithEp.length) {
                         showContainer.appendChild(templates.blankPage.cloneNode(true));
                     } else {
-                        showContainer.appendChild(renderShowListBlock(showsWithEp, nav, params.showWithOpenedMenu));
+                        showContainer.appendChild(renderShowList(showsWithEp, nav, params.showWithOpenedMenu));
                     }
                     break;
                 }
