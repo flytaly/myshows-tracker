@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import types from '../types.js';
 import storage from '../storage.js';
 import UILang from './ui-language.js';
@@ -7,6 +6,7 @@ import templates from './templates.js';
 import getOptions from './options.js';
 import { toggleClassOnClick } from './toggle-class.js';
 import ShowList from './components/show-list.js';
+import ShowEpisodes from './components/show-episodes.js';
 
 const runExtension = async () => {
     const options = await getOptions();
@@ -36,34 +36,6 @@ const runExtension = async () => {
     const customEvents = { episodeRemoved: new Event('episoderemoved') };
 
     const titleOptions = getTitleOptions(options);
-
-    function handleRatingClicks(ratingBlock, episodeId, showId, epListElem) {
-        const ratingElems = ratingBlock.querySelectorAll('a.rating-star, a.ep-check');
-        const handler = async (e) => {
-            const rateElem = e.target.closest('a.rating-star, a.ep-check');
-            const CHECKED = 'checked';
-            e.preventDefault();
-
-            if (rateElem) {
-                const listElem = rateElem.closest('li');
-                const { rating } = rateElem.dataset;
-
-                bgScriptPort.postMessage({ type: types.RATE_EPISODE, payload: { episodeId, rating, showId } });
-                listElem.classList.add(CHECKED);
-                ratingElems.forEach((el) => {
-                    if (el.dataset.rating <= rating) {
-                        el.classList.add(CHECKED);
-                        return;
-                    }
-                    el.classList.remove(CHECKED);
-                });
-                epListElem.addEventListener('mouseleave', () => { epListElem.dataset.mouseleaved = 'true'; });
-                epListElem.addEventListener('mouseenter', () => { epListElem.dataset.mouseleaved = ''; });
-            }
-        };
-
-        ratingBlock.addEventListener('click', handler);
-    }
 
     function renderCalendarRow({
         id, showId, title, airDateUTC, shortName,
@@ -135,96 +107,6 @@ const runExtension = async () => {
             calendarList.append(...episodes.map((ep) => renderCalendarRow(ep)));
             return calendarElem;
         });
-    }
-
-    function renderEpisodeRow({
-        id, title, shortName, airDateUTC, commentsCount, showId, seasonNumber,
-    }) {
-        const ep = templates.episodeRow.cloneNode(true);
-        const link = ep.querySelector('.ep-title a');
-        const epListElem = ep.querySelector('.episode-row');
-        const epNumber = ep.querySelector('.ep-number');
-        const epDate = ep.querySelector('.ep-date');
-        const epComments = ep.querySelector('.ep-comments a');
-        const epRatingBlock = ep.querySelector('.rating-block');
-        const date = airDateUTC ? new Date(airDateUTC) : null;
-        epListElem.dataset.id = id;
-        epListElem.dataset.season = seasonNumber;
-        link.href = `https://myshows.me/view/episode/${id}/`;
-        link.title = title;
-        link.textContent = title;
-        epNumber.textContent = shortName;
-        handleRatingClicks(epRatingBlock, id, showId, epListElem);
-        if (date) {
-            epDate.textContent = date.toLocaleDateString(dateLocale);
-            epDate.title = date.toLocaleString(dateLocale);
-        }
-
-        if (commentsCount) {
-            ep.querySelector('.ep-comments').hidden = false;
-            epComments.textContent = commentsCount;
-            epComments.href = `https://en.myshows.me/view/episode/${id}/#comments`;
-        }
-
-        return ep;
-    }
-
-    function renderSeasonBlocks(episodes) {
-        const order = options.episodesSortOrder === 'firstNew' ? 'firstNew' : 'firstOld';
-
-        const groupCb = (acc, ep) => {
-            const { seasonNumber: N } = ep;
-            acc[N] ? acc[N].push(ep) : acc[N] = [ep]; // eslint-disable-line no-unused-expressions
-            return acc;
-        };
-
-        const groupedBySeasons = order === 'firstNew'
-            ? episodes.reduce(groupCb, {})
-            : episodes.reduceRight(groupCb, {});
-
-        const getSortOrderFunc = () => (order === 'firstNew'
-            ? (a, b) => b - a
-            : (a, b) => a - b);
-
-        return Object.keys(groupedBySeasons)
-            .sort(getSortOrderFunc())
-            .map((season, idx, seasons) => {
-                const seasonBlock = templates.seasonBlock.cloneNode(true);
-                const seasonHeader = seasonBlock.querySelector('.season-header');
-                const seasonTitle = seasonBlock.querySelector('.season-title');
-                const seasonEpisodesNumber = seasonBlock.querySelector('.episodes-in-season');
-                const episodeList = seasonBlock.querySelector('.episode-list');
-                let episodesInSeason = groupedBySeasons[season].length;
-
-                seasonTitle.textContent = `${season} ${browser.i18n.getMessage('season')}`;
-                seasonEpisodesNumber.textContent = getPluralForm('episodesNumber', episodesInSeason);
-
-                seasonHeader.dataset.season = season;
-                seasonHeader.addEventListener('click', () => {
-                    seasonHeader.classList.toggle('expanded');
-                    const panel = seasonHeader.nextElementSibling;
-                    panel.hidden = !panel.hidden;
-                });
-                seasonHeader.addEventListener('episoderemoved', () => {
-                    episodesInSeason -= 1;
-                    seasonEpisodesNumber.textContent = getPluralForm('episodesNumber', episodesInSeason);
-                    if (episodesInSeason === 0) {
-                        seasonHeader.parentNode.removeChild(seasonHeader);
-                        episodeList.parentNode.removeChild(episodeList);
-                    }
-                });
-
-                if ((order === 'firstNew' && idx < seasons.length - 1)
-                    || (order === 'firstOld' && idx !== 0)) {
-                    episodeList.hidden = true;
-                } else {
-                    seasonHeader.classList.add('expanded');
-                }
-
-                const seasonEps = groupedBySeasons[season];
-                episodeList.append(...seasonEps.map((ep) => renderEpisodeRow(ep)));
-                return seasonBlock;
-            });
     }
 
     function renderShowList(shows, nav, showWithOpenedMenu) {
@@ -322,7 +204,9 @@ const runExtension = async () => {
                     this.updateLogoNav();
                     container.innerHTML = '';
 
-                    container.append(...renderSeasonBlocks(episodes));
+                    container.append(new ShowEpisodes({
+                        episodes, options, dateLocale, bgScriptPort,
+                    }));
                     break;
                 }
                 default:

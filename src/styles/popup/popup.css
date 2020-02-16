@@ -1,7 +1,7 @@
 @import url("./spinner.css");
 @import url("./header.css");
-@import url("./show-list.css");
-@import url("./external-search-list.css");
+@import url("./components/show-list.css");
+@import url("./components/external-search-list.css");
 @import url("./episode-view.css");
 @import url("./calendar.css");
 
