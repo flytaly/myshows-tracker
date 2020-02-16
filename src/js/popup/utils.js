@@ -1,5 +1,4 @@
-/* eslint-disable import/prefer-default-export */
-import UILang from './ui-language';
+import UILang from './ui-language.js';
 
 /* displayShowsTitle could be: 'undefined', original','ru', 'ru+original', 'original+ru' */
 export function getTitleOptions({ displayShowsTitle: t }) {

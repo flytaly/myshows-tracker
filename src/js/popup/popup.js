@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
-import types from '../types';
-import storage from '../storage';
-import { translateElement } from '../l10n';
-import UILang from './ui-language';
-import { getTitleOptions, getPluralForm } from './utils';
+import types from '../types.js';
+import storage from '../storage.js';
+import { translateElement } from '../l10n.js';
+import UILang from './ui-language.js';
+import { getTitleOptions, getPluralForm } from './utils.js';
 
 
 let dateLocale = UILang;

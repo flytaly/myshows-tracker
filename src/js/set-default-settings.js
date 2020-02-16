@@ -1,5 +1,5 @@
-import UILang from './popup/ui-language';
-import storage from './storage';
+import UILang from './popup/ui-language.js';
+import storage from './storage.js';
 
 const links = [{ name: 'youtube', url: 'https://www.youtube.com/results?search_query=' }];
 

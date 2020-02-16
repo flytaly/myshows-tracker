@@ -1,11 +1,11 @@
 /* eslint-disable no-underscore-dangle */
-import storage from '../storage';
-import types from '../types';
-import state from './state';
-import { clientId, clientSecret, redirectUri } from '../config';
-import { AuthError } from './errors';
-import rpcHandler from './rpc-handler'; // eslint-disable-line import/no-cycle
-import { mapObjToQueryStr, filterShowProperties, composeExtensionTitle } from './helpers';
+import storage from '../storage.js';
+import types from '../types.js';
+import state from './state.js';
+import { clientId, clientSecret, redirectUri } from '../config.js';
+import { AuthError } from './errors.js';
+import rpcHandler from './rpc-handler.js'; // eslint-disable-line import/no-cycle
+import { mapObjToQueryStr, filterShowProperties, composeExtensionTitle } from './helpers.js';
 
 const app = {
     baseURL: 'https://myshows.me/oauth',

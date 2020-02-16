@@ -1,5 +1,5 @@
-import storage from '../storage';
-import { translateElement } from '../l10n'; // translate option page
+import storage from '../storage.js';
+import { translateElement } from '../l10n.js'; // translate option page
 
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);

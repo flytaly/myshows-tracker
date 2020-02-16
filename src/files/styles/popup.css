@@ -1,0 +1,759 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%; /* ==10px if default font size is 16px */
+    font-family: "PT Sans", "Trebuchet MS", Arial, sans-serif;
+}
+
+body {
+    width: 40rem;
+    min-width: 350px;
+    max-width: 800px;
+    height: 40rem;
+    min-height: 350px;
+    max-height: 600px;
+    overflow: hidden auto;
+}
+
+a, a:visited {
+    color: #0066D0;
+    text-decoration: none;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 5px 10px;
+    color: white;
+    background: rgba(37, 37, 37, 0.95);
+    border-bottom: solid #c00 3px;
+}
+
+.logo {
+    height: 27px;
+    margin-left: 20px;
+    flex: 1;
+}
+
+.user {
+    position: relative;
+    font-size: 1.5rem;
+    margin: 0 1rem;
+    word-break: break-all;
+    cursor: pointer;
+}
+
+.user .menu {
+    display: none;
+    position: absolute;
+    background-color: rgba(37, 37, 37, 0.95);
+    right: 0;
+    overflow: auto;
+    min-width: 10rem;
+    z-index: 1;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.user .menu.open {
+    display: block;
+}
+
+.user .menu a {
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    color: white;
+    padding: 1rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.user .menu a:hover,
+.user .menu a:focus {
+    background-color: #cc0000;
+}
+
+.menu a .menu-option-sign {
+    height: 1em;
+    width: 1em;
+    margin-right: 0.5em;
+    color: white;
+}
+
+.button-container {
+    width: 13px;
+    height: 26px;
+    flex-shrink: 0;
+}
+
+#back-btn {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#back-btn:active {
+    transform: scale(0.90);
+}
+
+#back-btn svg {
+    width: 100%;
+    height: auto;
+}
+
+#back-btn svg path {
+    fill: #ffffff;
+}
+
+#back-btn:hover svg path {
+    fill: #999999;
+}
+
+#back-btn:focus {
+    outline: 1px dotted #999999;
+}
+
+#main-view,
+#episode-view {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+#main-view {
+    font-size: 1.4rem;
+}
+
+#main-view[hidden],
+#episode-view[hidden] {
+    display: none;
+}
+
+#main-view .tabs {
+    display: flex;
+    flex-direction: row;
+    background: #999999;
+}
+
+.tabs .tab {
+    background-color: #EEEEEE;
+    padding: 0.4rem 1.5rem;
+    margin: 0.5rem 0.5rem 0 0;
+    border-radius: 5px 5px 0 0;
+    border: 1px solid black;
+    border-bottom: 1px solid #999999;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.tabs .tab:first-child {
+    margin-left: 2rem;
+}
+
+.tabs .tab.active {
+    border-bottom: none;
+    background-color: white;
+}
+
+.tabs .tab:hover {
+    box-shadow: 0 -2px 2px #cc0000;
+}
+
+.blank-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.show-container {
+    height: 100%;
+    padding: 1rem;
+}
+
+#main-view ul.show-list {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#main-view ul.show-list[hidden] {
+    display: none;
+}
+
+#main-view .show-list li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.5rem;
+}
+
+#main-view .show-list > li:nth-child(2n) {
+    background-color: #EEEEEE;
+}
+
+#main-view .show-list > li:hover {
+   box-shadow: inset -1px -1px 1px 0px #CCCCCC, inset 1px 1px 1px 0px #CCCCCC;
+}
+
+#main-view .show-title {
+    flex: 1;
+    overflow-x: hidden;
+}
+
+#main-view .show-title a .show-title-1{
+    font-weight: bold;
+}
+
+#main-view .show-title a .show-title-2{
+    font-size: 1.2rem;
+    color: #676767;
+}
+
+#main-view .show-list .next-episode-date,
+#main-view .show-list .next-episode{
+    display: none;
+}
+
+#main-view .show-list li:hover .next-episode-date,
+#main-view .show-list li:hover .next-episode,
+#main-view .show-list .next-episode-date.no-hide,
+#main-view .show-list .next-episode.no-hide{
+    display: inline;
+    font-size: 1.1rem;
+    color: #A80303;
+}
+
+#main-view .show-list li:hover .next-episode-date,
+#main-view .show-list .next-episode-date.no-hide{
+    color: #676767;
+    white-space: nowrap;
+}
+
+#main-view .external-block {
+    position: relative;
+    width: 1.9rem;
+    height: 1.7rem;
+    margin: 0px 0.5rem;
+}
+
+#main-view .show-list li .external {
+    display: none;
+    margin: 0;
+    border: none;
+    background: transparent;
+}
+
+#main-view .external-block.open .external,
+#main-view .show-list li:hover .external {
+    display: block;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+    background: url(../images/external-link-alt.svg) center center no-repeat;
+    cursor: pointer;
+}
+
+#main-view ul.open-external-list {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    display: none;
+    list-style-type: none;
+    padding: 3px 0;
+    margin: 0;
+    z-index: 10;
+    background-color: #EDEEEE;
+    border-radius: 2px;
+    border: 1px solid #AAAAAA;
+    box-shadow: 0px 0px 5px 0px #AAAAAA;
+}
+
+#main-view .external-block.open ul.open-external-list {
+    display: block;
+    /* flex-direction: column; */
+}
+
+#main-view ul.open-external-list li{
+    padding: 0;
+    min-width: 15rem;
+}
+
+#main-view ul.open-external-list a {
+    display: block;
+    width: 100%;
+    font-size: 1.3rem;
+    color: black;
+    padding: 5px 1.3rem;
+    white-space: nowrap;
+}
+#main-view ul.open-external-list li:last-child a{
+    margin-top: 3px;
+    border-top: 1px solid #E5E5E5;
+}
+
+#main-view ul.open-external-list a:focus,
+#main-view ul.open-external-list a:hover {
+    color: white;
+    background-color: #AAAAAA;
+}
+
+#main-view .unwatched-ep {
+    background-color: #A80303;
+    border-radius: 5px;
+    padding: 2px 3px;
+    color: white;
+    min-width: 2.6rem;
+    text-align: center;
+}
+
+#main-view .unwatched-ep:hover {
+    cursor: pointer;
+}
+
+#episode-view .show-title {
+    padding: 1rem 1rem;
+    background: rgba(0, 0, 0, 0.4);
+    width: 100%;
+    color: white;
+    margin: 0;
+}
+
+#episode-view .show-title a,
+#episode-view .show-title a:visited {
+    color: white;
+}
+
+#episode-view .show-title a .show-title-1 {
+    color: white;
+    font-size: 1.9rem;
+    font-weight: bold;
+}
+
+#episode-view .show-title a .show-title-2 {
+    color: #e8e8e8;
+    font-size: 1.3rem;
+}
+
+#episode-view .episodes-container {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.season-header {
+    position: relative;
+    padding: 1rem;
+    margin: 0 1rem;
+    border-bottom: 1px dashed #999999;
+}
+
+    .season-header:hover {
+        border-bottom: 1px solid #999999;
+        cursor: pointer;
+    }
+
+    .season-header:after {
+        content: "";
+        position: absolute;
+        top: calc(50% - 0.2rem);
+        right: 1rem;
+        width: 0.4rem;
+        height: 0.4rem;
+        border: solid #999;
+        border-width: 0 3px 3px 0;
+        transform: rotate(-135deg);
+        transition: 0.25s;
+    }
+
+    .season-header.expanded:after {
+        transform: rotate(45deg);
+    }
+
+    .season-header .season-title {
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+
+    .season-header .episodes-in-season {
+        color: #676767;
+        font-size: 1.4rem;
+        margin-left: 1rem;
+    }
+
+ul.episode-list {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    margin: 0;
+    padding: 1rem 0;
+    font-size: 1.4rem;
+}
+
+    ul.episode-list[hidden] {
+        display: none;
+    }
+
+    .episode-list li {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        transition: opacity 0.4s ease-out;
+    }
+
+    .episode-list li:hover {
+        transition: opacity 0s;
+    }
+
+    .episode-list li:nth-child(2n) {
+        background: #EEEEEE;
+    }
+
+    .episode-list li > div {
+        margin-left: 1rem;
+    }
+
+    .episode-list li > div:last-child {
+        margin-right: 1rem;
+    }
+
+    .episode-list li.checked {
+        background-color: #dcffe0;
+    }
+
+    .episode-list  li.remove {
+        opacity: 0;
+    }
+
+    .ep-info {
+        flex: 1;
+        padding: 0.5rem 0;
+    }
+
+    .ep-title a {
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
+
+    .ep-number {
+        display: inline-block;
+        color: #cc0000;
+        font-size: 1.2rem;
+    }
+
+    .ep-date {
+        display: inline-block;
+        font-size: 1.2rem;
+    }
+
+    .ep-comments {
+        background-color: #999999;
+        position: relative;
+        color: white;
+        font-size: 1rem;
+        padding: 3px;
+        min-width: 2rem;
+        text-align: center;
+    }
+
+    .ep-comments:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 100%;
+        width: 0;
+        height: 0;
+        border: 2px solid transparent;
+        border-top-color: #999999;
+        border-right-color: #999999;
+    }
+
+    .ep-comments a,
+    .ep-comments a:visited {
+        color: white;
+    }
+
+.rating-block {
+    position: relative;
+    height: 3.2rem;
+    padding: 0.5rem;
+}
+
+    .rating-block:hover {
+        background-color: white;
+        box-shadow: -1px -1px 0px 0px #CCCCCC, 1px 1px 0px 0px #CCCCCC;
+    }
+
+    .ep-rating {
+        position: absolute;
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        top: 0;
+        bottom: 0;
+        left: 100%;
+        height: 100%;
+        /*height: 3.2rem;*/
+
+        max-width: 0;
+
+        overflow: hidden;
+        background-color: white;
+        white-space: nowrap;
+        z-index: 10;
+        transition: max-width 0.2s ease-out;
+    }
+
+    .rating-block:hover .ep-rating {
+        max-width: 14rem;
+        box-shadow: 1px 1px 0px 0px #CCCCCC, 0px -1px 0px 0px #CCCCCC;
+    }
+
+    .ep-rating a {
+        height: 2.2rem;
+        margin-right: 0.2rem;
+    }
+
+    .ep-rating a.rating-star:active svg {
+        transform: scale(0.90);
+    }
+
+    .ep-rating a.rating-star svg {
+        height: 100%;
+        width: auto;
+        fill: #CCCCCC;
+        pointer-events: none;
+    }
+
+    .ep-rating > a.rating-star.checked > svg {
+        fill: #cc0000;
+    }
+
+    .ep-check {
+        display: block;
+        position: relative;
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 50%;
+        border: 1px solid black;
+    }
+
+    .ep-check:active:after {
+        transform: scale(0.90);
+    }
+
+    .ep-check:hover {
+        box-shadow: 0 0 2px #cc0000;
+        border: 1px solid #cc0000;
+    }
+
+    .ep-rating:hover + .ep-check,
+    .ep-check.checked {
+        border: 1px solid #cc0000;
+    }
+
+    .ep-rating:hover + .ep-check:after,
+    .ep-check.checked:after,
+    .ep-check:hover:after {
+        content: "";
+        position: absolute;
+        background: url(../images/check.svg) center center no-repeat;
+        background-size: 1.5rem 1.5rem;
+        width: 2.2rem;
+        height: 2.2rem;
+        top: -1px;
+        left: -1px;
+    }
+
+    .ep-rating > a:nth-child(1):hover > svg,
+    .ep-rating > a:nth-child(1):hover  + * > svg,
+    .ep-rating > a:nth-child(1):hover  + * + * > svg,
+    .ep-rating > a:nth-child(1):hover  + * + * + * > svg,
+    .ep-rating > a:nth-child(1):hover  + * + * + * + *  >svg {
+        fill: #cc0000;
+    }
+
+    .ep-rating > a:nth-child(2):hover > svg,
+    .ep-rating > a:nth-child(2):hover  + * > svg,
+    .ep-rating > a:nth-child(2):hover  + * + * > svg,
+    .ep-rating > a:nth-child(2):hover  + * + * + * > svg {
+        fill: #cc0000;
+    }
+
+    .ep-rating > a:nth-child(3):hover > svg,
+    .ep-rating > a:nth-child(3):hover  + * > svg,
+    .ep-rating > a:nth-child(3):hover  + * + * > svg {
+        fill: #cc0000;
+    }
+
+    .ep-rating > a:nth-child(4):hover > svg,
+    .ep-rating > a:nth-child(4):hover  + * > svg {
+        fill: #cc0000;
+    }
+
+    .ep-rating > a:nth-child(5):hover > svg {
+        fill: #cc0000;
+    }
+
+
+/* http://tobiasahlin.com/spinkit/ */
+.spinner {
+    position: absolute;
+    bottom: 1rem;
+    right: 2rem;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    z-index: 2;
+}
+
+    .spinner[hidden] {
+        display: none;
+    }
+
+    .spinner > div {
+        width: 1rem;
+        height: 1rem;
+        border: 2px solid black;
+        background-color: white;
+        margin-left: 4px;
+        border-radius: 100%;
+        -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+        animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    }
+
+    .spinner .bounce1 {
+        -webkit-animation-delay: -0.32s;
+        animation-delay: -0.32s;
+    }
+
+    .spinner .bounce2 {
+        -webkit-animation-delay: -0.16s;
+        animation-delay: -0.16s;
+    }
+
+    @-webkit-keyframes sk-bouncedelay {
+        0%, 80%, 100% {
+            -webkit-transform: scale(0)
+        }
+        40% {
+            -webkit-transform: scale(1.0)
+        }
+    }
+
+    @keyframes sk-bouncedelay {
+        0%, 80%, 100% {
+            -webkit-transform: scale(0);
+            transform: scale(0);
+        }
+        40% {
+            -webkit-transform: scale(1.0);
+            transform: scale(1.0);
+        }
+    }
+
+.calendar-container {
+    padding: 1rem;
+    height: 100%;
+}
+
+    .calendar-container .month-name {
+        text-transform: capitalize;
+        font-size: 1.7rem;
+        font-weight: bold;
+        color: #cc0000;
+    }
+
+    .calendar-container .month-total {
+        color: #676767;
+        font-size: 1.6rem;
+    }
+
+    .calendar-container ul.calendar {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        list-style-type: none;
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+    }
+
+    .calendar li {
+        display: flex;
+        flex-direction: row;
+        font-size: 1.4rem;
+        padding: 0.4rem 0;
+    }
+
+    .calendar li:nth-child(2n) {
+        background-color: #EEEEEE;
+    }
+
+    .calendar .calendar-date {
+        text-transform: capitalize;
+        align-self: center;
+        text-align: center;
+        width: 4rem;
+        padding: 0 4px;
+    }
+
+    .calendar .calendar-ep {
+        flex: 1;
+        padding: 0 1rem;
+        overflow-x: hidden;
+        align-self: center;
+    }
+
+    .calendar .calendar-show-title {
+        overflow-x: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .calendar .calendar-show-title a {
+        font-weight: bold;
+        color: black;
+    }
+
+    .calendar .calendar-ep-info {
+        font-size: 1.2rem;
+        overflow-x: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .calendar .calendar-ep-number {
+        color: #cc0000;
+    }
+
+    .calendar .calendar-ep-title a {
+        color: #676767;
+    }
+
+    .calendar .calendar-days-left {
+        align-self: center;
+        text-align: center;
+        overflow: hidden;
+        width: 4.5rem;
+    }
+
