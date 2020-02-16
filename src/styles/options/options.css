@@ -1,3 +1,5 @@
+@import url("./url-browser-styles.css");
+
 @media (prefers-color-scheme: dark) {
     html {
         --bgColor: #202023;

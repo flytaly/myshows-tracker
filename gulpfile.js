@@ -17,6 +17,10 @@ const paths = {
         input: 'src/files/**/*',
         output: 'extension/',
     },
+    styles: {
+        input: 'src/styles/**/*.css',
+        output: 'extension/styles',
+    },
     firefox: {
         input: 'src/firefox/**/*',
         output: 'extension/',
@@ -33,10 +37,13 @@ const copyTargetFiles = () => src(paths.firefox.input)
     .pipe(dest(paths.firefox.output));
 const copyCommonFiles = () => src(paths.copy.input)
     .pipe(dest(paths.copy.output));
+const copyStyles = () => src(paths.styles.input)
+    .pipe(dest(paths.styles.output));
 
 const copyFiles = (done) => series(
     copyTargetFiles,
     copyCommonFiles,
+    copyStyles,
 )(done);
 
 const processScripts = () => src(paths.scripts.input)

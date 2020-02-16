@@ -1,10 +1,9 @@
 /* eslint-disable no-param-reassign */
 import types from '../types.js';
 import storage from '../storage.js';
-import { translateElement } from '../l10n.js';
 import UILang from './ui-language.js';
 import { getTitleOptions, getPluralForm } from './utils.js';
-
+import templates from './templates.js';
 
 let dateLocale = UILang;
 const initOptions = (async () => {
@@ -13,9 +12,7 @@ const initOptions = (async () => {
     return res;
 })();
 
-const translateTemplate = ({ content }) => { translateElement(content); return content; };
-
-document.addEventListener('DOMContentLoaded', async () => {
+const runExtension = async () => {
     const options = await initOptions;
     // If browser's standard size is 16px then +2 diff means 12px, -2 means 8px ...
     if (options.fSizeDiff) document.documentElement.style.fontSize = `${(100 / 16) * (10 + Number(options.fSizeDiff))}%`;
@@ -26,19 +23,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const showContainer = mainView.querySelector('.show-container');
     const calendarContainer = mainView.querySelector('.calendar-container');
     const logoLink = document.querySelector('.logo > a');
-
-    const templates = {
-        showRow: translateTemplate(getElem('show-row-tmp')),
-        seasonBlock: translateTemplate(getElem('season-block-tmp')),
-        episodeRow: translateTemplate(getElem('episode-row-tmp')),
-        calendar: translateTemplate(getElem('calendar-tmp')),
-        calendarRow: translateTemplate(getElem('calendar-row-tmp')),
-        blankPage: translateTemplate(getElem('blank-page-tmp')),
-        showListBlock: translateTemplate(getElem('show-list-block-tmp')),
-        openExternalList: translateTemplate(getElem('open-external-list-tmp')),
-        openExternalRow: translateTemplate(getElem('open-external-row-tmp')),
-        openExternalAddSearch: translateTemplate(getElem('open-external-add-search')),
-    };
 
     const bgScriptPort = browser.runtime.connect();
     const showsInfo = {}; // show's info for easy access to it in the episode view
@@ -584,8 +568,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     init()
         .catch((e) => console.error(e));
-}, {
-    capture: true,
-    passive: true,
-    once: true,
-});
+};
+
+runExtension();
