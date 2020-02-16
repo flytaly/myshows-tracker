@@ -1,12 +1,13 @@
-import types from '../types.js';
-import storage from '../storage.js';
 import UILang from './ui-language.js';
-import { getTitleOptions, getPluralForm } from './utils.js';
+import types from '../types.js';
 import templates from './templates.js';
-import getOptions from './options.js';
-import { toggleClassOnClick } from './toggle-class.js';
+import storage from '../storage.js';
 import ShowList from './components/show-list.js';
 import ShowEpisodes from './components/show-episodes.js';
+import ShowCalendar from './components/show-calendar.js';
+import getOptions from './options.js';
+import { toggleClassOnClick } from './toggle-class.js';
+import { getTitleOptions } from './utils.js';
 
 const runExtension = async () => {
     const options = await getOptions();
@@ -36,78 +37,6 @@ const runExtension = async () => {
     const customEvents = { episodeRemoved: new Event('episoderemoved') };
 
     const titleOptions = getTitleOptions(options);
-
-    function renderCalendarRow({
-        id, showId, title, airDateUTC, shortName,
-    }) {
-        const airDate = new Date(airDateUTC);
-        const now = new Date();
-
-        const calendarRowElem = templates.calendarRow.cloneNode(true);
-        const dateElem = calendarRowElem.querySelector('.calendar-date');
-        const dateElems = dateElem.querySelectorAll('span');
-        const showTitle = calendarRowElem.querySelector('.calendar-show-title a');
-        const epNumber = calendarRowElem.querySelector('.calendar-ep-number');
-        const epTitle = calendarRowElem.querySelector('.calendar-ep-title a');
-        const daysLeftElem = calendarRowElem.querySelector('.calendar-days-left');
-        const daysLeftElems = daysLeftElem.querySelectorAll('span');
-
-        dateElems[0].textContent = airDate.getDate().toString();
-        dateElems[1].textContent = airDate.toLocaleDateString(dateLocale, { weekday: 'short' });
-        dateElem.title = airDate.toLocaleString(dateLocale);
-
-        showTitle.href = `https://myshows.me/view/${showId}/`;
-        showTitle.title = (titleOptions.showTwoTitles && titleOptions.title2 !== 'original') ? showsInfo[showId].title : showsInfo[showId].titleOriginal;
-        showTitle.textContent = titleOptions.title1 === 'original' ? showsInfo[showId].titleOriginal : showsInfo[showId].title;
-
-        epNumber.textContent = shortName;
-
-        epTitle.textContent = title;
-        epTitle.title = title;
-        epTitle.href = `https://myshows.me/view/episode/${id}/`;
-
-        const countDays = Math.ceil((airDate - now) / 1000 / 60 / 60 / 24);
-        daysLeftElems[0].textContent = countDays.toString();
-        daysLeftElems[1].textContent = getPluralForm('daysNumber', countDays);
-        daysLeftElem.title = airDate.toLocaleString(dateLocale);
-
-        return calendarRowElem;
-    }
-
-    function renderCalendars(upcomingEpisodes) {
-    // TODO: show shows that will air today on top of the list in different category
-
-        // group episodes by month, episodes have to be sorted in time order beforehand
-        const groupByMonth = upcomingEpisodes.reduce((acc, ep) => {
-            const date = new Date(ep.airDateUTC);
-            const [month, year] = [date.getMonth(), date.getFullYear()];
-            const last = acc[acc.length - 1];
-            if (!last || last.month !== month || last.year !== year) {
-                acc.push({
-                    month,
-                    year,
-                    episodes: [ep],
-                    monthName: date.toLocaleDateString(dateLocale, { month: 'long' }),
-                });
-            } else {
-                last.episodes.push(ep);
-            }
-            return acc;
-        }, []);
-
-        const currentYear = new Date().getFullYear();
-
-        return groupByMonth.map(({ monthName, year, episodes }) => {
-            const calendarElem = templates.calendar.cloneNode(true);
-            const name = calendarElem.querySelector('.month-name');
-            const totalNumber = calendarElem.querySelector('.month-total');
-            const calendarList = calendarElem.querySelector('ul.calendar');
-            name.textContent = `${monthName} ${year === currentYear ? '' : year}`;
-            totalNumber.textContent = getPluralForm('episodesNumber', episodes.length); // `${episodes.length} episodes`
-            calendarList.append(...episodes.map((ep) => renderCalendarRow(ep)));
-            return calendarElem;
-        });
-    }
 
     function renderShowList(shows, nav, showWithOpenedMenu) {
         const showList = new ShowList(nav, options, dateLocale);
@@ -160,7 +89,7 @@ const runExtension = async () => {
 
                 case this.places.upcomingList: {
                     this.places.current = location;
-                    const episodes = await storage.getUpcomingEpisodes();
+                    const upcomingEpisodes = await storage.getUpcomingEpisodes();
 
                     toggleHidden(
                         [episodeView, backBtn, showContainer],
@@ -169,10 +98,14 @@ const runExtension = async () => {
 
                     calendarContainer.innerHTML = '';
 
-                    if (!episodes || !episodes.length) {
+                    if (!upcomingEpisodes || !upcomingEpisodes.length) {
                         calendarContainer.appendChild(templates.blankPage.cloneNode(true));
                     } else {
-                        calendarContainer.append(...renderCalendars(episodes));
+                        calendarContainer.appendChild(
+                            new ShowCalendar({
+                                upcomingEpisodes, showsInfo, titleOptions, dateLocale,
+                            }),
+                        );
                     }
                     break;
                 }

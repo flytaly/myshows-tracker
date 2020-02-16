@@ -2,6 +2,7 @@
 @import url("./header.css");
 @import url("./components/show-list.css");
 @import url("./components/external-search-list.css");
+@import url("./components/show-calendar.css");
 @import url("./episode-view.css");
 @import url("./calendar.css");
 
@@ -92,6 +93,11 @@ a, a:visited {
 }
 
 .show-container {
+    height: 100%;
+    padding: 1rem;
+}
+
+.calendar-container {
     height: 100%;
     padding: 1rem;
 }

@@ -32,7 +32,7 @@ export default class ShowEpisodes extends HTMLElement {
             ? (a, b) => b - a
             : (a, b) => a - b);
 
-        return Object.keys(groupedBySeasons)
+        const blocks = Object.keys(groupedBySeasons)
             .sort(getSortOrderFunc())
             .map((season, idx, seasons) => {
                 const seasonBlock = templates.seasonBlock.cloneNode(true);
@@ -69,8 +69,10 @@ export default class ShowEpisodes extends HTMLElement {
 
                 const seasonEps = groupedBySeasons[season];
                 episodeList.append(...seasonEps.map((ep) => this.renderEpisodeRow(ep)));
-                this.appendChild(seasonBlock);
+                return seasonBlock;
             });
+
+        this.append(...blocks);
     }
 
     renderEpisodeRow({
