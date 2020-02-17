@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-expressions,no-underscore-dangle */
-import state from './state';
-import storage from '../storage';
-import types from '../types';
-import app from './app';
-import setDefaultSettings from '../set-default-settings';
+import state from './state.js';
+import storage from '../storage.js';
+import types from '../types.js';
+import app from './app.js';
+import setDefaultSettings from '../set-default-settings.js';
 
 async function update() {
     state.updating = true;

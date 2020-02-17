@@ -4,8 +4,8 @@
 
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="styles/popup.css">
-  <script src="bundles/popup.js"></script>
+  <link rel="stylesheet" href="styles/popup/popup.css">
+  <script type="module" src="js/popup/popup.js" defer></script>
 </head>
 
 <body>
@@ -72,7 +72,7 @@
     </header>
 
     <!-- Main View -->
-    <div id="main-view">
+    <div id="main-view" class="main-view">
 
       <div class="tabs">
         <button id="tab-shows" class="tab active" data-l10n-id="tabShows" data-l10n-attrs="title"
@@ -85,14 +85,9 @@
       </div>
 
       <div class="show-container">
-
-        <template id="show-list-block-tmp">
-          <ul class="show-list">
-          </ul>
-        </template>
-
+        <!-- <ul is="show-list"></ul> -->
         <template id="show-row-tmp">
-          <li class="show-row">
+          <li>
             <div class="show-title">
               <a href="#">
                 <span class="show-title-1"></span>
@@ -106,15 +101,11 @@
             <div class="external-block">
               <button class="external" data-l10n-id="externalSearch" data-l10n-nocontent="true" data-l10n-attrs="title"
                 hidden></button>
+                <!-- <ul is="external-search-list"></ul> -->
             </div>
             <div class="unwatched-ep" data-l10n-id="unwatchedNumber" data-l10n-nocontent="true" data-l10n-attrs="title"
               hidden></div>
           </li>
-        </template>
-
-        <template id="open-external-list-tmp">
-          <ul class="open-external-list">
-          </ul>
         </template>
 
         <template id="open-external-row-tmp">
@@ -161,7 +152,7 @@
     </div>
 
     <!-- Episode View -->
-    <div id="episode-view" hidden>
+    <div id="episode-view" class="episode-view" hidden>
       <div class="show-title"><a href="#" data-l10n-id="showLink" data-l10n-nocontent="true"
           data-l10n-attrs="title"><span class="show-title-1"></span><br><span class="show-title-2"></span></a></div>
       <div class="episodes-container">

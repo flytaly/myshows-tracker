@@ -1,0 +1,99 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 5px 10px;
+    color: white;
+    background: rgba(37, 37, 37, 0.95);
+    border-bottom: solid #c00 3px;
+}
+
+.logo {
+    height: 27px;
+    margin-left: 20px;
+    flex: 1;
+}
+
+.user {
+    position: relative;
+    font-size: 1.5rem;
+    margin: 0 1rem;
+    word-break: break-all;
+    cursor: pointer;
+}
+
+.user .menu {
+    display: none;
+    position: absolute;
+    background-color: rgba(37, 37, 37, 0.95);
+    right: 0;
+    overflow: auto;
+    min-width: 10rem;
+    z-index: 1;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.user .menu.open {
+    display: block;
+}
+
+.user .menu a {
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    color: white;
+    padding: 1rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.user .menu a:hover,
+.user .menu a:focus {
+    background-color: #cc0000;
+}
+
+.menu a .menu-option-sign {
+    height: 1em;
+    width: 1em;
+    margin-right: 0.5em;
+    color: white;
+}
+
+.button-container {
+    width: 13px;
+    height: 26px;
+    flex-shrink: 0;
+}
+
+#back-btn {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#back-btn:active {
+    transform: scale(0.90);
+}
+
+#back-btn svg {
+    width: 100%;
+    height: auto;
+}
+
+#back-btn svg path {
+    fill: #ffffff;
+}
+
+#back-btn:hover svg path {
+    fill: #999999;
+}
+
+#back-btn:focus {
+    outline: 1px dotted #999999;
+}

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions,no-param-reassign */
-import types from '../types';
+import types from '../types.js';
 
 /* Proxy object that sends messages to the popup upon changes */
 const state = new Proxy({

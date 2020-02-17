@@ -23,9 +23,7 @@
     "https://*.myshows.me/*"
   ],
   "background": {
-    "scripts": [
-      "bundles/background.js"
-    ]
+    "page": "background.html"
   },
   "browser_action": {
     "default_title": "__MSG_extension_title__",

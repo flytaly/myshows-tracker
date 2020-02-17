@@ -1,0 +1,30 @@
+@import url('./components/show-episodes.css');
+
+.episode-view .show-title {
+    padding: 1rem 1rem;
+    background: rgba(0, 0, 0, 0.4);
+    width: 100%;
+    color: white;
+    margin: 0;
+}
+
+.episode-view .show-title a,
+.episode-view .show-title a:visited {
+    color: white;
+}
+
+.episode-view .show-title a .show-title-1 {
+    color: white;
+    font-size: 1.9rem;
+    font-weight: bold;
+}
+
+.episode-view .show-title a .show-title-2 {
+    color: #e8e8e8;
+    font-size: 1.3rem;
+}
+
+.episode-view .episodes-container {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.95);
+}

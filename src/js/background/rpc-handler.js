@@ -1,6 +1,6 @@
-import storage from '../storage';
-import app from './app'; // eslint-disable-line import/no-cycle
-import { AuthError } from './errors';
+import storage from '../storage.js';
+import app from './app.js'; // eslint-disable-line import/no-cycle
+import { AuthError } from './errors.js';
 
 const rpcHandler = {
     rpcUrl: 'https://api.myshows.me/v2/rpc/',

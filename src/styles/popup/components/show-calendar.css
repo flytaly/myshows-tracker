@@ -1,0 +1,80 @@
+show-calendar .month-name {
+    text-transform: capitalize;
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: #cc0000;
+}
+
+show-calendar .month-total {
+    color: #676767;
+    font-size: 1.6rem;
+}
+
+show-calendar ul.calendar {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    list-style-type: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+}
+
+show-calendar li {
+    display: flex;
+    flex-direction: row;
+    font-size: 1.4rem;
+    padding: 0.4rem 0;
+}
+
+show-calendar li:nth-child(2n) {
+    background-color: #EEEEEE;
+}
+
+show-calendar .calendar-date {
+    text-transform: capitalize;
+    align-self: center;
+    text-align: center;
+    width: 4rem;
+    padding: 0 4px;
+}
+
+show-calendar .calendar-ep {
+    flex: 1;
+    padding: 0 1rem;
+    overflow-x: hidden;
+    align-self: center;
+}
+
+show-calendar .calendar-show-title {
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+show-calendar .calendar-show-title a {
+    font-weight: bold;
+    color: black;
+}
+
+show-calendar .calendar-ep-info {
+    font-size: 1.2rem;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+show-calendar .calendar-ep-number {
+    color: #cc0000;
+}
+
+show-calendar .calendar-ep-title a {
+    color: #676767;
+}
+
+show-calendar .calendar-days-left {
+    align-self: center;
+    text-align: center;
+    overflow: hidden;
+    width: 4.5rem;
+}
+

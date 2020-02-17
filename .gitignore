@@ -2,7 +2,6 @@
 .DS_Store
 node_modules
 .idea
-scripts/config.js
+js/config.js
 web-ext-artifacts
-extension/**/bundle.js
-extension/bundles/
+extension/
