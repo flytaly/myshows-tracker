@@ -18,7 +18,7 @@ of TV shows you watch.
   - create an extension package from source
 
 The extension uses [MyShows JSON-RPC API](https://api.myshows.me/shared/doc/).
-To make it work you need credentials and then add them in `/scripts/config.js`;
+To make it work you need credentials and then add them in `/js/config.js`;
 
 ## License
 
