@@ -165,7 +165,14 @@ const app = {
     /** Returns array of future episodes in time order */
     futureEpisodes(episodes, time = new Date()) {
         let result = Object.keys(episodes).reduce((acc, showId) => {
-            acc.push(...episodes[showId].filter(({ airDateUTC }) => Date.parse(airDateUTC) > time));
+            acc.push(...episodes[showId]
+                .filter(({ airDateUTC }) => Date.parse(airDateUTC) > time)
+                /*
+                  Sort episodes by number, so they have correct order in the calendar
+                  if they have the same air time (like episodes on Netflix)
+                */
+                .sort((a, b) => a.episodeNumber - b.episodeNumber));
+
             return acc;
         }, []);
         result = result.sort(({ airDateUTC: a }, { airDateUTC: b }) => Date.parse(a) - Date.parse(b));
