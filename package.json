@@ -7,8 +7,8 @@
         "web-ext": "web-ext run --source-dir extension",
         "web-ext:ffdev": "web-ext run --firefox=firefoxdeveloperedition --source-dir extension",
         "gulp:watch": "gulp watch",
-        "start": "npm-run-all --parallel gulp:watch web-ext",
-        "start:ffdev": "npm-run-all --parallel gulp:watch web-ext:ffdev",
+        "start": "npm-run-all build:gulp --parallel gulp:watch web-ext",
+        "start:ffdev": "npm-run-all build:gulp --parallel gulp:watch web-ext:ffdev",
         "build:gulp": "gulp build",
         "build:webext": "web-ext build --source-dir extension",
         "build": "npm-run-all --sequential build:gulp build:webext"
