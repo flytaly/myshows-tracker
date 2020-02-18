@@ -4,6 +4,7 @@ import storage from '../storage.js';
 import types from '../types.js';
 import app from './app.js';
 import setDefaultSettings from '../set-default-settings.js';
+import { setBadgeAndTitle } from './helpers.js';
 
 async function update() {
     state.updating = true;
@@ -26,6 +27,12 @@ window.requestIdleCallback(async () => {
 
     if (!accessToken) {
         await app.setAuth();
+    }
+
+    const watchingShows = await storage.getWatchingShows();
+
+    if (watchingShows) {
+        setBadgeAndTitle(watchingShows);
     }
 
     await update();

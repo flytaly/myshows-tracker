@@ -5,7 +5,7 @@ import state from './state.js';
 import { clientId, clientSecret, redirectUri } from '../config.js';
 import { AuthError } from './errors.js';
 import rpcHandler from './rpc-handler.js'; // eslint-disable-line import/no-cycle
-import { mapObjToQueryStr, filterShowProperties, composeExtensionTitle } from './helpers.js';
+import { mapObjToQueryStr, filterShowProperties, setBadgeAndTitle } from './helpers.js';
 
 const app = {
     baseURL: 'https://myshows.me/oauth',
@@ -197,8 +197,7 @@ const app = {
             });
         });
 
-        state.extensionTitle = composeExtensionTitle(watchingShows);
-        state.totalEpisodes = watchingShows.reduce((acc, { unwatchedEpisodes }) => acc + unwatchedEpisodes, 0);
+        setBadgeAndTitle(watchingShows);
 
         await Promise.all([
             storage.saveWatchingShows(watchingShows),
@@ -242,11 +241,10 @@ const app = {
                     nextEpisode: len && episodes[showId][len - 1],
                 }) : show);
             });
-            state.totalEpisodes -= 1;
             await Promise.all([
                 storage.saveEpisodesToWatch(episodes),
                 storage.saveWatchingShows(shows)]);
-            state.extensionTitle = composeExtensionTitle(shows);
+            setBadgeAndTitle(shows);
         } catch (e) {
             console.error(`Error occurred during episode rating. ${e.name}: ${e.message}`);
             if (retryIfError) this.rateEpisodesAgain.push({ episodeId, rating, showId });
