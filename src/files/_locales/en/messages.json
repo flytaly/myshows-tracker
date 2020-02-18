@@ -91,6 +91,18 @@
         "message": "days",
         "description": "Number of days: 0 or >1"
     },
+    "hoursNumber_one": {
+        "message": "hour",
+        "description": "Number of hour: 1"
+    },
+    "hoursNumber_other": {
+        "message": "hours",
+        "description": "Number of hour: 0 or >1"
+    },
+    "calendar_today": {
+        "message": "Today",
+        "description": "Calendar: name of the group of episodes that air today"
+    },
     "rate0_title": {
         "message": "No rating",
         "description": "Attribute title rating: no stars"

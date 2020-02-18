@@ -99,6 +99,22 @@
         "message": "дней",
         "description": "Number of days: 5,6,7,25.."
     },
+    "hoursNumber_one": {
+        "message": "час",
+        "description": "Number of hours: 1,21"
+    },
+    "hoursNumber_few": {
+        "message": "часа",
+        "description": "Number of hours: 2,3,4,22.."
+    },
+    "hoursNumber_many": {
+        "message": "часов",
+        "description": "Number of hours: 5,6,7.."
+    },
+    "calendar_today": {
+        "message": "Сегодня",
+        "description": "Calendar: name of the group of episodes that air today"
+    },
     "rate0_title": {
         "message": "Нет оценки",
         "description": "Attribute title rating: no stars"

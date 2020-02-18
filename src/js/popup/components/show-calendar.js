@@ -15,19 +15,31 @@ export default class ShowCalendar extends HTMLElement {
     }
 
     generateCalendar() {
-        // TODO: show shows that will air today on top of the list in different category
+        const now = new Date();
 
-        // group episodes by month, episodes have to be sorted in time order beforehand
+        // -1 month means today
+        const getMonthGroup = (date) => {
+            const midnight = new Date(now);
+            midnight.setHours(24, 0, 0, 0);
+            return midnight > date ? -1 : date.getMonth();
+        };
+
+        /**
+         * Group episodes by months. Episodes have to be sorted in time order beforehand.
+         * Today episodes are grouped into "Today" category.
+         * */
         const groupByMonth = this.upcomingEpisodes.reduce((acc, ep) => {
             const date = new Date(ep.airDateUTC);
-            const [month, year] = [date.getMonth(), date.getFullYear()];
+            const [month, year] = [getMonthGroup(date), date.getFullYear()];
             const last = acc[acc.length - 1];
             if (!last || last.month !== month || last.year !== year) {
                 acc.push({
                     month,
                     year,
                     episodes: [ep],
-                    monthName: date.toLocaleDateString(this.dateLocale, { month: 'long' }),
+                    groupName: month < 0
+                        ? browser.i18n.getMessage('calendar_today')
+                        : date.toLocaleDateString(this.dateLocale, { month: 'long' }),
                 });
             } else {
                 last.episodes.push(ep);
@@ -37,12 +49,12 @@ export default class ShowCalendar extends HTMLElement {
 
         const currentYear = new Date().getFullYear();
 
-        const months = groupByMonth.map(({ monthName, year, episodes }) => {
+        const months = groupByMonth.map(({ groupName, year, episodes }) => {
             const calendarElem = templates.calendar.cloneNode(true);
             const name = calendarElem.querySelector('.month-name');
             const totalNumber = calendarElem.querySelector('.month-total');
             const calendarList = calendarElem.querySelector('.calendar');
-            name.textContent = `${monthName} ${year === currentYear ? '' : year}`;
+            name.textContent = `${groupName} ${year === currentYear ? '' : year}`;
             totalNumber.textContent = getPluralForm('episodesNumber', episodes.length); // `${episodes.length} episodes`
             calendarList.append(...episodes.map((ep) => this.renderCalendarRow(ep)));
             return calendarElem;
@@ -79,9 +91,15 @@ export default class ShowCalendar extends HTMLElement {
         epTitle.title = title;
         epTitle.href = `https://myshows.me/view/episode/${id}/`;
 
-        const countDays = Math.ceil((airDate - now) / 1000 / 60 / 60 / 24);
-        daysLeftElems[0].textContent = countDays.toString();
-        daysLeftElems[1].textContent = getPluralForm('daysNumber', countDays);
+        const countHours = Math.ceil((airDate - now) / 1000 / 60 / 60);
+        const countDays = Math.ceil(countHours / 24);
+        if (countHours < 24) {
+            daysLeftElems[0].textContent = countHours.toString();
+            daysLeftElems[1].textContent = getPluralForm('hoursNumber', countHours);
+        } else {
+            daysLeftElems[0].textContent = countDays.toString();
+            daysLeftElems[1].textContent = getPluralForm('daysNumber', countDays);
+        }
         daysLeftElem.title = airDate.toLocaleString(this.dateLocale);
 
         return calendarRowElem;
