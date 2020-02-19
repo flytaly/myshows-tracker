@@ -4,26 +4,28 @@ const {
 const del = require('del');
 const babel = require('gulp-babel');
 
-const target = process.env.TARGET || 'Firefox';
+const target = process.env.TARGET ? process.env.TARGET : 'firefox';
+
+const outputPath = target === 'firefox' ? 'dist/firefox/' : 'dist/chrome/';
 
 const paths = {
     input: 'src/',
-    output: 'extension/',
+    output: outputPath,
     scripts: {
         input: 'src/js/**/**.js',
-        output: 'extension/js/',
+        output: `${outputPath}js/`,
     },
     copy: {
         input: 'src/files/**/*',
-        output: 'extension/',
+        output: outputPath,
     },
     styles: {
         input: 'src/styles/**/*.css',
-        output: 'extension/styles',
+        output: `${outputPath}styles`,
     },
-    firefox: {
-        input: 'src/firefox/**/*',
-        output: 'extension/',
+    target: {
+        input: `src/${target}/**/*`,
+        output: outputPath,
     },
 };
 
@@ -33,17 +35,26 @@ const clean = (done) => {
 };
 
 // Copy static files
-const copyTargetFiles = () => src(paths.firefox.input)
-    .pipe(dest(paths.firefox.output));
+const copyTargetFiles = () => src(paths.target.input)
+    .pipe(dest(paths.target.output));
 const copyCommonFiles = () => src(paths.copy.input)
     .pipe(dest(paths.copy.output));
 const copyStyles = () => src(paths.styles.input)
     .pipe(dest(paths.styles.output));
+const copyPolyfill = (done) => {
+    if (target !== 'firefox') {
+        return src('node_modules/webextension-polyfill/dist/browser-polyfill.js')
+            .pipe(dest(paths.target.output));
+    }
+    return done();
+};
+
 
 const copyFiles = (done) => series(
     copyTargetFiles,
     copyCommonFiles,
     copyStyles,
+    copyPolyfill,
 )(done);
 
 const processScripts = () => src(paths.scripts.input)

@@ -10,11 +10,9 @@ of TV shows you watch.
 
 ## Usage for developers
 
-- `npm run start`
+- `npm run start:ff`
   - build the extension with [webpack](https://github.com/webpack/webpack) and run it in Firefox using [web-ext](https://github.com/mozilla/web-ext)
-- `npm run start:ffdev`
-  - the same as `start` but run the extension in Firefox Developer Edition
-- `npm run build`
+- `npm run buildzip:ff`
   - create an extension package from source
 
 The extension uses [MyShows JSON-RPC API](https://api.myshows.me/shared/doc/).

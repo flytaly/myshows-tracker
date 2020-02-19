@@ -22,7 +22,8 @@ async function update() {
     state.updating = false;
 }
 
-window.requestIdleCallback(async () => {
+
+const startExtension = async () => {
     const { accessToken } = await storage.getAuthData();
 
     if (!accessToken) {
@@ -36,7 +37,14 @@ window.requestIdleCallback(async () => {
     }
 
     await update();
-});
+};
+
+// requestIdleCallback doesn't work in Chrome
+if (TARGET === 'chrome') {
+    startExtension();
+} else { // firefox
+    window.requestIdleCallback(startExtension);
+}
 
 
 browser.runtime.onInstalled.addListener(async () => {
