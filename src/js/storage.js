@@ -18,6 +18,11 @@ const storage = {
         return shows;
     },
 
+    async getLaterShows() {
+        const { laterShows } = await browser.storage.local.get(['laterShows']);
+        return laterShows;
+    },
+
     async getUpcomingEpisodes() {
         const { upcomingEpisodes } = await browser.storage.local.get(['upcomingEpisodes']);
         return upcomingEpisodes;
@@ -48,6 +53,10 @@ const storage = {
 
     async saveWatchingShows(shows) {
         return browser.storage.local.set({ shows });
+    },
+
+    async saveLaterShows(laterShows) {
+        return browser.storage.local.set({ laterShows });
     },
 
     /** @param {obj} episodes - example: {showId: [{episodeInfo...}, {...}],...} */

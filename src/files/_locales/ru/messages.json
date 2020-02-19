@@ -24,8 +24,16 @@
         "description": "Name of the tab with list of upcoming shows"
     },
     "tabCalendar_title": {
-        "message": "Список градущих сериалов",
+        "message": "Список грядущих серий",
         "description": "Attribute title of the calendar tab"
+    },
+    "tabPostponed": {
+        "message": "Позже",
+        "description": "Name of the tab with list of postponed shows"
+    },
+    "tabPostponed_title": {
+        "message": "Буду смотреть",
+        "description": "Attribute title of the postponed tab"
     },
     "signOut": {
         "message": "Выход",
@@ -138,6 +146,26 @@
     "rate5_title": {
         "message": "Отличная серия",
         "description": "Attribute title rating: 5 stars"
+    },
+    "postponedListTitle":{
+        "message": "Буду смотреть",
+        "description": "Title of the list with postponed shows"
+    },
+    "showsNumber_one": {
+        "message": "$1 сериал",
+        "description": "Number of shows: 1, 21, 31..."
+    },
+    "showsNumber_few": {
+        "message": "$1 сериала",
+        "description": "Number of shows: 2,3,4,22.."
+    },
+    "showsNumber_many": {
+        "message": "$1 сериалов",
+        "description": "Number of shows: 5,6,7,25.."
+    },
+    "postponedShowCount_title": {
+        "message": "Посмотрено эпизодов / Всего эпизодов",
+        "description": "Attribute title of postponed show's episodes number"
     },
     "settingFontSize": {
         "message": "Базовый размер шрифта",

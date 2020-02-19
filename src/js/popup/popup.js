@@ -5,6 +5,7 @@ import storage from '../storage.js';
 import ShowList from './components/show-list.js';
 import ShowEpisodes from './components/show-episodes.js';
 import ShowCalendar from './components/show-calendar.js';
+import PostponedList from './components/postponed-list.js';
 import getOptions from './options.js';
 import { toggleClassOnClick } from './toggle-class.js';
 import { getTitleOptions } from './utils.js';
@@ -19,8 +20,9 @@ const runExtension = async () => {
     const mainView = getElem('main-view');
     const episodeView = getElem('episode-view');
     const backBtn = getElem('back-btn');
-    const showContainer = mainView.querySelector('.show-container');
-    const calendarContainer = mainView.querySelector('.calendar-container');
+    const showContainer = getElem('show-container');
+    const calendarContainer = getElem('calendar-container');
+    const postponedContainer = getElem('postponed-container');
     const logoLink = document.querySelector('.logo > a');
 
     const bgScriptPort = browser.runtime.connect();
@@ -44,13 +46,14 @@ const runExtension = async () => {
         return showList;
     }
 
-    const toggleHidden = (toHide, toShow) => {
-    /* eslint-disable no-param-reassign */
-        toHide.forEach((elem) => {
-            elem.hidden = true;
-        });
-        toShow.forEach((elem) => {
-            elem.hidden = false;
+    // hide elements except the ones in `toShow` array
+    const elements = [
+        mainView, episodeView, backBtn, showContainer, calendarContainer, postponedContainer,
+    ];
+    const toggleHidden = (toShow) => {
+        /* eslint-disable no-param-reassign */
+        elements.forEach((elem) => {
+            elem.hidden = !toShow.includes(elem);
         });
     };
 
@@ -59,6 +62,7 @@ const runExtension = async () => {
             showList: 'showList',
             episodeList: 'episodeList',
             upcomingList: 'upcomingList',
+            postponedList: 'postponedList',
             current: 'showList',
         },
         async navigate(location, params = {}) {
@@ -68,10 +72,7 @@ const runExtension = async () => {
                     const shows = await storage.getWatchingShows();
                     document.body.style.background = '#FFFFFF';
 
-                    toggleHidden(
-                        [backBtn, episodeView, calendarContainer],
-                        [mainView, showContainer],
-                    );
+                    toggleHidden([mainView, showContainer]);
                     this.updateLogoNav();
                     showContainer.innerHTML = '';
 
@@ -91,10 +92,7 @@ const runExtension = async () => {
                     this.places.current = location;
                     const upcomingEpisodes = await storage.getUpcomingEpisodes();
 
-                    toggleHidden(
-                        [episodeView, backBtn, showContainer],
-                        [mainView, calendarContainer],
-                    );
+                    toggleHidden([mainView, calendarContainer]);
 
                     calendarContainer.innerHTML = '';
 
@@ -132,13 +130,25 @@ const runExtension = async () => {
                     document.body.style.backgroundSize = 'cover';
                     document.body.style.backgroundAttachment = 'fixed';
 
-                    toggleHidden([mainView], [episodeView, backBtn]);
+                    toggleHidden([episodeView, backBtn]);
 
                     this.updateLogoNav();
                     container.innerHTML = '';
 
                     container.append(new ShowEpisodes({
                         episodes, options, dateLocale, bgScriptPort,
+                    }));
+                    break;
+                }
+
+                case this.places.postponedList: {
+                    this.places.current = location;
+                    const laterShows = await storage.getLaterShows();
+                    toggleHidden([mainView, postponedContainer]);
+                    postponedContainer.innerHTML = '';
+                    postponedContainer.appendChild(new PostponedList({
+                        laterShows,
+                        titleOptions,
                     }));
                     break;
                 }
@@ -175,20 +185,38 @@ const runExtension = async () => {
     };
 
     function initTabs() {
-        const tabShows = getElem('tab-shows');
-        const tabCalendar = getElem('tab-calendar');
+        const tabs = [{
+            elem: getElem('tab-shows'),
+            place: nav.places.showList,
+        }, {
+            elem: getElem('tab-calendar'),
+            place: nav.places.upcomingList,
+        }, {
+            elem: getElem('tab-postponed'),
+            place: nav.places.postponedList,
+        }];
 
-        tabShows.addEventListener('click', () => {
-            nav.navigate(nav.places.showList);
-            tabShows.classList.add('active');
-            tabCalendar.classList.remove('active');
+        const toggleActive = (activeIdx) => tabs.forEach(({ elem }, idx) => {
+            if (idx !== activeIdx) elem.classList.remove('active');
+            else elem.classList.add('active');
         });
 
-        tabCalendar.addEventListener('click', () => {
-            nav.navigate(nav.places.upcomingList);
-            tabCalendar.classList.add('active');
-            tabShows.classList.remove('active');
-        });
+        tabs.forEach(({ elem, place }, idx) => elem
+            .addEventListener('click', () => {
+                nav.navigate(place);
+                toggleActive(idx);
+            }));
+    }
+
+    // Hide tab with postponed shows is there are no such shows
+    async function updateTabs() {
+        const laterShows = await storage.getLaterShows();
+        const laterTab = getElem('tab-postponed');
+        if (laterShows && laterShows.length) {
+            laterTab.hidden = false;
+        } else {
+            laterTab.hidden = true;
+        }
     }
 
     async function init() {
@@ -203,6 +231,7 @@ const runExtension = async () => {
 
         initDropdownMenu(loginName);
         initTabs();
+        updateTabs();
 
         const episodesToRemove = new Set();
         bgScriptPort.onMessage.addListener(async (message) => {
@@ -219,6 +248,7 @@ const runExtension = async () => {
                     if (nav.places.current !== nav.places.episodeList) {
                         nav.navigate(nav.places.current, showId ? { showWithOpenedMenu: showId } : {});
                     }
+                    updateTabs();
                     break;
                 }
                 case types.LOADING_START:

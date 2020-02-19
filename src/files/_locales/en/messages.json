@@ -24,8 +24,16 @@
         "description": "Name of the tab with list of upcoming shows"
     },
     "tabCalendar_title": {
-        "message": "Upcoming TV shows",
+        "message": "Upcoming episodes",
         "description": "Attribute title of the calendar tab"
+    },
+    "tabPostponed": {
+        "message": "Later",
+        "description": "Name of the tab with list of postponed shows"
+    },
+    "tabPostponed_title": {
+        "message": "Going to watch",
+        "description": "Attribute title of the postponed tab"
     },
     "signOut": {
         "message": "Sign out",
@@ -126,6 +134,22 @@
     "rate5_title": {
         "message": "Great!",
         "description": "Attribute title rating: 5 stars"
+    },
+    "postponedListTitle":{
+        "message": "Going to watch",
+        "description": "Title of the list with postponed shows"
+    },
+    "showsNumber_one": {
+        "message": "$1 shows",
+        "description": "Number of shows: 1"
+    },
+    "showsNumber_other": {
+        "message": "$1 shows",
+        "description": "Number of shows: 0 or >1"
+    },
+    "postponedShowCount_title": {
+        "message": "Episodes watched / episodes total",
+        "description": "Attribute title of postponed show's episodes number"
     },
     "settingFontSize": {
         "message": "Basic font size",

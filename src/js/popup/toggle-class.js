@@ -6,11 +6,9 @@
  */
 export const toggleClassOnClick = (button, toggleTarget, className = 'open') => {
     const cb = (event) => {
-        if (event.target !== button) {
-            if (toggleTarget.classList.contains(className)) {
-                toggleTarget.classList.remove(className);
-                window.removeEventListener('click', cb);
-            }
+        if (event.target !== button && toggleTarget.classList.contains(className)) {
+            toggleTarget.classList.remove(className);
+            window.removeEventListener('click', cb);
         }
     };
     button.addEventListener('click', () => {

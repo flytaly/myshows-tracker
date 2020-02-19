@@ -182,10 +182,15 @@ const app = {
     async updateData() {
         const { result: allShows } = await rpcHandler.profileShows();
         let watchingShows = allShows.filter(({ watchStatus }) => watchStatus === 'watching');
+        let laterShows = allShows.filter(({ watchStatus }) => watchStatus === 'later');
         const showIds = watchingShows.map(({ show }) => show.id);
+        const laterShowIds = laterShows.map(({ show }) => show.id);
 
         let shows = await rpcHandler.showsGetById(showIds);
+        let laterShowsData = await rpcHandler.showsGetById(laterShowIds, false); // without episodes
+
         shows = shows.map(({ result }) => result);
+        laterShowsData = laterShowsData.map(({ result }) => result);
 
         const unwatchedEps = await this.fetchEpisodes(showIds, shows);
 
@@ -204,12 +209,18 @@ const app = {
             });
         });
 
+        laterShows = laterShows.map((entry) => ({
+            ...entry,
+            show: filterShowProperties(laterShowsData.find(({ id }) => entry.show.id === id)),
+        }));
+
         setBadgeAndTitle(watchingShows);
 
         await Promise.all([
             storage.saveWatchingShows(watchingShows),
             storage.saveEpisodesToWatch(pastEps),
             storage.saveUpcomingEpisodes(futureEps),
+            storage.saveLaterShows(laterShows),
         ]);
 
         while (this.rateEpisodesAgain.length) {

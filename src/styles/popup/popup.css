@@ -3,6 +3,7 @@
 @import url("./components/show-list.css");
 @import url("./components/external-search-list.css");
 @import url("./components/show-calendar.css");
+@import url("./components/postponed-list.css");
 @import url("./episode-view.css");
 @import url("./calendar.css");
 
@@ -84,20 +85,15 @@ a, a:visited {
     box-shadow: 0 -2px 2px #cc0000;
 }
 
+.tab-content {
+    height: 100%;
+    padding: 1rem;
+}
+
 .blank-page {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     height: 100%;
-}
-
-.show-container {
-    height: 100%;
-    padding: 1rem;
-}
-
-.calendar-container {
-    height: 100%;
-    padding: 1rem;
 }

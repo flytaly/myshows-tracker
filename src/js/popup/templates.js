@@ -10,6 +10,8 @@ const templates = {
     episodeRow: translateTemplate(getElem('episode-row-tmp')),
     calendar: translateTemplate(getElem('calendar-tmp')),
     calendarRow: translateTemplate(getElem('calendar-row-tmp')),
+    postponed: translateTemplate(getElem('postponed-tmp')),
+    postponedRow: translateTemplate(getElem('postponed-row-tmp')),
     blankPage: translateTemplate(getElem('blank-page-tmp')),
     openExternalRow: translateTemplate(getElem('open-external-row-tmp')),
     openExternalAddSearch: translateTemplate(getElem('open-external-add-search')),

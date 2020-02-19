@@ -82,9 +82,13 @@
           title="Upcoming TV shows">
           Calendar
         </button>
+        <button id="tab-postponed" class="tab"  data-l10n-id="tabPostponed" data-l10n-attrs="title"
+        title="Going to watch">
+        Later
+        </button>
       </div>
 
-      <div class="show-container">
+      <div id="show-container" class="tab-content">
         <!-- <ul is="show-list"></ul> -->
         <template id="show-row-tmp">
           <li>
@@ -118,7 +122,7 @@
 
       </div>
 
-      <div class="calendar-container" hidden>
+      <div id="calendar-container" class="tab-content" hidden>
         <template id="calendar-tmp">
           <div class="calendar-month">
             <span class="month-name"></span>
@@ -138,6 +142,28 @@
               </div>
             </div>
             <div class="calendar-days-left"><span></span><br><span></span></div>
+          </li>
+        </template>
+      </div>
+
+      <div id="postponed-container" class="tab-content" hidden>
+        <template id="postponed-tmp">
+          <h2>
+            <span data-l10n-id="postponedListTitle">Going to watch</span>
+            <span class="show-count"></span>
+          </h2>
+          <ul></ul>
+        </template>
+        <template id="postponed-row-tmp">
+          <li>
+            <div class="postponed-show-title">
+              <a href="#">
+                <span class="title-1"></span>
+                <br>
+                <span class="title-2"></span>
+              </a>
+            </div>
+            <div class="postponed-episodes-count" data-l10n-id="postponedShowCount" data-l10n-nocontent="true" data-l10n-attrs="title"></div>
           </li>
         </template>
       </div>
