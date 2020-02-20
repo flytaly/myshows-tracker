@@ -1,4 +1,4 @@
-@import url("./url-browser-styles.css");
+@import url("./target-styles.css");
 
 @media (prefers-color-scheme: dark) {
     html {
@@ -9,13 +9,16 @@
     body, select, option, [label],
     .browser-style > input[type="url"],
     .browser-style > input[type="text"] {
-         background-color: var(--bgColor); color: var(--fontColor);
+        background-color: var(--bgColor); color: var(--fontColor);
+        text-shadow: none;
     }
 
     button:not(.default) {
         background-color: var(--bgColor);
+        background-image: none;
         color: var(--fontColor);
         border-color: #737373;
+        text-shadow: none;
     }
     button:hover,
     button:focus {

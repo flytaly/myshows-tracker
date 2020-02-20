@@ -51,9 +51,9 @@ const copyPolyfill = (done) => {
 
 
 const copyFiles = (done) => series(
-    copyTargetFiles,
     copyCommonFiles,
     copyStyles,
+    copyTargetFiles, // should be after common files and styles so they can be rewritten
     copyPolyfill,
 )(done);
 
@@ -64,6 +64,7 @@ const processScripts = () => src(paths.scripts.input)
             {
                 targets: {
                     firefox: '69',
+                    chrome: '76',
                 },
                 modules: 'false',
             },

@@ -20,14 +20,15 @@
     "background": {
         "page": "background.html"
     },
-        "browser_action": {
+    "browser_action": {
         "default_title": "__MSG_extension_title__",
         "default_icon": "/images/icon.svg",
         "default_popup": "popup.html",
         "chrome_style": true
     },
-        "options_ui": {
+    "options_ui": {
         "page": "options.html",
+        "open_in_tab": true,
         "chrome_style": true
     }
   }
