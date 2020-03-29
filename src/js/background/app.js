@@ -29,7 +29,7 @@ const app = {
         return `${this.baseURL}/authorize?${mapObjToQueryStr(params)}`;
     },
 
-    async getAuthCode(authState) {
+    /*     async getAuthCode(authState) {
         const response = await browser.identity.launchWebAuthFlow({
             url: this.getAuthURL(authState),
             interactive: true,
@@ -43,7 +43,7 @@ const app = {
             return responseURL.searchParams.get('code');
         }
         return false;
-    },
+    }, */
 
     fetchAuthInit(params) {
         return {
@@ -56,7 +56,7 @@ const app = {
         };
     },
 
-    async getTokens(code) {
+    /* async getTokens(code) {
         const params = {
             grant_type: 'authorization_code',
             client_id: clientId,
@@ -69,6 +69,35 @@ const app = {
             throw new AuthError(`Couldn't receive tokens. ${response.status}: ${response.statusText}`);
         }
         return response.json();
+    }, */
+
+    async getTokens(username, password) {
+        // Resource Owner Password Credentials Grant example
+        // curl "https://myshows.me/oauth/token" -d "grant_type=password&client_id=&client_secret=&username=&password="
+
+        const getParamsString = () => 'grant_type=password'
+        + `&client_id=${clientId}`
+        + `&client_secret=${clientSecret}`
+        + `&username=${username}`
+        + `&password=${password}`;
+
+        const response = await fetch('https://myshows.me/oauth/token', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json; charset=utf-8',
+                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+            },
+            body: getParamsString(username, password),
+        });
+
+
+        const responseData = await response.json();
+        if (responseData.error) {
+            console.error(responseData);
+            throw new Error(responseData.error_description);
+        }
+
+        return responseData;
     },
 
     async renewAccessToken(token) {
@@ -93,17 +122,21 @@ const app = {
         return { accessToken };
     },
 
-    async login() {
-        const authState = this.generateAuthState();
-        const code = await this.getAuthCode(authState);
-        if (!code) throw new Error('Couldn\'t get auth code');
+    async login(username, password) {
+        // const authState = this.generateAuthState();
+        // const code = await this.getAuthCode(authState);
+        // if (!code) throw new Error('Couldn\'t get auth code');
+
+        state.loginStarted = true;
         const {
             access_token: accessToken,
             expires_in: expiresIn,
             refresh_token: refreshToken,
-        } = await this.getTokens(code);
+        } = await this.getTokens(username, password);
         await storage.saveAuthData({ accessToken, expiresIn, refreshToken });
         await this.getProfileData();
+        state.loginStarted = false;
+        if (this.authPromiseResolveFn) this.authPromiseResolveFn();
         return true;
     },
 
@@ -112,22 +145,15 @@ const app = {
         await storage.saveProfile(user);
     },
 
-    // Initiate authentication next time user click badge.
-    // Returns promise that will be fulfilled only after a successful login
+    authPromiseResolveFn: null,
+
     setAuth() {
         state.needAuth = true;
         return new Promise((resolve) => {
-            const listener = async () => {
-                try {
-                    await this.login();
-                    state.needAuth = false;
-                    browser.browserAction.onClicked.removeListener(listener);
-                    resolve();
-                } catch (e) {
-                    console.error(`${e.name}: ${e.message}`);
-                }
+            this.authPromiseResolveFn = () => {
+                state.needAuth = false;
+                resolve();
             };
-            browser.browserAction.onClicked.addListener(listener);
         });
     },
 

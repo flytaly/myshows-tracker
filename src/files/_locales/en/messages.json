@@ -11,6 +11,46 @@
         "message": "MyShows",
         "description": "Extension title"
     },
+    "loginMessage": {
+        "message": "Log in to authorize extension",
+        "description": "Login form message"
+    },
+    "loginInput_placeholder": {
+        "message": "Login or E-mail",
+        "description": "Login input placeholder"
+    },
+    "passwordInput_placeholder": {
+        "message": "Password",
+        "description": "Password input placeholder"
+    },
+    "signup": {
+        "message": "Sign-up",
+        "description": "Signup link"
+    },
+    "loginButton": {
+        "message": "Log in",
+        "description": "Login Button"
+    },
+    "loggingIn": {
+        "message": "Logging in ...",
+        "description": "Login Button during logging"
+    },
+    "loginErrorMsg": {
+        "message": "Error",
+        "description": "Login error message"
+    },
+    "emptyUsername": {
+        "message": "enter login or email",
+        "description": "Empty username input warning"
+    },
+    "emptyPassword": {
+        "message": "enter password",
+        "description": "Empty password input warning"
+    },
+    "invalidUsernameOrPassword": {
+        "message": "invalid username and password combination",
+        "description": "Invalid username or password message"
+    },
     "tabShows": {
         "message": "Shows",
         "description": "Name of the tab with list of watching shows"

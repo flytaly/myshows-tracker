@@ -4,7 +4,7 @@ export default class ExternalSearchList extends HTMLUListElement {
     constructor(showTitle = '', externalLinks = []) {
         super();
 
-        let externalLinksElements;
+        let externalLinksElements = [];
 
         const addNewSearchElem = templates.openExternalAddSearch.cloneNode(true);
         const addNewSearchLink = addNewSearchElem.querySelector('a');

@@ -66,6 +66,15 @@ browser.runtime.onConnect.addListener(async (port) => {
             case types.RATE_EPISODE:
                 await app.rateEpisode(payload.episodeId, payload.rating, payload.showId);
                 break;
+            case types.LOGIN: {
+                try {
+                    await app.login(payload.username, payload.password);
+                    await update();
+                } catch (e) {
+                    state.loginError = e;
+                }
+                break;
+            }
             default:
         }
     });

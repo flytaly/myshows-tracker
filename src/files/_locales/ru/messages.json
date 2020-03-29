@@ -11,6 +11,46 @@
         "message": "MyShows сериалы",
         "description": "Extension title"
     },
+    "loginMessage": {
+        "message": "Войти для авторизации расширения",
+        "description": "Login form message"
+    },
+    "loginInput_placeholder": {
+        "message": "Логин или E-mail",
+        "description": "Login input placeholder"
+    },
+    "passwordInput_placeholder": {
+        "message": "Пароль",
+        "description": "Password input placeholder"
+    },
+    "signup": {
+        "message": "Регистрация",
+        "description": "Signup link"
+    },
+    "loginButton": {
+        "message": "Войти",
+        "description": "Login Button"
+    },
+    "loggingIn": {
+        "message": "Вход...",
+        "description": "Login Button during logging"
+    },
+    "loginErrorMsg": {
+        "message": "Ошибка",
+        "description": "Login error message"
+    },
+    "emptyUsername": {
+        "message": "введите логин или E-mail",
+        "description": "Empty username input warning"
+    },
+    "emptyPassword": {
+        "message": "введите пароль",
+        "description": "Empty password input warning"
+    },
+    "invalidUsernameOrPassword": {
+        "message": "неправильный логин/E-mail или пароль",
+        "description": "Invalid username or password message"
+    },
     "tabShows": {
         "message": "Сериалы",
         "description": "Name of the tab with list of watching shows"
