@@ -9,6 +9,7 @@ import PostponedList from './components/postponed-list.js';
 import getOptions from './options.js';
 import { toggleClassOnClick } from './toggle-class.js';
 import { getTitleOptions } from './utils.js';
+import './open-links.js';
 
 const runExtension = async () => {
     const options = await getOptions();
