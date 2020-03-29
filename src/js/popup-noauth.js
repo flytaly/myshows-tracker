@@ -1,4 +1,5 @@
 import './l10n.js'; // load to translate html elements
+import './popup/open-links.js';
 import types from './types.js';
 
 const $ = document.querySelector.bind(document);

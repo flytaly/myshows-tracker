@@ -4,4 +4,4 @@ node_modules
 .idea
 js/config.js
 web-ext-artifacts
-extension/
+dist/

@@ -56,7 +56,8 @@ export default class ShowList extends HTMLUListElement {
 
         titleLink.dataset.id = show.id;
         titleLink.title = show.titleOriginal;
-        titleLink.href = `https://myshows.me/view/${show.id}/`;
+        // titleLink.href = `https://myshows.me/view/${show.id}/`;
+        titleLink.href = '#';
 
         const { showTwoTitles, title1, title2 } = this.titleOptions;
         showTitle1.textContent = title1 === 'original' ? show.titleOriginal : show.title;
