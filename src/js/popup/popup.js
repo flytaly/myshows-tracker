@@ -163,7 +163,9 @@ const runExtension = async () => {
                     e.preventDefault();
                     nav.navigate(nav.places.showList);
                 };
+                logoLink.href = '#';
             } else {
+                logoLink.href = 'https://myshows.me';
                 logoLink.title = browser.i18n.getMessage('logoLink_title');
                 logoLink.onclick = null;
             }
