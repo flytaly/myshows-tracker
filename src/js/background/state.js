@@ -10,6 +10,8 @@ const state = new Proxy({
     popupPort: null,
     extensionTitle: '',
     needAuth: false,
+    loginStarted: false,
+    loginError: {},
 }, ({
     set: (obj, prop, value) => {
         const { popupPort } = obj;
@@ -21,7 +23,7 @@ const state = new Proxy({
                 break;
             case 'needAuth':
                 if (value) {
-                    browser.browserAction.setPopup({ popup: '' });
+                    browser.browserAction.setPopup({ popup: browser.extension.getURL('popup-noauth.html') });
                     browser.browserAction.setBadgeBackgroundColor({ color: 'red' });
                     browser.browserAction.setBadgeText({ text: '...' });
                 } else {
@@ -42,6 +44,17 @@ const state = new Proxy({
                 break;
             case 'episodeWasRated':
                 popupPort && popupPort.postMessage({ type: types.EPISODE_WAS_RATED, payload: { episodeId: value } });
+                break;
+            case 'loginStarted':
+                value
+                    ? popupPort && popupPort.postMessage({ type: types.LOGIN_STARTED })
+                    : popupPort && popupPort.postMessage({ type: types.LOGIN_SUCCESS });
+                break;
+            case 'loginError':
+                popupPort && popupPort.postMessage({
+                    type: types.LOGIN_ERROR,
+                    payload: value.message,
+                });
                 break;
             default:
         }
