@@ -17,14 +17,14 @@
       </div>
   </header>
   <main>
-    <div class="message">Log in to authorize extension</div>
+    <div class="message" data-l10n-id="loginMessage">Log in to authorize extension</div>
     <form id="login-form" method="post">
-      <input id="login" type="text" placeholder="Login or E-mail">
+      <input id="login" type="text" placeholder="Login or E-mail" data-l10n-id="loginInput" data-l10n-nocontent="true" data-l10n-attrs="placeholder">
       <span class="error" id="login-error"></span>
-      <input id="password" type="password" placeholder="Password">
+      <input id="password" type="password" placeholder="Password" data-l10n-id="passwordInput" data-l10n-nocontent="true" data-l10n-attrs="placeholder">
       <span class="error" id="password-error"></span>
-      <a href="https://myshows.me/" class="sign-up">Sign up</a>
-      <button id="submit-button" type="submit">Log in</button>
+      <a href="https://myshows.me/" class="sign-up" data-l10n-id="signup">Sign up</a>
+      <button id="submit-button" type="submit" data-l10n-id="loginButton">Log in</button>
     </form>
   </main>
 </body>

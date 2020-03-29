@@ -1,8 +1,8 @@
+import './l10n.js'; // load to translate html elements
 import types from './types.js';
 
 const $ = document.querySelector.bind(document);
 
-// TODO: ADD i18n
 
 const loginError = $('#login-error');
 const passwordError = $('#password-error');
@@ -12,15 +12,20 @@ const bgScriptPort = browser.runtime.connect();
 bgScriptPort.onMessage.addListener(async (message) => {
     const { type, payload } = message;
     switch (type) {
-        case types.LOGIN_ERROR:
-            passwordError.textContent = `Couldn't log in: ${payload}`;
-            submitBtn.textContent = 'Log in';
+        case types.LOGIN_ERROR: {
+            let errMsg = payload;
+            if (payload === 'Invalid username and password combination') {
+                errMsg = browser.i18n.getMessage('invalidUsernameOrPassword');
+            }
+            passwordError.textContent = `${browser.i18n.getMessage('loginErrorMsg')}: ${errMsg}`;
+            submitBtn.textContent = browser.i18n.getMessage('loginButton');
             break;
+        }
         case types.LOGIN_STARTED:
-            submitBtn.textContent = 'Logging in ...';
+            submitBtn.textContent = browser.i18n.getMessage('loggingIn');
             break;
         case types.LOGIN_SUCCESS:
-            submitBtn.textContent = 'Log in';
+            submitBtn.textContent = browser.i18n.getMessage('loginButton');
             window.close();
             break;
         default:
@@ -39,8 +44,8 @@ $('#login-form').addEventListener('submit', async (e) => {
     const password = $('#password').value.trim();
 
     if (!username || !password) {
-        if (!username) loginError.textContent = 'enter login or email';
-        if (!password) passwordError.textContent = 'enter password';
+        if (!username) loginError.textContent = browser.i18n.getMessage('emptyUsername');
+        if (!password) passwordError.textContent = browser.i18n.getMessage('emptyPassword');
         return;
     }
 
