@@ -15,6 +15,7 @@ async function update() {
     } catch (e) {
         console.error(`${e.name}: ${e.message} \n ${e.stack}`);
         if (e.name === 'AuthError' && e.needAuth) {
+            state.updating = false;
             await app.setAuth();
         }
         browser.alarms.create(types.ALARM_UPDATE, { delayInMinutes: 0.5 });
@@ -83,7 +84,12 @@ browser.runtime.onConnect.addListener(async (port) => {
         state.popupPort = null;
     });
     // force update if popup has been opened
-    if (!state.updating) await update();
+    if (!state.updating) {
+        await update();
+    } else {
+        // set state as true again so it send message to the popup
+        state.updating = true;
+    }
 });
 
 
