@@ -18,7 +18,7 @@ export function getTitleOptions({ displayShowsTitle: t }) {
 export function getPluralForm(i18nMessageName, number) {
     if (Intl.PluralRules) {
         const rules = new Intl.PluralRules(UILang === 'ru' ? UILang : 'en');
-        return browser.i18n.getMessage(`${i18nMessageName}_${rules.select(number)}`, number);
+        return browser.i18n.getMessage(`${i18nMessageName}_${rules.select(number)}`, [number]);
     }
     let rule;
 
@@ -35,5 +35,5 @@ export function getPluralForm(i18nMessageName, number) {
     } else {
         rule = number === 1 ? 'one' : 'other';
     }
-    return browser.i18n.getMessage(`${i18nMessageName}_${rule}`, number);
+    return browser.i18n.getMessage(`${i18nMessageName}_${rule}`, [number]);
 }
