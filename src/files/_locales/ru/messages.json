@@ -275,6 +275,14 @@
         "message": "Всегда показывать следующий эпизод или только при наведении",
         "description": "Attribute title for show next episode option"
     },
+    "settingForceEngVer": {
+        "message": "Всегда открывать английскую версию сайта en.myshows.me",
+        "description": "Setting: always open English version"
+    },
+    "settingForceEngVer_title": {
+        "message": "При клике на ссылки открывать en.myshows.me вместо myshows.me",
+        "description": "Attribute title for force English version option"
+    },
     "settingExternalLinksLegend": {
         "message": "Поиск сериала на внешних ресурсах",
         "description": "Setting: search a show on external websites:"

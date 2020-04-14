@@ -1,11 +1,12 @@
 import templates from '../templates.js';
-import { getPluralForm } from '../utils.js';
+import { getPluralForm, getBaseUrl } from '../utils.js';
 
 export default class PostponedList extends HTMLElement {
-    constructor({ laterShows, titleOptions }) {
+    constructor({ laterShows, titleOptions, forceEnglishVersion }) {
         super();
         this.laterShows = laterShows;
         this.titleOptions = titleOptions;
+        this.forceEnglishVersion = forceEnglishVersion;
 
         this.container = templates.postponed.cloneNode(true);
         const showCountElem = this.container.querySelector('h2 .show-count');
@@ -26,7 +27,7 @@ export default class PostponedList extends HTMLElement {
             const epCountElem = li.querySelector('.postponed-episodes-count');
 
 
-            link.href = `https://myshows.me/view/${show.id}/`;
+            link.href = `${getBaseUrl(this.forceEnglishVersion)}/view/${show.id}/`;
             const { showTwoTitles, title1, title2 } = this.titleOptions;
             showTitle1.textContent = title1 === 'original' ? show.titleOriginal : show.title;
             if (showTwoTitles) {

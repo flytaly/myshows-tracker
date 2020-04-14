@@ -66,7 +66,7 @@ const processScripts = () => src(paths.scripts.input)
                     firefox: '69',
                     chrome: '76',
                 },
-                modules: 'false',
+                modules: false,
             },
         ]],
         plugins: [[

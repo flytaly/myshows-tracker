@@ -259,6 +259,14 @@
         "message": "Always show the next episode or only by hover",
         "description": "Attribute title for show next episode option"
     },
+    "settingForceEngVer": {
+        "message": "Always open English version en.myshows.me",
+        "description": "Setting: always open English version"
+    },
+    "settingForceEngVer_title": {
+        "message": "Open en.myshows.me instead of myshows.me to force English version",
+        "description": "Attribute title for force English version option"
+    },
     "settingExternalLinksLegend": {
         "message": "Search a show on external websites:",
         "description": "Setting: search a show on external websites:"

@@ -1,16 +1,17 @@
 /* eslint-disable no-param-reassign */
 import templates from '../templates.js';
-import { getPluralForm } from '../utils.js';
+import { getPluralForm, getBaseUrl } from '../utils.js';
 
 export default class ShowCalendar extends HTMLElement {
     constructor({
-        upcomingEpisodes, showsInfo, titleOptions, dateLocale,
+        upcomingEpisodes, showsInfo, titleOptions, dateLocale, forceEnglishVersion,
     }) {
         super();
         this.upcomingEpisodes = upcomingEpisodes;
         this.showsInfo = showsInfo;
         this.titleOptions = titleOptions;
         this.dateLocale = dateLocale;
+        this.forceEnglishVersion = forceEnglishVersion;
         this.generateCalendar();
     }
 
@@ -81,7 +82,7 @@ export default class ShowCalendar extends HTMLElement {
         dateElems[1].textContent = airDate.toLocaleDateString(this.dateLocale, { weekday: 'short' });
         dateElem.title = airDate.toLocaleString(this.dateLocale);
 
-        showTitle.href = `https://myshows.me/view/${showId}/`;
+        showTitle.href = `${getBaseUrl(this.forceEnglishVersion)}/view/${showId}/`;
         showTitle.title = (this.titleOptions.showTwoTitles && this.titleOptions.title2 !== 'original') ? this.showsInfo[showId].title : this.showsInfo[showId].titleOriginal;
         showTitle.textContent = this.titleOptions.title1 === 'original' ? this.showsInfo[showId].titleOriginal : this.showsInfo[showId].title;
 
@@ -89,7 +90,7 @@ export default class ShowCalendar extends HTMLElement {
 
         epTitle.textContent = title;
         epTitle.title = title;
-        epTitle.href = `https://myshows.me/view/episode/${id}/`;
+        epTitle.href = `${getBaseUrl(this.forceEnglishVersion)}/view/episode/${id}/`;
 
         const countHours = Math.ceil((airDate - now) / 1000 / 60 / 60);
         const countDays = Math.ceil(countHours / 24);

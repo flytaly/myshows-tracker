@@ -37,3 +37,7 @@ export function getPluralForm(i18nMessageName, number) {
     }
     return browser.i18n.getMessage(`${i18nMessageName}_${rule}`, [number]);
 }
+
+export function getBaseUrl(forceEnglish = false) {
+    return forceEnglish ? 'https://en.myshows.me' : 'https://myshows.me';
+}

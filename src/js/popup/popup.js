@@ -8,7 +8,7 @@ import ShowCalendar from './components/show-calendar.js';
 import PostponedList from './components/postponed-list.js';
 import getOptions from './options.js';
 import { toggleClassOnClick } from './toggle-class.js';
-import { getTitleOptions } from './utils.js';
+import { getTitleOptions, getBaseUrl } from './utils.js';
 import './open-links.js';
 
 const runExtension = async () => {
@@ -40,6 +40,7 @@ const runExtension = async () => {
     const customEvents = { episodeRemoved: new Event('episoderemoved') };
 
     const titleOptions = getTitleOptions(options);
+    const { forceEnglishVersion } = options;
 
     function renderShowList(shows, nav, showWithOpenedMenu) {
         const showList = new ShowList(nav, options, dateLocale);
@@ -102,7 +103,7 @@ const runExtension = async () => {
                     } else {
                         calendarContainer.appendChild(
                             new ShowCalendar({
-                                upcomingEpisodes, showsInfo, titleOptions, dateLocale,
+                                upcomingEpisodes, showsInfo, titleOptions, dateLocale, forceEnglishVersion,
                             }),
                         );
                     }
@@ -122,7 +123,7 @@ const runExtension = async () => {
                     if (!episodes) break;
 
                     const show = showsInfo[this.showId];
-                    showTitle.href = `https://myshows.me/view/${this.showId}/`;
+                    showTitle.href = `${getBaseUrl(forceEnglishVersion)}/view/${this.showId}/`;
                     title1.textContent = titleOptions.title1 !== 'original' ? show.title : show.titleOriginal;
                     if (titleOptions.showTwoTitles) {
                         title2.textContent = titleOptions.title2 !== 'original' ? show.title : show.titleOriginal;
@@ -137,7 +138,7 @@ const runExtension = async () => {
                     container.innerHTML = '';
 
                     container.append(new ShowEpisodes({
-                        episodes, options, dateLocale, bgScriptPort,
+                        episodes, options, dateLocale, bgScriptPort, forceEnglishVersion,
                     }));
                     break;
                 }
@@ -150,6 +151,7 @@ const runExtension = async () => {
                     postponedContainer.appendChild(new PostponedList({
                         laterShows,
                         titleOptions,
+                        forceEnglishVersion,
                     }));
                     break;
                 }
@@ -165,7 +167,7 @@ const runExtension = async () => {
                 };
                 logoLink.href = '#';
             } else {
-                logoLink.href = 'https://myshows.me';
+                logoLink.href = getBaseUrl(forceEnglishVersion);
                 logoLink.title = browser.i18n.getMessage('logoLink_title');
                 logoLink.onclick = null;
             }

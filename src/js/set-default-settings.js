@@ -11,6 +11,7 @@ const defaultOptions = {
     showsWithNewEpAtTop: true,
     externalLinks: JSON.stringify(links),
     alwaysShowNextEpisode: false,
+    forceEnglishVersion: UILang !== 'ru' && false,
 };
 
 export default async () => {

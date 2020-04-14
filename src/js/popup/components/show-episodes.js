@@ -1,17 +1,18 @@
 /* eslint-disable no-param-reassign */
 import templates from '../templates.js';
-import { getPluralForm } from '../utils.js';
+import { getPluralForm, getBaseUrl } from '../utils.js';
 import types from '../../types.js';
 
 export default class ShowEpisodes extends HTMLElement {
     constructor({
-        episodes, options, dateLocale, bgScriptPort,
+        episodes, options, dateLocale, bgScriptPort, forceEnglishVersion,
     }) {
         super();
         this.episodes = episodes;
         this.options = options;
         this.dateLocale = dateLocale;
         this.bgScriptPort = bgScriptPort;
+        this.forceEnglishVersion = forceEnglishVersion;
         this.setSeasonsBlocks();
     }
 
@@ -88,7 +89,7 @@ export default class ShowEpisodes extends HTMLElement {
         const date = airDateUTC ? new Date(airDateUTC) : null;
         epListElem.dataset.id = id;
         epListElem.dataset.season = seasonNumber;
-        link.href = `https://myshows.me/view/episode/${id}/`;
+        link.href = `${getBaseUrl(this.forceEnglishVersion)}/view/episode/${id}/`;
         link.title = title;
         link.textContent = title;
         epNumber.textContent = shortName;
@@ -101,7 +102,7 @@ export default class ShowEpisodes extends HTMLElement {
         if (commentsCount) {
             ep.querySelector('.ep-comments').hidden = false;
             epComments.textContent = commentsCount;
-            epComments.href = `https://en.myshows.me/view/episode/${id}/#comments`;
+            epComments.href = `${getBaseUrl(this.forceEnglishVersion)}/view/episode/${id}/#comments`;
         }
 
         return ep;

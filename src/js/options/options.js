@@ -79,7 +79,7 @@ function createUrlField(template, { name = '', url = '' } = {}) {
 const restoreData = async () => {
     const {
         fSizeDiff, dateLocale, episodesSortOrder, displayShowsTitle, showsWithNewEpAtTop,
-        externalLinks, alwaysShowNextEpisode,
+        externalLinks, alwaysShowNextEpisode, forceEnglishVersion,
     } = await storage.getOptions();
 
     setCurrentFontSize(fSizeDiff);
@@ -107,6 +107,9 @@ const restoreData = async () => {
 
     if (alwaysShowNextEpisode) {
         $('#show-next-episode').checked = true;
+    }
+    if (forceEnglishVersion) {
+        $('#force-english-ver').checked = true;
     }
 
     const externalLinksList = document.getElementById('external-links');
@@ -169,6 +172,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const showNextEpisode = $('#show-next-episode');
     showNextEpisode.addEventListener('change', async () => {
         await storage.saveOptions({ alwaysShowNextEpisode: showNextEpisode.checked });
+    });
+
+    const forceEnglishURL = $('#force-english-ver');
+    forceEnglishURL.addEventListener('change', async () => {
+        await storage.saveOptions({ forceEnglishVersion: forceEnglishURL.checked });
     });
 
     const fieldset = $('fieldset.external-search');
