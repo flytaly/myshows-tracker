@@ -1,6 +1,6 @@
 {
     "name": "myshows-tracker",
-    "version": "2.1.1",
+    "version": "2.1.3",
     "description": "Myshows.me Firefox extension for tracking TV shows",
     "main": "manifest.json",
     "scripts": {

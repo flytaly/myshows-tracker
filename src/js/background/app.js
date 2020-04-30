@@ -182,9 +182,10 @@ const app = {
 
     /** Returns episodes that was already aired */
     pastEpisodes(episodes, time = new Date()) {
+        // In some rare cases airDateUTC could be empty
         return Object.keys(episodes).reduce((acc, showId) => ({
             ...acc,
-            [showId]: episodes[showId].filter(({ airDateUTC }) => Date.parse(airDateUTC) <= time),
+            [showId]: episodes[showId].filter(({ airDateUTC, airDate }) => Date.parse(airDateUTC || airDate) <= time),
         }), {});
     },
 
@@ -192,7 +193,7 @@ const app = {
     futureEpisodes(episodes, time = new Date()) {
         let result = Object.keys(episodes).reduce((acc, showId) => {
             acc.push(...episodes[showId]
-                .filter(({ airDateUTC }) => Date.parse(airDateUTC) > time)
+                .filter(({ airDateUTC, airDate }) => Date.parse(airDateUTC || airDate) > time)
                 /*
                   Sort episodes by number, so they have correct order in the calendar
                   if they have the same air time (like episodes on Netflix)
@@ -201,7 +202,10 @@ const app = {
 
             return acc;
         }, []);
-        result = result.sort(({ airDateUTC: a }, { airDateUTC: b }) => Date.parse(a) - Date.parse(b));
+        result = result.sort(
+            ({ airDateUTC: a, airDate: a2 },
+                { airDateUTC: b, airDate: b2 }) => Date.parse(a || a2) - Date.parse(b || b2),
+        );
         return result;
     },
 

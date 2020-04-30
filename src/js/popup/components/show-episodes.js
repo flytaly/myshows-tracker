@@ -77,7 +77,7 @@ export default class ShowEpisodes extends HTMLElement {
     }
 
     renderEpisodeRow({
-        id, title, shortName, airDateUTC, commentsCount, showId, seasonNumber,
+        id, title, shortName, airDateUTC, airDate, commentsCount, showId, seasonNumber,
     }) {
         const ep = templates.episodeRow.cloneNode(true);
         const link = ep.querySelector('.ep-title a');
@@ -86,7 +86,7 @@ export default class ShowEpisodes extends HTMLElement {
         const epDate = ep.querySelector('.ep-date');
         const epComments = ep.querySelector('.ep-comments a');
         const epRatingBlock = ep.querySelector('.rating-block');
-        const date = airDateUTC ? new Date(airDateUTC) : null;
+        const date = (airDateUTC || airDate) ? new Date(airDateUTC || airDate) : null;
         epListElem.dataset.id = id;
         epListElem.dataset.season = seasonNumber;
         link.href = `${getBaseUrl(this.forceEnglishVersion)}/view/episode/${id}/`;

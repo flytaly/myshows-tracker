@@ -30,7 +30,7 @@ export default class ShowCalendar extends HTMLElement {
          * Today episodes are grouped into "Today" category.
          * */
         const groupByMonth = this.upcomingEpisodes.reduce((acc, ep) => {
-            const date = new Date(ep.airDateUTC);
+            const date = new Date(ep.airDateUTC || ep.airDate);
             const [month, year] = [getMonthGroup(date), date.getFullYear()];
             const last = acc[acc.length - 1];
             if (!last || last.month !== month || last.year !== year) {
@@ -64,9 +64,9 @@ export default class ShowCalendar extends HTMLElement {
     }
 
     renderCalendarRow({
-        id, showId, title, airDateUTC, shortName,
+        id, showId, title, airDateUTC, airDate: aDate, shortName,
     }) {
-        const airDate = new Date(airDateUTC);
+        const airDate = new Date(airDateUTC || aDate);
         const now = new Date();
 
         const calendarRowElem = templates.calendarRow.cloneNode(true);
