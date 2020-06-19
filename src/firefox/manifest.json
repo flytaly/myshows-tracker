@@ -10,7 +10,7 @@
     "description": "__MSG_description__",
     "name": "__MSG_name__",
     "short_name": "MyShows",
-    "version": "2.1.3",
+    "version": "2.2.0",
     "homepage_url": "https://github.com/flytaly/myshows-tracker",
     "icons": {
         "48": "/images/icon-48.png",
