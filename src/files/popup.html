@@ -175,15 +175,29 @@
                     </template>
                     <template id="calendar-row-tmp">
                         <li>
-                            <div class="calendar-date"><span></span><br /><span></span></div>
-                            <div class="calendar-ep">
-                                <div class="calendar-show-title"><a href="#"></a></div>
-                                <div class="calendar-ep-info">
-                                    <span class="calendar-ep-number"></span>
-                                    <span class="calendar-ep-title"><a href="#"></a></span>
+                            <div class="calendar-row-container">
+                                <div class="calendar-date"><span></span><br /><span></span></div>
+                                <div class="calendar-ep">
+                                    <div class="calendar-show-title"><a href="#"></a></div>
+                                    <div class="calendar-ep-info">
+                                        <span class="calendar-ep-number"></span>
+                                        <span class="calendar-ep-title"><a href="#"></a></span>
+                                    </div>
                                 </div>
+                                <button class="triangle"></button>
+                                <div class="calendar-days-left"><span></span><br /><span></span></div>
                             </div>
-                            <div class="calendar-days-left"><span></span><br /><span></span></div>
+                            <div class="calendar-episodes-batch">
+                                <ul></ul>
+                            </div>
+                        </li>
+                    </template>
+                    <template id="calendar-episodes-batch-row">
+                        <li>
+                            <div class="calendar-ep-info">
+                                <span class="calendar-ep-number"></span>
+                                <span class="calendar-ep-title"><a href="#"></a></span>
+                            </div>
                         </li>
                     </template>
                 </div>

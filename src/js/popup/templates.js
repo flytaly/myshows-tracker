@@ -13,6 +13,7 @@ const templates = {
     episodeRow: translateTemplate(getElem('episode-row-tmp')),
     calendar: translateTemplate(getElem('calendar-tmp')),
     calendarRow: translateTemplate(getElem('calendar-row-tmp')),
+    calendarEpBatchRow: translateTemplate(getElem('calendar-episodes-batch-row')),
     postponed: translateTemplate(getElem('postponed-tmp')),
     postponedRow: translateTemplate(getElem('postponed-row-tmp')),
     blankPage: translateTemplate(getElem('blank-page-tmp')),

@@ -230,6 +230,7 @@ const app = {
 
         const unwatchedEps = await this.fetchEpisodes(showIds, shows);
 
+        // const time = new Date(Date.now() - 1000 * 60 * 60 * 24 * 300); // for debug
         const time = new Date();
         const pastEps = this.pastEpisodes(unwatchedEps, time);
         const futureEps = this.futureEpisodes(unwatchedEps, time);
