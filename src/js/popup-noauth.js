@@ -4,7 +4,6 @@ import types from './types.js';
 
 const $ = document.querySelector.bind(document);
 
-
 const loginError = $('#login-error');
 const passwordError = $('#password-error');
 const submitBtn = $('#submit-button');
@@ -33,10 +32,8 @@ bgScriptPort.onMessage.addListener(async (message) => {
     }
 });
 
-
 $('#login-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-
 
     loginError.textContent = '';
     passwordError.textContent = '';

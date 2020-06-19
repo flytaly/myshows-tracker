@@ -26,7 +26,6 @@ export default class PostponedList extends HTMLElement {
             const showTitle2 = li.querySelector('.title-2');
             const epCountElem = li.querySelector('.postponed-episodes-count');
 
-
             link.href = `${getBaseUrl(this.forceEnglishVersion)}/view/${show.id}/`;
             const { showTwoTitles, title1, title2 } = this.titleOptions;
             showTitle1.textContent = title1 === 'original' ? show.titleOriginal : show.title;

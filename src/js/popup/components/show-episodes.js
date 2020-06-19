@@ -4,9 +4,7 @@ import { getPluralForm, getBaseUrl } from '../utils.js';
 import types from '../../types.js';
 
 export default class ShowEpisodes extends HTMLElement {
-    constructor({
-        episodes, options, dateLocale, bgScriptPort, forceEnglishVersion,
-    }) {
+    constructor({ episodes, options, dateLocale, bgScriptPort, forceEnglishVersion }) {
         super();
         this.episodes = episodes;
         this.options = options;
@@ -21,17 +19,14 @@ export default class ShowEpisodes extends HTMLElement {
 
         const groupCb = (acc, ep) => {
             const { seasonNumber: N } = ep;
-            acc[N] ? acc[N].push(ep) : acc[N] = [ep]; // eslint-disable-line no-unused-expressions
+            acc[N] ? acc[N].push(ep) : (acc[N] = [ep]); // eslint-disable-line no-unused-expressions
             return acc;
         };
 
-        const groupedBySeasons = order === 'firstNew'
-            ? this.episodes.reduce(groupCb, {})
-            : this.episodes.reduceRight(groupCb, {});
+        const groupedBySeasons =
+            order === 'firstNew' ? this.episodes.reduce(groupCb, {}) : this.episodes.reduceRight(groupCb, {});
 
-        const getSortOrderFunc = () => (order === 'firstNew'
-            ? (a, b) => b - a
-            : (a, b) => a - b);
+        const getSortOrderFunc = () => (order === 'firstNew' ? (a, b) => b - a : (a, b) => a - b);
 
         const blocks = Object.keys(groupedBySeasons)
             .sort(getSortOrderFunc())
@@ -61,8 +56,7 @@ export default class ShowEpisodes extends HTMLElement {
                     }
                 });
 
-                if ((order === 'firstNew' && idx < seasons.length - 1)
-                    || (order === 'firstOld' && idx !== 0)) {
+                if ((order === 'firstNew' && idx < seasons.length - 1) || (order === 'firstOld' && idx !== 0)) {
                     episodeList.hidden = true;
                 } else {
                     seasonHeader.classList.add('expanded');
@@ -76,9 +70,7 @@ export default class ShowEpisodes extends HTMLElement {
         this.append(...blocks);
     }
 
-    renderEpisodeRow({
-        id, title, shortName, airDateUTC, airDate, commentsCount, showId, seasonNumber,
-    }) {
+    renderEpisodeRow({ id, title, shortName, airDateUTC, airDate, commentsCount, showId, seasonNumber }) {
         const ep = templates.episodeRow.cloneNode(true);
         const link = ep.querySelector('.ep-title a');
         const epListElem = ep.querySelector('.episode-row');
@@ -86,7 +78,7 @@ export default class ShowEpisodes extends HTMLElement {
         const epDate = ep.querySelector('.ep-date');
         const epComments = ep.querySelector('.ep-comments a');
         const epRatingBlock = ep.querySelector('.rating-block');
-        const date = (airDateUTC || airDate) ? new Date(airDateUTC || airDate) : null;
+        const date = airDateUTC || airDate ? new Date(airDateUTC || airDate) : null;
         epListElem.dataset.id = id;
         epListElem.dataset.season = seasonNumber;
         link.href = `${getBaseUrl(this.forceEnglishVersion)}/view/episode/${id}/`;
@@ -128,8 +120,12 @@ export default class ShowEpisodes extends HTMLElement {
                     }
                     el.classList.remove(CHECKED);
                 });
-                epListElem.addEventListener('mouseleave', () => { epListElem.dataset.mouseleaved = 'true'; });
-                epListElem.addEventListener('mouseenter', () => { epListElem.dataset.mouseleaved = ''; });
+                epListElem.addEventListener('mouseleave', () => {
+                    epListElem.dataset.mouseleaved = 'true';
+                });
+                epListElem.addEventListener('mouseenter', () => {
+                    epListElem.dataset.mouseleaved = '';
+                });
             }
         };
 

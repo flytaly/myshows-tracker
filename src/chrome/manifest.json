@@ -14,12 +14,7 @@
         "96": "/images/icon-96.png",
         "128": "/images/icon-128_padding.png"
     },
-    "permissions": [
-        "identity",
-        "storage",
-        "alarms",
-        "https://*.myshows.me/*"
-    ],
+    "permissions": ["identity", "storage", "alarms", "https://*.myshows.me/*"],
     "background": {
         "page": "background.html"
     },
@@ -29,7 +24,7 @@
             "32": "/images/icon-32.png",
             "64": "/images/icon-64.png",
             "96": "/images/icon-96.png"
-          },
+        },
         "default_popup": "popup.html",
         "chrome_style": true
     },
@@ -38,4 +33,4 @@
         "open_in_tab": true,
         "chrome_style": true
     }
-  }
+}

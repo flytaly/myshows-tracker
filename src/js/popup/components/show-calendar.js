@@ -3,9 +3,7 @@ import templates from '../templates.js';
 import { getPluralForm, getBaseUrl } from '../utils.js';
 
 export default class ShowCalendar extends HTMLElement {
-    constructor({
-        upcomingEpisodes, showsInfo, titleOptions, dateLocale, forceEnglishVersion,
-    }) {
+    constructor({ upcomingEpisodes, showsInfo, titleOptions, dateLocale, forceEnglishVersion }) {
         super();
         this.upcomingEpisodes = upcomingEpisodes;
         this.showsInfo = showsInfo;
@@ -38,9 +36,10 @@ export default class ShowCalendar extends HTMLElement {
                     month,
                     year,
                     episodes: [ep],
-                    groupName: month < 0
-                        ? browser.i18n.getMessage('calendar_today')
-                        : date.toLocaleDateString(this.dateLocale, { month: 'long' }),
+                    groupName:
+                        month < 0
+                            ? browser.i18n.getMessage('calendar_today')
+                            : date.toLocaleDateString(this.dateLocale, { month: 'long' }),
                 });
             } else {
                 last.episodes.push(ep);
@@ -63,9 +62,7 @@ export default class ShowCalendar extends HTMLElement {
         this.append(...months);
     }
 
-    renderCalendarRow({
-        id, showId, title, airDateUTC, airDate: aDate, shortName,
-    }) {
+    renderCalendarRow({ id, showId, title, airDateUTC, airDate: aDate, shortName }) {
         const airDate = new Date(airDateUTC || aDate);
         const now = new Date();
 
@@ -83,8 +80,14 @@ export default class ShowCalendar extends HTMLElement {
         dateElem.title = airDate.toLocaleString(this.dateLocale);
 
         showTitle.href = `${getBaseUrl(this.forceEnglishVersion)}/view/${showId}/`;
-        showTitle.title = (this.titleOptions.showTwoTitles && this.titleOptions.title2 !== 'original') ? this.showsInfo[showId].title : this.showsInfo[showId].titleOriginal;
-        showTitle.textContent = this.titleOptions.title1 === 'original' ? this.showsInfo[showId].titleOriginal : this.showsInfo[showId].title;
+        showTitle.title =
+            this.titleOptions.showTwoTitles && this.titleOptions.title2 !== 'original'
+                ? this.showsInfo[showId].title
+                : this.showsInfo[showId].titleOriginal;
+        showTitle.textContent =
+            this.titleOptions.title1 === 'original'
+                ? this.showsInfo[showId].titleOriginal
+                : this.showsInfo[showId].title;
 
         epNumber.textContent = shortName;
 

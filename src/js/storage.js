@@ -41,7 +41,7 @@ const storage = {
     async saveAuthData(data) {
         let expiresIn;
         if (data.expiresIn) {
-            expiresIn = (new Date()).getTime() + data.expiresIn * 1000;
+            expiresIn = new Date().getTime() + data.expiresIn * 1000;
         }
         return browser.storage.local.set({ ...data, expiresIn });
     },

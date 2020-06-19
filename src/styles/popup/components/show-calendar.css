@@ -27,7 +27,7 @@ show-calendar li {
 }
 
 show-calendar li:nth-child(2n) {
-    background-color: #EEEEEE;
+    background-color: #eeeeee;
 }
 
 show-calendar .calendar-date {
@@ -77,4 +77,3 @@ show-calendar .calendar-days-left {
     overflow: hidden;
     width: 4.5rem;
 }
-

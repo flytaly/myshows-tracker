@@ -9,7 +9,6 @@ postponed-list h2 .show-count {
     color: #676767;
 }
 
-
 postponed-list ul {
     display: flex;
     flex-direction: column;
@@ -27,20 +26,19 @@ postponed-list li {
 }
 
 postponed-list li:nth-child(2n) {
-    background-color: #EEEEEE;
+    background-color: #eeeeee;
 }
-
 
 postponed-list .postponed-show-title {
     flex: 1;
     overflow-x: hidden;
 }
 
-postponed-list .title-1{
+postponed-list .title-1 {
     font-weight: bold;
 }
 
-postponed-list .title-2{
+postponed-list .title-2 {
     font-size: 1.2rem;
     color: #676767;
 }

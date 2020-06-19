@@ -1,11 +1,11 @@
-@import url("./spinner.css");
-@import url("./header.css");
-@import url("./components/show-list.css");
-@import url("./components/external-search-list.css");
-@import url("./components/show-calendar.css");
-@import url("./components/postponed-list.css");
-@import url("./episode-view.css");
-@import url("./calendar.css");
+@import url('./spinner.css');
+@import url('./header.css');
+@import url('./components/show-list.css');
+@import url('./components/external-search-list.css');
+@import url('./components/show-calendar.css');
+@import url('./components/postponed-list.css');
+@import url('./episode-view.css');
+@import url('./calendar.css');
 
 * {
     box-sizing: border-box;
@@ -13,7 +13,7 @@
 
 html {
     font-size: 62.5%; /* ==10px if default font size is 16px */
-    font-family: "PT Sans", "Trebuchet MS", Arial, sans-serif;
+    font-family: 'PT Sans', 'Trebuchet MS', Arial, sans-serif;
 }
 
 body {
@@ -27,8 +27,9 @@ body {
     overflow: hidden auto;
 }
 
-a, a:visited {
-    color: #0066D0;
+a,
+a:visited {
+    color: #0066d0;
     text-decoration: none;
 }
 
@@ -63,7 +64,7 @@ a, a:visited {
 }
 
 .tabs .tab {
-    background-color: #EEEEEE;
+    background-color: #eeeeee;
     padding: 0.4rem 1.5rem;
     margin: 0.5rem 0.5rem 0 0;
     border-radius: 5px 5px 0 0;

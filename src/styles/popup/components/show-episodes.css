@@ -11,7 +11,7 @@ show-episodes .season-header:hover {
 }
 
 show-episodes .season-header:after {
-    content: "";
+    content: '';
     position: absolute;
     top: calc(50% - 0.2rem);
     right: 1rem;
@@ -63,7 +63,7 @@ show-episodes .episode-list li:hover {
 }
 
 show-episodes .episode-list li:nth-child(2n) {
-    background: #EEEEEE;
+    background: #eeeeee;
 }
 
 show-episodes .episode-list li > div {
@@ -78,7 +78,7 @@ show-episodes .episode-list li.checked {
     background-color: #dcffe0;
 }
 
-show-episodes .episode-list  li.remove {
+show-episodes .episode-list li.remove {
     opacity: 0;
 }
 
@@ -114,7 +114,7 @@ show-episodes .ep-comments {
 }
 
 show-episodes .ep-comments:before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     right: 100%;
@@ -138,7 +138,7 @@ show-episodes .ep-comments a:visited {
 
 .rating-block:hover {
     background-color: white;
-    box-shadow: -1px -1px 0px 0px #CCCCCC, 1px 1px 0px 0px #CCCCCC;
+    box-shadow: -1px -1px 0px 0px #cccccc, 1px 1px 0px 0px #cccccc;
 }
 
 .ep-rating {
@@ -163,7 +163,7 @@ show-episodes .ep-comments a:visited {
 
 .rating-block:hover .ep-rating {
     max-width: 14rem;
-    box-shadow: 1px 1px 0px 0px #CCCCCC, 0px -1px 0px 0px #CCCCCC;
+    box-shadow: 1px 1px 0px 0px #cccccc, 0px -1px 0px 0px #cccccc;
 }
 
 .ep-rating a {
@@ -172,13 +172,13 @@ show-episodes .ep-comments a:visited {
 }
 
 .ep-rating a.rating-star:active svg {
-    transform: scale(0.90);
+    transform: scale(0.9);
 }
 
 .ep-rating a.rating-star svg {
     height: 100%;
     width: auto;
-    fill: #CCCCCC;
+    fill: #cccccc;
     pointer-events: none;
 }
 
@@ -196,7 +196,7 @@ show-episodes .ep-comments a:visited {
 }
 
 .ep-check:active:after {
-    transform: scale(0.90);
+    transform: scale(0.9);
 }
 
 .ep-check:hover {
@@ -212,7 +212,7 @@ show-episodes .ep-comments a:visited {
 .ep-rating:hover + .ep-check:after,
 .ep-check.checked:after,
 .ep-check:hover:after {
-    content: "";
+    content: '';
     position: absolute;
     background: url(../../../images/check.svg) center center no-repeat;
     background-size: 1.5rem 1.5rem;
@@ -223,28 +223,28 @@ show-episodes .ep-comments a:visited {
 }
 
 .ep-rating > a:nth-child(1):hover > svg,
-.ep-rating > a:nth-child(1):hover  + * > svg,
-.ep-rating > a:nth-child(1):hover  + * + * > svg,
-.ep-rating > a:nth-child(1):hover  + * + * + * > svg,
-.ep-rating > a:nth-child(1):hover  + * + * + * + *  >svg {
+.ep-rating > a:nth-child(1):hover + * > svg,
+.ep-rating > a:nth-child(1):hover + * + * > svg,
+.ep-rating > a:nth-child(1):hover + * + * + * > svg,
+.ep-rating > a:nth-child(1):hover + * + * + * + * > svg {
     fill: #cc0000;
 }
 
 .ep-rating > a:nth-child(2):hover > svg,
-.ep-rating > a:nth-child(2):hover  + * > svg,
-.ep-rating > a:nth-child(2):hover  + * + * > svg,
-.ep-rating > a:nth-child(2):hover  + * + * + * > svg {
+.ep-rating > a:nth-child(2):hover + * > svg,
+.ep-rating > a:nth-child(2):hover + * + * > svg,
+.ep-rating > a:nth-child(2):hover + * + * + * > svg {
     fill: #cc0000;
 }
 
 .ep-rating > a:nth-child(3):hover > svg,
-.ep-rating > a:nth-child(3):hover  + * > svg,
-.ep-rating > a:nth-child(3):hover  + * + * > svg {
+.ep-rating > a:nth-child(3):hover + * > svg,
+.ep-rating > a:nth-child(3):hover + * + * > svg {
     fill: #cc0000;
 }
 
 .ep-rating > a:nth-child(4):hover > svg,
-.ep-rating > a:nth-child(4):hover  + * > svg {
+.ep-rating > a:nth-child(4):hover + * > svg {
     fill: #cc0000;
 }
 

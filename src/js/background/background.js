@@ -23,7 +23,6 @@ async function update() {
     state.updating = false;
 }
 
-
 const startExtension = async () => {
     const { accessToken } = await storage.getAuthData();
 
@@ -43,10 +42,10 @@ const startExtension = async () => {
 // requestIdleCallback doesn't work in Chrome
 if (TARGET === 'chrome') {
     startExtension();
-} else { // firefox
+} else {
+    // firefox
     window.requestIdleCallback(startExtension);
 }
-
 
 browser.runtime.onInstalled.addListener(async () => {
     await setDefaultSettings();
@@ -91,7 +90,6 @@ browser.runtime.onConnect.addListener(async (port) => {
         state.updating = true;
     }
 });
-
 
 browser.alarms.onAlarm.addListener(async ({ name }) => {
     if (name === types.ALARM_UPDATE) {

@@ -75,6 +75,7 @@ const app = {
         // Resource Owner Password Credentials Grant example
         // curl "https://myshows.me/oauth/token" -d "grant_type=password&client_id=&client_secret=&username=&password="
 
+        // prettier-ignore
         const getParamsString = () => 'grant_type=password'
         + `&client_id=${clientId}`
         + `&client_secret=${clientSecret}`
@@ -89,7 +90,6 @@ const app = {
             },
             body: getParamsString(username, password),
         });
-
 
         const responseData = await response.json();
         if (responseData.error) {
@@ -113,11 +113,7 @@ const app = {
         if (response.status !== 200) {
             throw new AuthError(`Couldn't receive refreshed tokens. ${response.status}: ${response.statusText}`);
         }
-        const {
-            access_token: accessToken,
-            expires_in: expiresIn,
-            refresh_token: refreshToken,
-        } = await response.json();
+        const { access_token: accessToken, expires_in: expiresIn, refresh_token: refreshToken } = await response.json();
         await storage.saveAuthData({ accessToken, expiresIn, refreshToken });
         return { accessToken };
     },
@@ -128,11 +124,10 @@ const app = {
         // if (!code) throw new Error('Couldn\'t get auth code');
 
         state.loginStarted = true;
-        const {
-            access_token: accessToken,
-            expires_in: expiresIn,
-            refresh_token: refreshToken,
-        } = await this.getTokens(username, password);
+        const { access_token: accessToken, expires_in: expiresIn, refresh_token: refreshToken } = await this.getTokens(
+            username,
+            password,
+        );
         await storage.saveAuthData({ accessToken, expiresIn, refreshToken });
         await this.getProfileData();
         state.loginStarted = false;
@@ -141,7 +136,9 @@ const app = {
     },
 
     async getProfileData() {
-        const { result: { user } } = await rpcHandler.profileGet();
+        const {
+            result: { user },
+        } = await rpcHandler.profileGet();
         await storage.saveProfile(user);
     },
 
@@ -183,28 +180,37 @@ const app = {
     /** Returns episodes that was already aired */
     pastEpisodes(episodes, time = new Date()) {
         // In some rare cases airDateUTC could be empty
-        return Object.keys(episodes).reduce((acc, showId) => ({
-            ...acc,
-            [showId]: episodes[showId].filter(({ airDateUTC, airDate }) => Date.parse(airDateUTC || airDate) <= time),
-        }), {});
+        return Object.keys(episodes).reduce(
+            (acc, showId) => ({
+                ...acc,
+                [showId]: episodes[showId].filter(
+                    ({ airDateUTC, airDate }) => Date.parse(airDateUTC || airDate) <= time,
+                ),
+            }),
+            {},
+        );
     },
 
     /** Returns array of future episodes in time order */
     futureEpisodes(episodes, time = new Date()) {
         let result = Object.keys(episodes).reduce((acc, showId) => {
-            acc.push(...episodes[showId]
-                .filter(({ airDateUTC, airDate }) => Date.parse(airDateUTC || airDate) > time)
-                /*
+            acc.push(
+                ...episodes[showId]
+                    .filter(({ airDateUTC, airDate }) => Date.parse(airDateUTC || airDate) > time)
+                    /*
                   Sort episodes by number, so they have correct order in the calendar
                   if they have the same air time (like episodes on Netflix)
                 */
-                .sort((a, b) => a.episodeNumber - b.episodeNumber));
+                    .sort((a, b) => a.episodeNumber - b.episodeNumber),
+            );
 
             return acc;
         }, []);
         result = result.sort(
-            ({ airDateUTC: a, airDate: a2 },
-                { airDateUTC: b, airDate: b2 }) => Date.parse(a || a2) - Date.parse(b || b2),
+            (
+                { airDateUTC: a, airDate: a2 }, //
+                { airDateUTC: b, airDate: b2 },
+            ) => Date.parse(a || a2) - Date.parse(b || b2),
         );
         return result;
     },
@@ -230,13 +236,13 @@ const app = {
 
         watchingShows = watchingShows.map((entry) => {
             const len = pastEps[entry.show.id].length;
-            return ({
+            return {
                 ...entry,
                 unwatchedEpisodes: len,
                 latestEpisode: len && pastEps[entry.show.id][0],
                 nextEpisode: len && pastEps[entry.show.id][len - 1],
                 show: filterShowProperties(shows.find(({ id }) => entry.show.id === id)),
-            });
+            };
         });
 
         laterShows = laterShows.map((entry) => ({
@@ -255,6 +261,7 @@ const app = {
 
         while (this.rateEpisodesAgain.length) {
             const { episodeId, rating, showId } = this.rateEpisodesAgain.pop();
+            // eslint-disable-next-line no-await-in-loop
             await this.rateEpisode(episodeId, rating, showId, false); /* eslint-disable-line no-await-in-loop */
         }
     },
@@ -272,26 +279,26 @@ const app = {
             state.episodeWasRated = episodeId;
 
             // Delete episode from storage and re-count number of episodes left to watch
-            let [shows, episodes] = await Promise.all([
-                storage.getWatchingShows(),
-                storage.getEpisodes(),
-            ]);
+            let [shows, episodes] = await Promise.all([storage.getWatchingShows(), storage.getEpisodes()]);
 
             if (!episodes[showId].some((ep) => ep.id === episodeId)) return; // already deleted from storage
 
-            episodes = { ...episodes, [showId]: episodes[showId].filter((e) => e.id !== episodeId) };
+            episodes = {
+                ...episodes,
+                [showId]: episodes[showId].filter((e) => e.id !== episodeId),
+            };
             shows = shows.map((show) => {
                 const len = episodes[showId].length;
-                return (show.show.id === showId ? ({
-                    ...show,
-                    unwatchedEpisodes: show.unwatchedEpisodes - 1,
-                    latestEpisode: len && episodes[showId][0],
-                    nextEpisode: len && episodes[showId][len - 1],
-                }) : show);
+                return show.show.id === showId
+                    ? {
+                          ...show,
+                          unwatchedEpisodes: show.unwatchedEpisodes - 1,
+                          latestEpisode: len && episodes[showId][0],
+                          nextEpisode: len && episodes[showId][len - 1],
+                      }
+                    : show;
             });
-            await Promise.all([
-                storage.saveEpisodesToWatch(episodes),
-                storage.saveWatchingShows(shows)]);
+            await Promise.all([storage.saveEpisodesToWatch(episodes), storage.saveWatchingShows(shows)]);
             setBadgeAndTitle(shows);
         } catch (e) {
             console.error(`Error occurred during episode rating. ${e.name}: ${e.message}`);

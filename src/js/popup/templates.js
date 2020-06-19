@@ -1,6 +1,9 @@
 import { translateElement } from '../l10n.js';
 
-const translateTemplate = ({ content }) => { translateElement(content); return content; };
+const translateTemplate = ({ content }) => {
+    translateElement(content);
+    return content;
+};
 
 const getElem = document.getElementById.bind(document);
 

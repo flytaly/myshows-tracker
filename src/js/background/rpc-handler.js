@@ -7,13 +7,14 @@ const rpcHandler = {
 
     async getAccessToken() {
         const { accessToken, refreshToken, expiresIn } = await storage.getAuthData();
-        if (!refreshToken) throw new AuthError('Couldn\'t get refresh token');
+        if (!refreshToken) throw new AuthError("Couldn't get refresh token");
         if (!accessToken) {
             const { accessToken: newAccessToken } = await app.renewAccessToken(refreshToken);
             if (newAccessToken) return newAccessToken;
-            throw new AuthError('Couldn\'t get access token');
+            throw new AuthError("Couldn't get access token");
         }
-        if (expiresIn - Date.now() < 24 * 60 * 60 * 1000) { // update token if less than one day left
+        if (expiresIn - Date.now() < 24 * 60 * 60 * 1000) {
+            // update token if less than one day left
             const { accessToken: newAccessToken } = await app.renewAccessToken(refreshToken);
             if (newAccessToken) return newAccessToken;
         }
@@ -50,16 +51,19 @@ const rpcHandler = {
     },
 
     async singleRequest(method, params = {}, withAuth = false) {
-        return this.request({
-            jsonrpc: '2.0',
-            method,
-            params,
-            id: 1,
-        }, withAuth);
+        return this.request(
+            {
+                jsonrpc: '2.0',
+                method,
+                params,
+                id: 1,
+            },
+            withAuth,
+        );
     },
 
     /* Combines requests in batches by N requests per batch https://jsonrpc.org/specification#batch
-    *  Returns array of successful results */
+     *  Returns array of successful results */
     async batchRequest(reqObjects = [], withAuth = false, N = 10) {
         const results = [];
         const body = reqObjects.map(({ method, params, id }, idx) => ({
@@ -72,7 +76,7 @@ const rpcHandler = {
         // Intentionally sending requests sequentially (not concurrently with Promise.All)
         // to prevent triggering server's DDOS protection if the batch contains too many requests
         for (let i = 0; i < body.length; i += N) {
-            results.push(...await this.request(body.slice(i, i + N), withAuth)); // eslint-disable-line no-await-in-loop
+            results.push(...(await this.request(body.slice(i, i + N), withAuth))); // eslint-disable-line no-await-in-loop
         }
 
         return results.filter(({ error, id }) => {
@@ -101,11 +105,14 @@ const rpcHandler = {
      * Return user information about episodes to given show.
      * @param {array} showIds */
     async profileEpisodes(showIds) {
-        return this.batchRequest(showIds.map((showId) => ({
-            method: 'profile.Episodes',
-            params: { showId },
-            id: showId,
-        })), true);
+        return this.batchRequest(
+            showIds.map((showId) => ({
+                method: 'profile.Episodes',
+                params: { showId },
+                id: showId,
+            })),
+            true,
+        );
     },
 
     // ========== Shows Methods ==========
@@ -113,11 +120,13 @@ const rpcHandler = {
      * Return information about shows.
      * @param {array} showIds */
     async showsGetById(showIds, withEpisodes = true) {
-        return this.batchRequest(showIds.map((showId) => ({
-            method: 'shows.GetById',
-            params: { showId, withEpisodes },
-            id: showId,
-        })));
+        return this.batchRequest(
+            showIds.map((showId) => ({
+                method: 'shows.GetById',
+                params: { showId, withEpisodes },
+                id: showId,
+            })),
+        );
     },
 
     async showsEpisode(id) {
@@ -137,7 +146,6 @@ const rpcHandler = {
     async manageRateEpisode(episodeId, rating = 0) {
         return this.singleRequest('manage.RateEpisode', { id: episodeId, rating }, true);
     },
-
 };
 
 export default rpcHandler;

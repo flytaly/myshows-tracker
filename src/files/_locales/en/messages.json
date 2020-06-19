@@ -175,7 +175,7 @@
         "message": "Great!",
         "description": "Attribute title rating: 5 stars"
     },
-    "postponedListTitle":{
+    "postponedListTitle": {
         "message": "Going to watch",
         "description": "Title of the list with postponed shows"
     },

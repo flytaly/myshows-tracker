@@ -16,7 +16,8 @@ const runExtension = async () => {
     const dateLocale = options.dateLocale ? options.dateLocale : UILang;
 
     // If browser's standard size is 16px then +2 diff means 12px, -2 means 8px ...
-    if (options.fSizeDiff) document.documentElement.style.fontSize = `${(100 / 16) * (10 + Number(options.fSizeDiff))}%`;
+    if (options.fSizeDiff)
+        document.documentElement.style.fontSize = `${(100 / 16) * (10 + Number(options.fSizeDiff))}%`;
     const getElem = document.getElementById.bind(document);
     const mainView = getElem('main-view');
     const episodeView = getElem('episode-view');
@@ -29,11 +30,7 @@ const runExtension = async () => {
     const bgScriptPort = browser.runtime.connect();
     const showsInfo = {}; // show's info for easy access to it in the episode view
     const updateShowsInfo = (shows = []) => {
-        shows.forEach(({
-            show: {
-                id, image, title, titleOriginal,
-            },
-        }) => {
+        shows.forEach(({ show: { id, image, title, titleOriginal } }) => {
             showsInfo[id] = { image, title, titleOriginal };
         });
     };
@@ -49,9 +46,7 @@ const runExtension = async () => {
     }
 
     // hide elements except the ones in `toShow` array
-    const elements = [
-        mainView, episodeView, backBtn, showContainer, calendarContainer, postponedContainer,
-    ];
+    const elements = [mainView, episodeView, backBtn, showContainer, calendarContainer, postponedContainer];
     const toggleHidden = (toShow) => {
         /* eslint-disable no-param-reassign */
         elements.forEach((elem) => {
@@ -103,7 +98,11 @@ const runExtension = async () => {
                     } else {
                         calendarContainer.appendChild(
                             new ShowCalendar({
-                                upcomingEpisodes, showsInfo, titleOptions, dateLocale, forceEnglishVersion,
+                                upcomingEpisodes,
+                                showsInfo,
+                                titleOptions,
+                                dateLocale,
+                                forceEnglishVersion,
                             }),
                         );
                     }
@@ -137,9 +136,15 @@ const runExtension = async () => {
                     this.updateLogoNav();
                     container.innerHTML = '';
 
-                    container.append(new ShowEpisodes({
-                        episodes, options, dateLocale, bgScriptPort, forceEnglishVersion,
-                    }));
+                    container.append(
+                        new ShowEpisodes({
+                            episodes,
+                            options,
+                            dateLocale,
+                            bgScriptPort,
+                            forceEnglishVersion,
+                        }),
+                    );
                     break;
                 }
 
@@ -148,11 +153,13 @@ const runExtension = async () => {
                     const laterShows = await storage.getLaterShows();
                     toggleHidden([mainView, postponedContainer]);
                     postponedContainer.innerHTML = '';
-                    postponedContainer.appendChild(new PostponedList({
-                        laterShows,
-                        titleOptions,
-                        forceEnglishVersion,
-                    }));
+                    postponedContainer.appendChild(
+                        new PostponedList({
+                            laterShows,
+                            titleOptions,
+                            forceEnglishVersion,
+                        }),
+                    );
                     break;
                 }
                 default:
@@ -190,27 +197,33 @@ const runExtension = async () => {
     };
 
     function initTabs() {
-        const tabs = [{
-            elem: getElem('tab-shows'),
-            place: nav.places.showList,
-        }, {
-            elem: getElem('tab-calendar'),
-            place: nav.places.upcomingList,
-        }, {
-            elem: getElem('tab-postponed'),
-            place: nav.places.postponedList,
-        }];
+        const tabs = [
+            {
+                elem: getElem('tab-shows'),
+                place: nav.places.showList,
+            },
+            {
+                elem: getElem('tab-calendar'),
+                place: nav.places.upcomingList,
+            },
+            {
+                elem: getElem('tab-postponed'),
+                place: nav.places.postponedList,
+            },
+        ];
 
-        const toggleActive = (activeIdx) => tabs.forEach(({ elem }, idx) => {
-            if (idx !== activeIdx) elem.classList.remove('active');
-            else elem.classList.add('active');
-        });
+        const toggleActive = (activeIdx) =>
+            tabs.forEach(({ elem }, idx) => {
+                if (idx !== activeIdx) elem.classList.remove('active');
+                else elem.classList.add('active');
+            });
 
-        tabs.forEach(({ elem, place }, idx) => elem
-            .addEventListener('click', () => {
+        tabs.forEach(({ elem, place }, idx) =>
+            elem.addEventListener('click', () => {
                 nav.navigate(place);
                 toggleActive(idx);
-            }));
+            }),
+        );
     }
 
     // Hide tab with postponed shows is there are no such shows
@@ -232,7 +245,9 @@ const runExtension = async () => {
             nav.navigate(nav.places.showList);
         });
 
-        (async () => { loginName.textContent = await storage.getProfile(); })();
+        (async () => {
+            loginName.textContent = await storage.getProfile();
+        })();
 
         initDropdownMenu(loginName);
         initTabs();
@@ -279,10 +294,14 @@ const runExtension = async () => {
                             seasonHeader.dispatchEvent(customEvents.episodeRemoved);
                         }, 500);
 
-                        episodeElem.addEventListener('mouseover', () => {
-                            episodeElem.classList.remove('remove');
-                            clearTimeout(tm);
-                        }, { once: true });
+                        episodeElem.addEventListener(
+                            'mouseover',
+                            () => {
+                                episodeElem.classList.remove('remove');
+                                clearTimeout(tm);
+                            },
+                            { once: true },
+                        );
                     });
                     // forcefully trigger 'mouseleave' if mouse already leaved episode before the event was added
                     if (episodeElem.dataset.mouseleaved) episodeElem.dispatchEvent(new Event('mouseleave'));
@@ -296,8 +315,7 @@ const runExtension = async () => {
         await nav.navigate(nav.places.showList);
     }
 
-    init()
-        .catch((e) => console.error(e));
+    init().catch((e) => console.error(e));
 };
 
 runExtension();

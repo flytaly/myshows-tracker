@@ -31,18 +31,16 @@ async function saveExternalLinks(fieldset) {
     const data = rows
         .map((row) => {
             const inputs = Array.from(row.getElementsByTagName('input'));
-            return inputs
-                .reduce((acc, currentInput) => {
-                    const { name, value } = currentInput;
-                    if (name !== 'name' && name !== 'url') return acc;
-                    return { ...acc, [name]: value };
-                }, {});
+            return inputs.reduce((acc, currentInput) => {
+                const { name, value } = currentInput;
+                if (name !== 'name' && name !== 'url') return acc;
+                return { ...acc, [name]: value };
+            }, {});
         })
         .filter(({ url }) => isValidUrl(url));
 
     await storage.saveOptions({ externalLinks: JSON.stringify(data) });
 }
-
 
 function setCurrentFontSize(fSizeDiff) {
     if (fSizeDiff) {
@@ -78,8 +76,14 @@ function createUrlField(template, { name = '', url = '' } = {}) {
 
 const restoreData = async () => {
     const {
-        fSizeDiff, dateLocale, episodesSortOrder, displayShowsTitle, showsWithNewEpAtTop,
-        externalLinks, alwaysShowNextEpisode, forceEnglishVersion,
+        fSizeDiff,
+        dateLocale,
+        episodesSortOrder,
+        displayShowsTitle,
+        showsWithNewEpAtTop,
+        externalLinks,
+        alwaysShowNextEpisode,
+        forceEnglishVersion,
     } = await storage.getOptions();
 
     setCurrentFontSize(fSizeDiff);
@@ -90,8 +94,9 @@ const restoreData = async () => {
     } else {
         $('#date-format').value = '';
     }
-    $('#date-example').textContent = `${d.toLocaleDateString(dateLocale || UILang)} `
-            + `${d.toLocaleDateString(dateLocale || UILang, { month: 'long' })}`;
+    $('#date-example').textContent =
+        `${d.toLocaleDateString(dateLocale || UILang)} ` +
+        `${d.toLocaleDateString(dateLocale || UILang, { month: 'long' })}`;
 
     if (episodesSortOrder) $('#sort-order').value = episodesSortOrder;
 
@@ -130,7 +135,6 @@ const restoreData = async () => {
     });
 };
 
-
 document.addEventListener('DOMContentLoaded', async () => {
     await restoreData();
 
@@ -147,8 +151,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     dateFormat.addEventListener('change', async () => {
         const dateLocale = dateFormat.value;
         const d = new Date();
-        $('#date-example').textContent = `${d.toLocaleDateString(dateLocale || UILang)} `
-            + `${d.toLocaleDateString(dateLocale || UILang, { month: 'long' })}`;
+        $('#date-example').textContent =
+            `${d.toLocaleDateString(dateLocale || UILang)} ` +
+            `${d.toLocaleDateString(dateLocale || UILang, { month: 'long' })}`;
         await storage.saveOptions({ dateLocale });
     });
 

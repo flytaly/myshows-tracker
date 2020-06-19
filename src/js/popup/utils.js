@@ -9,7 +9,9 @@ export function getTitleOptions({ displayShowsTitle: t }) {
 
     const [title1, title2] = t.split('+');
     if (!title1) return options;
-    if (title2) { options = { ...options, showTwoTitles: true, title2 }; }
+    if (title2) {
+        options = { ...options, showTwoTitles: true, title2 };
+    }
     return { ...options, title1 };
 }
 

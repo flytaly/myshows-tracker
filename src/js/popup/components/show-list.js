@@ -24,11 +24,12 @@ export default class ShowList extends HTMLUListElement {
         if (this.options.showsWithNewEpAtTop) {
             shows.sort((s1, s2) => Date.parse(s2.latestEpisode.airDateUTC) - Date.parse(s1.latestEpisode.airDateUTC));
         }
-        this.append(...shows
-            .map((show) => {
-                const openMenu = showWithOpenedMenu && (Number(show.show.id) === Number(showWithOpenedMenu));
+        this.append(
+            ...shows.map((show) => {
+                const openMenu = showWithOpenedMenu && Number(show.show.id) === Number(showWithOpenedMenu);
                 return this.renderShowRow(show, clickHandler, openMenu);
-            }));
+            }),
+        );
     }
 
     renderShowRow(showRecord, onClick, withOpenedMenu = false) {
@@ -52,7 +53,9 @@ export default class ShowList extends HTMLUListElement {
         const externalSearchList = new ExternalSearchList(show.titleOriginal, externalLinks);
         toggleClassOnClick(externalButton, externalBlock);
         externalBlock.appendChild(externalSearchList);
-        if (withOpenedMenu) { externalBlock.classList.add('open'); }
+        if (withOpenedMenu) {
+            externalBlock.classList.add('open');
+        }
 
         titleLink.dataset.id = show.id;
         titleLink.title = show.titleOriginal;
