@@ -17,11 +17,13 @@ export default class ShowCalendar extends HTMLElement {
         const result = [];
         let lastStack = [];
         let prevEpDate = null;
+        let prevShowId = null;
 
         episodes.forEach((episode) => {
             const currentEpDate = new Date(episode.airDateUTC || episode.airDate);
+            const { showId } = episode;
 
-            if (prevEpDate && +prevEpDate === +currentEpDate) {
+            if (prevShowId === showId && prevEpDate && +prevEpDate === +currentEpDate) {
                 lastStack.push(episode);
             } else {
                 if (lastStack.length) result.push(lastStack);
@@ -29,6 +31,7 @@ export default class ShowCalendar extends HTMLElement {
             }
 
             prevEpDate = currentEpDate;
+            prevShowId = showId;
         });
         if (lastStack.length) result.push(lastStack);
 
