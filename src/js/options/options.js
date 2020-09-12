@@ -122,6 +122,8 @@ const restoreData = async () => {
     let links;
     try {
         links = JSON.parse(externalLinks);
+    } catch (e) {
+        console.log(e);
     } finally {
         links = links && links.length ? links : [];
     }

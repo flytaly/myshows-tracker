@@ -226,7 +226,7 @@ const runExtension = async () => {
         );
     }
 
-    // Hide tab with postponed shows is there are no such shows
+    // Hide tab with postponed shows if there are no such shows
     async function updateTabs() {
         const laterShows = await storage.getLaterShows();
         const laterTab = getElem('tab-postponed');
