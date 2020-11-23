@@ -6,7 +6,7 @@ postponed-list h2 {
 postponed-list h2 .show-count {
     font-size: 1.6rem;
     font-weight: normal;
-    color: #676767;
+    color: var(--grey-5);
 }
 
 postponed-list ul {
@@ -26,7 +26,7 @@ postponed-list li {
 }
 
 postponed-list li:nth-child(2n) {
-    background-color: #eeeeee;
+    background-color: var(--grey-1);
 }
 
 postponed-list .postponed-show-title {
@@ -40,7 +40,7 @@ postponed-list .title-1 {
 
 postponed-list .title-2 {
     font-size: 1.2rem;
-    color: #676767;
+    color: var(--grey-5);
 }
 
 postponed-list .postponed-episodes-count {

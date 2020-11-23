@@ -78,3 +78,18 @@
 .external-search input.url {
     width: 60%;
 }
+
+.theme-section {
+    display: flex;
+    align-items: center;
+}
+
+.theme-section .radio-label {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 1.3rem;
+}
+
+.theme-section .radio-label:first-of-type {
+    margin-left: 2rem;
+}

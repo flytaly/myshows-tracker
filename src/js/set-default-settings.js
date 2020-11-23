@@ -12,6 +12,7 @@ const defaultOptions = {
     externalLinks: JSON.stringify(links),
     alwaysShowNextEpisode: false,
     forceEnglishVersion: UILang !== 'ru',
+    theme: 'auto',
 };
 
 export default async () => {

@@ -2,11 +2,11 @@ show-episodes .season-header {
     position: relative;
     padding: 1rem;
     margin: 0 1rem;
-    border-bottom: 1px dashed #999999;
+    border-bottom: 1px dashed var(--grey-4);
 }
 
 show-episodes .season-header:hover {
-    border-bottom: 1px solid #999999;
+    border-bottom: 1px solid var(--grey-4);
     cursor: pointer;
 }
 
@@ -17,7 +17,7 @@ show-episodes .season-header:after {
     right: 1rem;
     width: 0.4rem;
     height: 0.4rem;
-    border: solid #999;
+    border: solid var(--grey-4);
     border-width: 0 3px 3px 0;
     transform: rotate(-135deg);
     transition: 0.25s;
@@ -33,7 +33,7 @@ show-episodes .season-header .season-title {
 }
 
 show-episodes .season-header .episodes-in-season {
-    color: #676767;
+    color: var(--grey-5);
     font-size: 1.4rem;
     margin-left: 1rem;
 }
@@ -63,7 +63,7 @@ show-episodes .episode-list li:hover {
 }
 
 show-episodes .episode-list li:nth-child(2n) {
-    background: #eeeeee;
+    background: var(--grey-1);
 }
 
 show-episodes .episode-list li > div {
@@ -75,7 +75,7 @@ show-episodes .episode-list li > div:last-child {
 }
 
 show-episodes .episode-list li.checked {
-    background-color: #dcffe0;
+    background-color: var(--checked-episode-background);
 }
 
 show-episodes .episode-list li.remove {
@@ -94,7 +94,7 @@ show-episodes .ep-title a {
 
 show-episodes .ep-number {
     display: inline-block;
-    color: #cc0000;
+    color: var(--accent-color);
     font-size: 1.2rem;
 }
 
@@ -104,9 +104,9 @@ show-episodes .ep-date {
 }
 
 show-episodes .ep-comments {
-    background-color: #999999;
+    background-color: var(--episode-comments-bg-color);
     position: relative;
-    color: white;
+    color: var(--episode-comments-color);
     font-size: 1rem;
     padding: 3px;
     min-width: 2rem;
@@ -121,13 +121,13 @@ show-episodes .ep-comments:before {
     width: 0;
     height: 0;
     border: 2px solid transparent;
-    border-top-color: #999999;
-    border-right-color: #999999;
+    border-top-color: var(--episode-comments-bg-color);
+    border-right-color: var(--episode-comments-bg-color);
 }
 
 show-episodes .ep-comments a,
 show-episodes .ep-comments a:visited {
-    color: white;
+    color: var(--episode-comments-color);
 }
 
 .rating-block {
@@ -137,8 +137,8 @@ show-episodes .ep-comments a:visited {
 }
 
 .rating-block:hover {
-    background-color: white;
-    box-shadow: -1px -1px 0px 0px #cccccc, 1px 1px 0px 0px #cccccc;
+    background-color: var(--background-color);
+    box-shadow: -1px -1px 0px 0px var(--grey-2), 1px 1px 0px 0px var(--grey-2);
 }
 
 .ep-rating {
@@ -155,7 +155,7 @@ show-episodes .ep-comments a:visited {
     max-width: 0;
 
     overflow: hidden;
-    background-color: white;
+    background-color: var(--background-color);
     white-space: nowrap;
     z-index: 10;
     transition: max-width 0.2s ease-out;
@@ -163,7 +163,7 @@ show-episodes .ep-comments a:visited {
 
 .rating-block:hover .ep-rating {
     max-width: 14rem;
-    box-shadow: 1px 1px 0px 0px #cccccc, 0px -1px 0px 0px #cccccc;
+    box-shadow: 1px 1px 0px 0px var(--grey-2), 0px -1px 0px 0px var(--grey-2);
 }
 
 .ep-rating a {
@@ -178,12 +178,12 @@ show-episodes .ep-comments a:visited {
 .ep-rating a.rating-star svg {
     height: 100%;
     width: auto;
-    fill: #cccccc;
+    fill: var(--grey-3);
     pointer-events: none;
 }
 
 .ep-rating > a.rating-star.checked > svg {
-    fill: #cc0000;
+    fill: var(--accent-color);
 }
 
 .ep-check {
@@ -192,7 +192,7 @@ show-episodes .ep-comments a:visited {
     width: 2.2rem;
     height: 2.2rem;
     border-radius: 50%;
-    border: 1px solid black;
+    border: 1px solid var(--font-color);
 }
 
 .ep-check:active:after {
@@ -200,13 +200,13 @@ show-episodes .ep-comments a:visited {
 }
 
 .ep-check:hover {
-    box-shadow: 0 0 2px #cc0000;
-    border: 1px solid #cc0000;
+    box-shadow: 0 0 2px var(--accent-color);
+    border: 1px solid var(--accent-color);
 }
 
 .ep-rating:hover + .ep-check,
 .ep-check.checked {
-    border: 1px solid #cc0000;
+    border: 1px solid var(--accent-color);
 }
 
 .ep-rating:hover + .ep-check:after,
@@ -227,27 +227,27 @@ show-episodes .ep-comments a:visited {
 .ep-rating > a:nth-child(1):hover + * + * > svg,
 .ep-rating > a:nth-child(1):hover + * + * + * > svg,
 .ep-rating > a:nth-child(1):hover + * + * + * + * > svg {
-    fill: #cc0000;
+    fill: var(--accent-color);
 }
 
 .ep-rating > a:nth-child(2):hover > svg,
 .ep-rating > a:nth-child(2):hover + * > svg,
 .ep-rating > a:nth-child(2):hover + * + * > svg,
 .ep-rating > a:nth-child(2):hover + * + * + * > svg {
-    fill: #cc0000;
+    fill: var(--accent-color);
 }
 
 .ep-rating > a:nth-child(3):hover > svg,
 .ep-rating > a:nth-child(3):hover + * > svg,
 .ep-rating > a:nth-child(3):hover + * + * > svg {
-    fill: #cc0000;
+    fill: var(--accent-color);
 }
 
 .ep-rating > a:nth-child(4):hover > svg,
 .ep-rating > a:nth-child(4):hover + * > svg {
-    fill: #cc0000;
+    fill: var(--accent-color);
 }
 
 .ep-rating > a:nth-child(5):hover > svg {
-    fill: #cc0000;
+    fill: var(--accent-color);
 }

@@ -7,10 +7,10 @@
     padding: 3px 0;
     margin: 0;
     z-index: 10;
-    background-color: #edeeee;
+    background-color: var(--grey-1);
     border-radius: 2px;
-    border: 1px solid #aaaaaa;
-    box-shadow: 0px 0px 5px 0px #aaaaaa;
+    border: 1px solid var(--grey-3);
+    box-shadow: 0px 0px 5px 0px var(--grey-3);
 }
 
 .open > [is='external-search-list'] {
@@ -29,22 +29,22 @@ ul[is='external-search-list'] li {
     display: block;
     width: 100%;
     font-size: 1.3rem;
-    color: black;
+    color: var(--font-color);
     padding: 5px 1.3rem;
     white-space: nowrap;
 }
 
 [is='external-search-list'] a:visited {
-    color: black;
+    color: var(--external-search-color);
 }
 
 [is='external-search-list'] li:last-child a {
     margin-top: 3px;
-    border-top: 1px solid #e5e5e5;
+    border-top: 1px solid var(--grey-1);
 }
 
 [is='external-search-list'] a:focus,
 [is='external-search-list'] a:hover {
-    color: white;
-    background-color: #aaaaaa;
+    color: var(--external-search-hover-color);
+    background-color: var(--grey-3);
 }

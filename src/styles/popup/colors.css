@@ -1,0 +1,63 @@
+body {
+    --font-color: #000000;
+    --background-color: #ffffff;
+    --link-color: #0066d0;
+    --tabs-block-background: #999999;
+    --tab-border-color: #000000;
+    --tab-not-active: #eeeeee;
+    --accent-color: #cc0000;
+
+    --header-bg-color: rgba(37, 37, 37, 0.95);
+    --header-font-color: #ffffff;
+
+    --unwatched-bg-color: #a80303;
+    --unwatched-color: #ffffff;
+
+    --external-search-color: #000000;
+    --external-search-hover-color: #ffffff;
+
+    --checked-episode-background: #dcffe0;
+    --episode-view-background: rgba(255, 255, 255, 0.95);
+    --episode-comments-color: #ffffff;
+    --episode-comments-bg-color: #999999;
+
+    --grey-1: #eeeeee;
+    --grey-2: #cccccc;
+    --grey-3: #aaaaaa;
+    --grey-4: #999999;
+    --grey-5: #777777;
+    --grey-6: #555555;
+    --grey-7: #333333;
+}
+
+body.dark-mode {
+    --font-color: #f0f0f0;
+    --background-color: #282828;
+    --link-color: #33bbee;
+    --tabs-block-background: #666666;
+    --tab-border-color: #777777;
+    --tab-not-active: #444444;
+    --accent-color: #ee7070;
+
+    --header-bg-color: #252525;
+    --header-font-color: #ffffff;
+
+    --unwatched-bg-color: #bb5050;
+    --unwatched-color: #ffffff;
+
+    --external-search-color: #dddddd;
+    --external-search-hover-color: #ffffff;
+
+    --checked-episode-background: #336644;
+    --episode-view-background: rgba(37, 37, 37, 0.9);
+    --episode-comments-color: #ffffff;
+    --episode-comments-bg-color: #999999;
+
+    --grey-1: #393939;
+    --grey-2: #555555;
+    --grey-3: #888888;
+    --grey-4: #aaaaaa;
+    --grey-5: #cccccc;
+    --grey-6: #dddddd;
+    --grey-7: #eeeeee;
+}

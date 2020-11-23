@@ -13,11 +13,11 @@ show-calendar .month-name {
     text-transform: capitalize;
     font-size: 1.7rem;
     font-weight: bold;
-    color: #cc0000;
+    color: var(--accent-color);
 }
 
 show-calendar .month-total {
-    color: #676767;
+    color: var(--grey-5);
     font-size: 1.6rem;
 }
 
@@ -34,7 +34,7 @@ show-calendar .calendar > li {
 }
 
 show-calendar .calendar > li:nth-child(2n) {
-    background-color: #eeeeee;
+    background-color: var(--grey-1);
 }
 
 .calendar-row-container {
@@ -69,7 +69,7 @@ show-calendar .calendar-show-title {
 
 show-calendar .calendar-show-title a {
     font-weight: bold;
-    color: black;
+    color: var(--font-color);
 }
 
 show-calendar .calendar-ep-info {
@@ -80,11 +80,11 @@ show-calendar .calendar-ep-info {
 }
 
 show-calendar .calendar-ep-number {
-    color: #cc0000;
+    color: var(--accent-color);
 }
 
 show-calendar .calendar-ep-title a {
-    color: #676767;
+    color: var(--grey-5);
 }
 
 show-calendar .calendar-days-left {
@@ -130,7 +130,7 @@ show-calendar .expandable .triangle {
 }
 
 show-calendar .triangle:focus {
-    outline: 1px solid #333333;
+    outline: 1px solid var(--grey-7);
 }
 
 show-calendar .triangle:after {
@@ -140,7 +140,7 @@ show-calendar .triangle:after {
     right: calc(50% - 0.4rem);
     width: 0.4rem;
     height: 0.4rem;
-    border: solid #999;
+    border: solid var(--grey-4);
     border-width: 0 3px 3px 0;
     transform: rotate(-135deg);
     transition: 0.25s;
@@ -152,7 +152,7 @@ show-calendar .expanded .triangle:after {
 
 show-calendar .triangle:focus:after,
 show-calendar .expandable:hover .triangle:after {
-    border-color: #900;
+    border-color: var(--accent-color);
 }
 
 show-calendar .expandable:hover {

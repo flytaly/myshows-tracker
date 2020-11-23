@@ -9,10 +9,13 @@ import PostponedList from './components/postponed-list.js';
 import getOptions from './options.js';
 import { toggleClassOnClick } from './toggle-class.js';
 import { getTitleOptions, getBaseUrl } from './utils.js';
+import applyTheme from '../theme.js';
+
 import './open-links.js';
 
 const runExtension = async () => {
     const options = await getOptions();
+    applyTheme(options.theme);
     const dateLocale = options.dateLocale ? options.dateLocale : UILang;
 
     // If browser's standard size is 16px then +2 diff means 12px, -2 means 8px ...
@@ -67,7 +70,7 @@ const runExtension = async () => {
                 case this.places.showList: {
                     this.places.current = location;
                     const shows = await storage.getWatchingShows();
-                    document.body.style.background = '#FFFFFF';
+                    document.body.style.background = '';
 
                     toggleHidden([mainView, showContainer]);
                     this.updateLogoNav();
@@ -127,7 +130,7 @@ const runExtension = async () => {
                     if (titleOptions.showTwoTitles) {
                         title2.textContent = titleOptions.title2 !== 'original' ? show.title : show.titleOriginal;
                     }
-                    document.body.style.background = `white url(${show.image}) no-repeat`;
+                    document.body.style.background = `url(${show.image}) no-repeat`;
                     document.body.style.backgroundSize = 'cover';
                     document.body.style.backgroundAttachment = 'fixed';
 

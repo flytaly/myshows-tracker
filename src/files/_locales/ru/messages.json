@@ -215,6 +215,18 @@
         "message": "Меняет размеры окна и шрифтов относительно выбранного базового размера",
         "description": "Attribute title of font size setting"
     },
+    "settingTheme": {
+        "message": "Тема:"
+    },
+    "settingThemeLight": {
+        "message": "светлая"
+    },
+    "settingThemeDark": {
+        "message": "тёмная"
+    },
+    "settingThemeAuto": {
+        "message": "автоматическая"
+    },
     "settingDateFormat": {
         "message": "Формат отображения дат",
         "description": "Setting: set format of the dates"

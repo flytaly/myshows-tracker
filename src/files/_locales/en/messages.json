@@ -199,6 +199,18 @@
         "message": "Scale extension's window and font sizes by chosen basic font size",
         "description": "Attribute title of font size setting"
     },
+    "settingTheme": {
+        "message": "Theme:"
+    },
+    "settingThemeLight": {
+        "message": "light"
+    },
+    "settingThemeDark": {
+        "message": "dark"
+    },
+    "settingThemeAuto": {
+        "message": "auto"
+    },
     "settingDateFormat": {
         "message": "Date format",
         "description": "Setting: set format of the dates"

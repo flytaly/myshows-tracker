@@ -4,9 +4,9 @@
     justify-content: flex-start;
     align-items: center;
     padding: 5px 10px;
-    color: white;
-    background: rgba(37, 37, 37, 0.95);
-    border-bottom: solid #c00 3px;
+    color: var(--header-font-color);
+    background: var(--header-bg-color);
+    border-bottom: solid 3px var(--accent-color);
 }
 
 .logo {
@@ -26,7 +26,7 @@
 .user .menu {
     display: none;
     position: absolute;
-    background-color: rgba(37, 37, 37, 0.95);
+    background-color: var(--header-bg-color);
     right: 0;
     overflow: auto;
     min-width: 10rem;
@@ -44,7 +44,7 @@
     display: flex;
     align-items: center;
     font-size: 1.4rem;
-    color: white;
+    color: var(--header-font-color);
     padding: 1rem;
     text-decoration: none;
     white-space: nowrap;
@@ -52,14 +52,14 @@
 
 .user .menu a:hover,
 .user .menu a:focus {
-    background-color: #cc0000;
+    background-color: var(--accent-color);
 }
 
 .menu a .menu-option-sign {
     height: 1em;
     width: 1em;
     margin-right: 0.5em;
-    color: white;
+    color: var(--header-font-color);
 }
 
 .button-container {
@@ -87,13 +87,13 @@
 }
 
 #back-btn svg path {
-    fill: #ffffff;
+    fill: var(--header-font-color);
 }
 
 #back-btn:hover svg path {
-    fill: #999999;
+    fill: var(--grey-4);
 }
 
 #back-btn:focus {
-    outline: 1px dotted #999999;
+    outline: 1px dotted var(--grey-4);
 }

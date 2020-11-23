@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import storage from '../storage.js';
 import { translateElement } from '../l10n.js'; // translate option page
 
@@ -84,9 +85,15 @@ const restoreData = async () => {
         externalLinks,
         alwaysShowNextEpisode,
         forceEnglishVersion,
+        theme = 'auto',
     } = await storage.getOptions();
 
     setCurrentFontSize(fSizeDiff);
+
+    const themeRadio = $$('input[type="radio"][name="theme"]');
+    themeRadio.forEach((themeInput) => {
+        themeInput.checked = themeInput.value === theme;
+    });
 
     const d = new Date();
     if (['ru', 'en-GB', 'en-US'].includes(dateLocale)) {
@@ -148,6 +155,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             setCurrentFontSize(fSizeDiff);
         });
     }
+
+    const themeRadio = $$('input[type="radio"][name="theme"]');
+    themeRadio.forEach((themeInput) => {
+        themeInput.addEventListener('change', (e) => storage.saveOptions({ theme: e.target.value }));
+    });
 
     const dateFormat = $('#date-format');
     dateFormat.addEventListener('change', async () => {
