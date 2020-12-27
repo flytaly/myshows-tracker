@@ -1,7 +1,7 @@
 # MyShows: TV show tracker
 
 [ ![addons.mozilla.org/](https://ffp4g1ylyit3jdyti1hqcvtb-wpengine.netdna-ssl.com/addons/files/2015/11/get-the-addon.png)](https://addons.mozilla.org/firefox/addon/myshows-tv-show-tracker/)
-[ ![chrome.google.com/](https://developer.chrome.com/webstore/images/ChromeWebStore_BadgeWBorder_v2_206x58.png)](https://chrome.google.com/webstore/detail/myshows-tv-show-tracker/lcdinflfffodmodbkhaijglgjpeefodo/)
+[ ![chrome.google.com/](https://i.imgur.com/unvdmLG.png)](https://chrome.google.com/webstore/detail/myshows-tv-show-tracker/lcdinflfffodmodbkhaijglgjpeefodo/)
 
 Unofficial Firefox/Chrome extension for [MyShows.me](https://myshows.me), that allows you to track aired and future episodes
 of TV shows you watch.
