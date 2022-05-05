@@ -1,4 +1,30 @@
-@import url('./target-styles.css');
+@import url('../modern-normalize.css');
+@import url('../colors.css');
+
+section {
+    margin-bottom: 1rem;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    max-width: 60rem;
+    margin: 0 auto;
+    accent-color: var(--accent-color);
+}
+
+:focus {
+    outline: none;
+}
+
+:focus-visible {
+    box-shadow: 0px 0px 0px 0.2rem var(--accent-color);
+}
+
+fieldset input {
+    margin-bottom: 0.5rem;
+}
 
 @media (prefers-color-scheme: dark) {
     html {
@@ -10,8 +36,8 @@
     select,
     option,
     [label],
-    .browser-style > input[type='url'],
-    .browser-style > input[type='text'] {
+    input[type='url'],
+    input[type='text'] {
         background-color: var(--bgColor);
         color: var(--fontColor);
         text-shadow: none;
@@ -34,7 +60,6 @@
 }
 
 .font-size {
-    font-family: 'PT Sans', 'Trebuchet MS', Arial, sans-serif;
     margin-left: 0.5rem;
 }
 .font-12 {

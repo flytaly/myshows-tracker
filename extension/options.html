@@ -4,47 +4,46 @@
     <head>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="styles/options/options.css" />
-        <script src="browser-polyfill.js"></script>
-        <script type="module" src="js/options/options.js"></script>
+
+        <script type="module" src="dist/options/options.js"></script>
     </head>
 
     <body>
-        <section class="browser-style">
+        <section>
             <span
-                class="browser-style"
                 title="Resize extension by chosen basic font size"
                 data-l10n-id="settingFontSize"
                 data-l10n-attrs="title"
                 >Basic font size</span
             >
-            <button class="browser-style font-size font-12" data-f-size-diff="-4">aA</button>
-            <button class="browser-style font-size font-14" data-f-size-diff="-2">aA</button>
-            <button class="browser-style font-size font-15" data-f-size-diff="-1">aA</button>
-            <button class="browser-style font-size font-16 default" data-f-size-diff="0">aA</button>
-            <button class="browser-style font-size font-17" data-f-size-diff="+1">aA</button>
-            <button class="browser-style font-size font-18" data-f-size-diff="+2">aA</button>
-            <button class="browser-style font-size font-20" data-f-size-diff="+4">aA</button>
+            <button  font-size font-12" data-f-size-diff="-4">aA</button>
+            <button  font-size font-14" data-f-size-diff="-2">aA</button>
+            <button  font-size font-15" data-f-size-diff="-1">aA</button>
+            <button  font-size font-16 default" data-f-size-diff="0">aA</button>
+            <button  font-size font-17" data-f-size-diff="+1">aA</button>
+            <button  font-size font-18" data-f-size-diff="+2">aA</button>
+            <button  font-size font-20" data-f-size-diff="+4">aA</button>
         </section>
-        <section class="browser-style theme-section">
+        <section class="theme-section">
             <span data-l10n-id="settingTheme">Theme:</span>
-            <label class="browser-style radio-label">
+            <label class="radio-label">
                 <input id="light-theme" type="radio" name="theme" value="light" />
                 <span data-l10n-id="settingThemeLight"> light </span>
             </label>
-            <label class="browser-style radio-label">
+            <label class="radio-label">
                 <input id="dark-theme" type="radio" name="theme" value="dark" />
                 <span data-l10n-id="settingThemeDark"> dark </span>
             </label>
-            <label class="browser-style radio-label">
+            <label class="radio-label">
                 <input id="auto-theme" type="radio" name="theme" value="auto" />
                 <span data-l10n-id="settingThemeAuto"> auto </span>
             </label>
             <!-- </div> -->
         </section>
 
-        <section class="browser-style">
-            <label for="date-format" class="browser-style-label" data-l10n-id="settingDateFormat">Date format</label>
-            <select id="date-format" class="browser-style">
+        <section>
+            <label for="date-format"  data-l10n-id="settingDateFormat">Date format</label>
+            <select id="date-format" >
                 <option value="" data-l10n-id="settingDateFormatDefault" selected>Browser's default language</option>
                 <!--<optgroup label="English">-->
                 <option value="en-GB">en-GB (UK English)</option>
@@ -57,21 +56,21 @@
             <span data-l10n-id="settingDateExample">Example:</span> <span id="date-example">25/10/2018</span>
         </section>
 
-        <section class="browser-style">
-            <label for="sort-order" class="browser-style-label" data-l10n-id="settingSortOrder"
+        <section>
+            <label for="sort-order" data-l10n-id="settingSortOrder"
                 >Sort order of episodes</label
             >
-            <select id="sort-order" class="browser-style">
+            <select id="sort-order" >
                 <option selected value="firstOld" data-l10n-id="settingSortOldToNew">from oldest to newest</option>
                 <option value="firstNew" data-l10n-id="settingSortNewToOld">from newest to oldest</option>
             </select>
         </section>
 
-        <section class="browser-style">
-            <label for="shows-titles" class="browser-style-label" data-l10n-id="settingDisplayTitles"
+        <section >
+            <label for="shows-titles"  data-l10n-id="settingDisplayTitles"
                 >Display titles of the shows</label
             >
-            <select id="shows-titles" class="browser-style">
+            <select id="shows-titles" >
                 <option selected value="original" data-l10n-id="settingTitleOnlyOrig">Only original</option>
                 <optgroup
                     label="Locale"
@@ -86,52 +85,50 @@
             </select>
         </section>
 
-        <section class="browser-style">
-            <label for="sort-shows" class="browser-style-label" data-l10n-id="settingSortShows"
+        <section>
+            <label for="sort-shows"  data-l10n-id="settingSortShows"
                 >Place shows with new episodes at the top
             </label>
-            <span class="browser-style">
+            <span>
                 <input type="checkbox" id="sort-shows" checked />
             </span>
         </section>
 
-        <section class="browser-style">
+        <section>
             <label
                 for="show-next-episode"
-                class="browser-style-label"
                 data-l10n-id="settingShowNextEpisode"
                 data-l10n-attrs="title"
             >
                 Always show the next episode
             </label>
-            <span class="browser-style">
+            <span>
                 <input type="checkbox" id="show-next-episode" />
             </span>
         </section>
 
-        <section class="browser-style">
+        <section >
             <label
                 for="force-english-ver"
-                class="browser-style-label"
                 data-l10n-id="settingForceEngVer"
                 data-l10n-attrs="title"
             >
                 Always open English version http://en.myshows.me
             </label>
-            <span class="browser-style">
+            <span>
                 <input type="checkbox" id="force-english-ver" />
             </span>
         </section>
 
-        <section class="browser-style">
-            <label class="browser-style-label"> </label>
-            <fieldset class="browser-style external-search">
+        <section >
+            <label> </label>
+            <fieldset class="external-search">
                 <legend data-l10n-id="settingExternalLinksLegend">Search a show on external websites:</legend>
                 <ul id="external-links">
                     <template id="external-link-tmp">
-                        <li class="browser-style">
+                        <li >
                             <input
-                                class="browser-style name"
+                                class="name"
                                 type="text"
                                 name="name"
                                 placeholder="Name"
@@ -140,7 +137,7 @@
                                 data-l10n-attrs="placeholder"
                             />
                             <input
-                                class="browser-style url"
+                                class="url"
                                 type="url"
                                 name="url"
                                 placeholder="URL e.g. https://youtube.com/results?search_query="
@@ -149,7 +146,7 @@
                                 data-l10n-attrs="placeholder"
                             />
                             <button
-                                class="browser-style delete"
+                                class="delete"
                                 data-l10n-id="settingExternalLinksRemoveField"
                                 data-l10n-nocontent="true"
                                 data-l10n-attrs="title"
@@ -159,7 +156,7 @@
                         </li>
                     </template>
                 </ul>
-                <button class="browser-style add-field" data-l10n-id="settingExternalLinksAddField">+ field</button>
+                <button class="add-field" data-l10n-id="settingExternalLinksAddField">+ field</button>
             </fieldset>
         </section>
     </body>

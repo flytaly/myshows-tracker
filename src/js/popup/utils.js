@@ -1,3 +1,4 @@
+import browser from 'webextension-polyfill';
 import UILang from './ui-language.js';
 
 /* displayShowsTitle could be: 'undefined', original','ru', 'ru+original', 'original+ru' */

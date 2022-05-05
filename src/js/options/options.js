@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import browser from 'webextension-polyfill';
 import storage from '../storage.js';
 import { translateElement } from '../l10n.js'; // translate option page
 

@@ -6,11 +6,6 @@
     },
     "env": {
         "browser": true,
-        "es6": true,
-        "webextensions": true
-    },
-    "globals": {
-        "TARGET": true
     },
     "plugins": ["prettier"],
     "rules": {

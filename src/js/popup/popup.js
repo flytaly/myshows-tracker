@@ -1,3 +1,4 @@
+import browser from 'webextension-polyfill';
 import UILang from './ui-language.js';
 import types from '../types.js';
 import templates from './templates.js';

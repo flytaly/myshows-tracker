@@ -1,3 +1,5 @@
+import browser from 'webextension-polyfill';
+
 const storage = {
     async getAuthData() {
         return browser.storage.local.get(['accessToken', 'expiresIn', 'refreshToken']);

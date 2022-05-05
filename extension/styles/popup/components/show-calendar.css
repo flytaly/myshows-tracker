@@ -57,12 +57,12 @@ show-calendar .calendar-date {
 show-calendar .calendar-ep {
     flex: 1;
     padding: 0 1rem;
-    overflow-x: hidden;
+    overflow: hidden;
     align-self: center;
 }
 
 show-calendar .calendar-show-title {
-    overflow-x: hidden;
+    overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
@@ -74,7 +74,7 @@ show-calendar .calendar-show-title a {
 
 show-calendar .calendar-ep-info {
     font-size: 1.2rem;
-    overflow-x: hidden;
+    overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }

@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-expressions,no-underscore-dangle */
+import browser from 'webextension-polyfill';
 import state from './state.js';
 import storage from '../storage.js';
 import types from '../types.js';
 import app from './app.js';
 import setDefaultSettings from '../set-default-settings.js';
 import { setBadgeAndTitle } from './helpers.js';
+import { IS_CHROME } from '../constants.js';
 
 async function update() {
     state.updating = true;
@@ -40,7 +42,7 @@ const startExtension = async () => {
 };
 
 // requestIdleCallback doesn't work in Chrome
-if (TARGET === 'chrome') {
+if (IS_CHROME) {
     startExtension();
 } else {
     // firefox

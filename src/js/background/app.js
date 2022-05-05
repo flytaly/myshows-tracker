@@ -1,8 +1,9 @@
 /* eslint-disable no-underscore-dangle */
+import browser from 'webextension-polyfill';
 import storage from '../storage.js';
 import types from '../types.js';
 import state from './state.js';
-import { clientId, clientSecret, redirectUri } from '../config.js';
+import { clientId, clientSecret } from '../constants.js';
 import { AuthError } from './errors.js';
 import rpcHandler from './rpc-handler.js'; // eslint-disable-line import/no-cycle
 import { mapObjToQueryStr, filterShowProperties, setBadgeAndTitle } from './helpers.js';
@@ -18,7 +19,7 @@ const app = {
         return (Math.random() * Number.MAX_SAFE_INTEGER).toString(36);
     },
 
-    getAuthURL(authState) {
+    /* getAuthURL(authState) {
         const params = {
             response_type: 'code',
             redirect_uri: encodeURIComponent(redirectUri),
@@ -27,7 +28,7 @@ const app = {
             state: authState,
         };
         return `${this.baseURL}/authorize?${mapObjToQueryStr(params)}`;
-    },
+    }, */
 
     /*     async getAuthCode(authState) {
         const response = await browser.identity.launchWebAuthFlow({
@@ -124,10 +125,11 @@ const app = {
         // if (!code) throw new Error('Couldn\'t get auth code');
 
         state.loginStarted = true;
-        const { access_token: accessToken, expires_in: expiresIn, refresh_token: refreshToken } = await this.getTokens(
-            username,
-            password,
-        );
+        const {
+            access_token: accessToken,
+            expires_in: expiresIn,
+            refresh_token: refreshToken,
+        } = await this.getTokens(username, password);
         await storage.saveAuthData({ accessToken, expiresIn, refreshToken });
         await this.getProfileData();
         state.loginStarted = false;

@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-expressions,no-param-reassign */
+import browser from 'webextension-polyfill';
 import types from '../types.js';
 
 /* Proxy object that sends messages to the popup upon changes */

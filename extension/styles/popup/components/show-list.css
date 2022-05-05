@@ -27,7 +27,7 @@ ul[is='show-list'] > li:hover {
 
 ul[is='show-list'] .show-title {
     flex: 1;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 ul[is='show-list'] .show-title a .show-title-1 {

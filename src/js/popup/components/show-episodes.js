@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import browser from 'webextension-polyfill';
 import templates from '../templates.js';
 import { getPluralForm, getBaseUrl } from '../utils.js';
 import types from '../../types.js';

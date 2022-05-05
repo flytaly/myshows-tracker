@@ -31,7 +31,7 @@ postponed-list li:nth-child(2n) {
 
 postponed-list .postponed-show-title {
     flex: 1;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 postponed-list .title-1 {
@@ -44,7 +44,7 @@ postponed-list .title-2 {
 }
 
 postponed-list .postponed-episodes-count {
-    overflow-x: hidden;
+    overflow: hidden;
     white-space: nowrap;
     align-self: center;
 }

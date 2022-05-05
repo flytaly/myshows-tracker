@@ -1,3 +1,4 @@
+import browser from 'webextension-polyfill';
 import './l10n.js'; // load to translate html elements
 import './popup/open-links.js';
 import types from './types.js';
