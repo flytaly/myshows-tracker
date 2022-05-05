@@ -47,10 +47,10 @@ async function saveExternalLinks(fieldset) {
 function setCurrentFontSize(fSizeDiff) {
     if (fSizeDiff) {
         const elem = $(`.font-size[data-f-size-diff="${fSizeDiff}"]`);
-        const prev = $('.font-size.default');
+        const prev = $('.font-size.current');
         if (elem) {
-            prev.classList.remove('default');
-            elem.classList.add('default');
+            prev.classList.remove('current');
+            elem.classList.add('current');
         }
     }
 }

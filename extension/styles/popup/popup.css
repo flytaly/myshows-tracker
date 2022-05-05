@@ -8,13 +8,8 @@
 @import url('./components/postponed-list.css');
 @import url('./episode-view.css');
 
-* {
-    box-sizing: border-box;
-}
-
 html {
     font-size: 62.5%; /* ==10px if default font size is 16px */
-    font-family: 'PT Sans', 'Trebuchet MS', Arial, sans-serif;
 }
 
 body {
