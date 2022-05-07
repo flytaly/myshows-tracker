@@ -31,7 +31,7 @@ const runExtension = async () => {
     const postponedContainer = getElem('postponed-container');
     const logoLink = document.querySelector('.logo > a');
 
-    const bgScriptPort = browser.runtime.connect();
+    const bgScriptPort = browser.runtime.connect(null, { name: 'Popup' });
     const showsInfo = {}; // show's info for easy access to it in the episode view
     const updateShowsInfo = (shows = []) => {
         shows.forEach(({ show: { id, image, title, titleOriginal } }) => {
@@ -259,6 +259,7 @@ const runExtension = async () => {
 
         const episodesToRemove = new Set();
         bgScriptPort.onMessage.addListener(async (message) => {
+            console.log('Message received', message);
             const { type, payload } = message;
             switch (type) {
                 case types.INFO_UPDATED: {

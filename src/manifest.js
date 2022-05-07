@@ -32,12 +32,13 @@ export async function getManifest() {
     // update this file to update this manifest.json
     // can also be conditional based on your need
     return {
-        manifest_version: 2,
+        manifest_version: 3,
         ...info,
         ...browserSpecific(),
         background: {
-            page: 'background.html',
+            service_worker: './dist/background/background.js',
         },
+
         icons: {
             48: '/images/icon-48.png',
             64: '/images/icon-64.png',
@@ -45,7 +46,7 @@ export async function getManifest() {
             128: '/images/icon-128_padding.png',
         },
         permissions: ['identity', 'storage', 'alarms', 'https://*.myshows.me/*'],
-        browser_action: {
+        action: {
             default_title: '__MSG_extension_title__',
             default_icon: {
                 32: '/images/icon-32.png',

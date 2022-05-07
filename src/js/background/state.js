@@ -1,6 +1,8 @@
-/* eslint-disable no-unused-expressions,no-param-reassign */
 import browser from 'webextension-polyfill';
 import types from '../types.js';
+
+// eslint-disable-next-line no-use-before-define
+const sendMsg = (msg) => state.popupPort?.postMessage(msg);
 
 /* Proxy object that sends messages to the popup upon changes */
 const state = new Proxy(
@@ -11,59 +13,38 @@ const state = new Proxy(
         episodeWasRated: null,
         popupPort: null,
         extensionTitle: '',
-        needAuth: false,
         loginStarted: false,
         loginError: {},
     },
     {
         set: (obj, prop, value) => {
-            const { popupPort } = obj;
             switch (prop) {
                 case 'updating':
-                    popupPort &&
-                        popupPort.postMessage({
-                            type: value ? types.LOADING_START : types.LOADING_ENDED,
-                        });
-                    break;
-                case 'needAuth':
-                    if (value) {
-                        browser.browserAction.setPopup({ popup: browser.extension.getURL('popup-noauth.html') });
-                        browser.browserAction.setBadgeBackgroundColor({ color: 'red' });
-                        browser.browserAction.setBadgeText({ text: '...' });
-                    } else {
-                        browser.browserAction.setPopup({ popup: browser.extension.getURL('popup.html') });
-                        browser.browserAction.setBadgeText({ text: '' });
-                    }
+                    sendMsg({ type: value ? types.LOADING_START : types.LOADING_ENDED });
                     break;
                 case 'lastUpdate':
-                    popupPort && popupPort.postMessage({ type: types.INFO_UPDATED });
-                    console.log(`Successfully updated at ${value}`);
+                    sendMsg({ type: types.INFO_UPDATED });
+                    console.log(`%c ✅ Successfully updated at ${value}`, 'color:green;');
                     break;
                 case 'totalEpisodes':
-                    browser.browserAction.setBadgeBackgroundColor({ color: '#252525' });
-                    browser.browserAction.setBadgeText({ text: value ? value.toString() : null });
+                    browser.action.setBadgeBackgroundColor({ color: '#252525' });
+                    browser.action.setBadgeText({ text: value ? value.toString() : null });
                     break;
                 case 'extensionTitle':
-                    browser.browserAction.setTitle({ title: value });
+                    browser.action.setTitle({ title: value });
                     break;
                 case 'episodeWasRated':
-                    popupPort &&
-                        popupPort.postMessage({ type: types.EPISODE_WAS_RATED, payload: { episodeId: value } });
+                    sendMsg({ type: types.EPISODE_WAS_RATED, payload: { episodeId: value } });
                     break;
                 case 'loginStarted':
-                    value
-                        ? popupPort && popupPort.postMessage({ type: types.LOGIN_STARTED })
-                        : popupPort && popupPort.postMessage({ type: types.LOGIN_SUCCESS });
+                    sendMsg({ type: value ? types.LOGIN_STARTED : types.LOGIN_SUCCESS });
                     break;
                 case 'loginError':
-                    popupPort &&
-                        popupPort.postMessage({
-                            type: types.LOGIN_ERROR,
-                            payload: value.message,
-                        });
+                    sendMsg({ type: types.LOGIN_ERROR, payload: value.message });
                     break;
                 default:
             }
+            // eslint-disable-next-line no-param-reassign
             obj[prop] = value;
             return true;
         },

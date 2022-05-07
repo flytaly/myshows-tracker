@@ -133,7 +133,6 @@ const app = {
         await storage.saveAuthData({ accessToken, expiresIn, refreshToken });
         await this.getProfileData();
         state.loginStarted = false;
-        if (this.authPromiseResolveFn) this.authPromiseResolveFn();
         return true;
     },
 
@@ -142,18 +141,6 @@ const app = {
             result: { user },
         } = await rpcHandler.profileGet();
         await storage.saveProfile(user);
-    },
-
-    authPromiseResolveFn: null,
-
-    setAuth() {
-        state.needAuth = true;
-        return new Promise((resolve) => {
-            this.authPromiseResolveFn = () => {
-                state.needAuth = false;
-                resolve();
-            };
-        });
     },
 
     /* Return object with unwatched episodes grouped by show id */
