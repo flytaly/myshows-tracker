@@ -24,7 +24,7 @@ async function update() {
         console.error(`${e.name}: ${e.message} \n ${e.stack}`);
         if (e.name === 'AuthError' && e.needAuth) {
             state.updating = false;
-            await app.setAuth();
+            togglePopup(true);
         }
         browser.alarms.create(types.ALARM_UPDATE, { delayInMinutes: 2 });
     }
