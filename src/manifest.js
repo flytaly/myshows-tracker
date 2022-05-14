@@ -45,7 +45,8 @@ export async function getManifest() {
             96: '/images/icon-96.png',
             128: '/images/icon-128_padding.png',
         },
-        permissions: ['identity', 'storage', 'alarms', 'https://*.myshows.me/*'],
+        permissions: ['identity', 'storage', 'alarms'],
+        host_permissions: ['https://*.myshows.me/*'],
         action: {
             default_title: '__MSG_extension_title__',
             default_icon: {
