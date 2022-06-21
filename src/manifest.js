@@ -7,13 +7,19 @@ function browserSpecific() {
         manifest.minimum_chrome_version = '86';
         manifest.key =
             'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzS/1DCNgzInyNUYNZcwDad5+SZPVAsiQaXfTC2k14b9CE3E2WWSROMK9BDesmKk5bOlrDyNlu0ZU5/kR8BBIKX1Hh6ZiXT2tZz+Q/YW3J2Tv6aqPYsOubzG2b2alcVjeO/HP30CDYMl5ia0GmGd4/nshWKrEH8/e8vYwlXM2dvsZEAZ0Rp2VliC5ycc8qoZXLk/MxFeC1jduqpfs5nkoe6TOsAU8svJerTUlpt1acU66xoRqOW+XsnHGlOb0zox9wY+PwSI2yCEJIXYh3OcOUqFCXmlGzJ+uVlFcnKvWFHViuO6r20Sb7aeEAB9kDSph/2iRIKQcDodGgPEKQV026wIDAQAB';
+        manifest.background = {
+            service_worker: './dist/background/background.js',
+        };
     }
     if (TARGET === 'firefox') {
         manifest.applications = {
             gecko: {
-                strict_min_version: '86.0',
-                id: 'multitran@flytaly',
+                strict_min_version: '101',
+                id: 'myshows@flytaly',
             },
+        };
+        manifest.background = {
+            scripts: ['./dist/background/background.js'],
         };
     }
     return manifest;
@@ -35,10 +41,6 @@ export async function getManifest() {
         manifest_version: 3,
         ...info,
         ...browserSpecific(),
-        background: {
-            service_worker: './dist/background/background.js',
-        },
-
         icons: {
             48: '/images/icon-48.png',
             64: '/images/icon-64.png',
