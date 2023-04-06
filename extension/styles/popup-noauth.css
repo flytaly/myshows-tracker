@@ -1,11 +1,9 @@
-@import './popup/header.css';
-
-* {
-    box-sizing: border-box;
-}
+@import url('./modern-normalize.css');
+@import url('./colors.css');
+@import url('./popup/header.css');
 
 html {
-    font-size: 10px;
+    font-size: 62.5%; /* ==10px if default font size is 16px */
 }
 
 body {
@@ -16,7 +14,7 @@ body {
 }
 
 main {
-    padding: 1rem;
+    padding: 2rem 1rem;
     width: 100%;
 }
 

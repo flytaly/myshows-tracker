@@ -42,10 +42,11 @@ export async function getManifest() {
         ...info,
         ...browserSpecific(),
         icons: {
-            48: '/images/icon-48.png',
+            16: '/images/icon-16.png',
+            32: '/images/icon-32.png',
             64: '/images/icon-64.png',
-            96: '/images/icon-96.png',
-            128: '/images/icon-128_padding.png',
+            128: '/images/icon-128.png',
+            256: '/images/icon-256.png',
         },
         permissions: ['identity', 'storage', 'alarms'],
         host_permissions: ['https://*.myshows.me/*'],
@@ -54,7 +55,6 @@ export async function getManifest() {
             default_icon: {
                 32: '/images/icon-32.png',
                 64: '/images/icon-64.png',
-                96: '/images/icon-96.png',
             },
             default_popup: 'popup.html',
         },

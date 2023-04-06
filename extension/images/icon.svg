@@ -1,8 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-	<path fill="#d80027" d="M43.94,12.3H29.52l5.12-8.4A1.54,1.54,0,1,0,32,2.3l-6.1,10H22.1L16,2.3a1.54,1.54,0,1,0-2.64,1.6l5.12,8.4H4.06A3.39,3.39,0,0,0,.68,15.69V43.62A3.39,3.39,0,0,0,4.06,47H43.94a3.39,3.39,0,0,0,3.38-3.38V15.69A3.39,3.39,0,0,0,43.94,12.3ZM33.39,39.56a1.85,1.85,0,0,1-1.84,1.84H8a1.84,1.84,0,0,1-1.84-1.84V19.75A1.84,1.84,0,0,1,8,17.91H31.55a1.84,1.84,0,0,1,1.84,1.84Zm6.8-.59a3.19,3.19,0,1,1,3.2-3.19A3.19,3.19,0,0,1,40.19,39Zm0-12.25a3.2,3.2,0,1,1,3.2-3.19A3.19,3.19,0,0,1,40.19,26.72Z"/>
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_2_2)">
+<path d="M176 26L128 74L80 26M20 98C20 91.6348 22.5286 85.5303 27.0294 81.0294C31.5303 76.5286 37.6348 74 44 74H212C218.365 74 224.47 76.5286 228.971 81.0294C233.471 85.5303 236 91.6348 236 98V206C236 212.365 233.471 218.47 228.971 222.971C224.47 227.471 218.365 230 212 230H44C37.6348 230 31.5303 227.471 27.0294 222.971C22.5286 218.47 20 212.365 20 206V98Z" stroke="#D00228" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<clipPath id="clip0_2_2">
+<rect width="256" height="256" fill="white"/>
+</clipPath>
+</defs>
 </svg>
-<!--
-Icon: https://www.flaticon.com/free-icon/television_167018
-Icon made by Freepik (https://freepik.com) from www.flaticon.com 
-License - Flaticon Basic License: https://file000.flaticon.com/downloads/license/license.pdf 
--->
