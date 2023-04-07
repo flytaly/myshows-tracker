@@ -1,3 +1,4 @@
+import browser from 'webextension-polyfill';
 import './l10n.js'; // load to translate html elements
 import './popup/open-links.js';
 import types from './types.js';
@@ -8,7 +9,7 @@ const loginError = $('#login-error');
 const passwordError = $('#password-error');
 const submitBtn = $('#submit-button');
 
-const bgScriptPort = browser.runtime.connect();
+const bgScriptPort = browser.runtime.connect({ name: 'Popup' });
 bgScriptPort.onMessage.addListener(async (message) => {
     const { type, payload } = message;
     switch (type) {

@@ -1,0 +1,98 @@
+ul[is='show-list'] {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul[is='show-list'][hidden] {
+    display: none;
+}
+
+ul[is='show-list'] > li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.5rem;
+}
+
+ul[is='show-list'] > li:nth-child(2n) {
+    background-color: var(--grey-1);
+}
+
+ul[is='show-list'] > li:hover {
+    box-shadow: inset -1px -1px 1px 0px var(--grey-2), inset 1px 1px 1px 0px var(--grey-2);
+}
+
+ul[is='show-list'] .show-title {
+    flex: 1;
+    overflow: hidden;
+}
+
+ul[is='show-list'] .show-title a .show-title-1 {
+    font-weight: bold;
+}
+
+ul[is='show-list'] .show-title a .show-title-2 {
+    font-size: 1.2rem;
+    color: var(--grey-5);
+}
+
+ul[is='show-list'] .next-episode-date,
+ul[is='show-list'] .next-episode {
+    display: none;
+}
+
+ul[is='show-list'] > li:hover .next-episode-date,
+ul[is='show-list'] > li:hover .next-episode,
+ul[is='show-list'] .next-episode-date.no-hide,
+ul[is='show-list'] .next-episode.no-hide {
+    display: inline;
+    font-size: 1.1rem;
+    color: var(--accent-color);
+}
+
+ul[is='show-list'] > li:hover .next-episode-date,
+ul[is='show-list'] .next-episode-date.no-hide {
+    color: var(--grey-5);
+    white-space: nowrap;
+}
+
+ul[is='show-list'] .external-block {
+    position: relative;
+    width: 1.9rem;
+    height: 1.7rem;
+    margin: 0px 0.5rem;
+}
+
+ul[is='show-list'] button.external {
+    display: none;
+    margin: 0;
+    border: none;
+    background: transparent;
+}
+
+ul[is='show-list'] .external-block.open button.external,
+ul[is='show-list'] > li:hover button.external {
+    display: block;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+    background: url(../../../images/external-link-alt.svg) center center no-repeat;
+    cursor: pointer;
+}
+
+ul[is='show-list'] .unwatched-ep {
+    background-color: var(--unwatched-bg-color);
+    border-radius: 5px;
+    padding: 2px 3px;
+    color: var(--unwatched-color);
+    min-width: 2.6rem;
+    text-align: center;
+}
+
+ul[is='show-list'] .unwatched-ep:hover {
+    cursor: pointer;
+}

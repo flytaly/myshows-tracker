@@ -11,13 +11,17 @@ of TV shows you watch.
 
 ## Usage for developers
 
-- `npm run start:ff`
-  - build the extension with [webpack](https://github.com/webpack/webpack) and run it in Firefox using [web-ext](https://github.com/mozilla/web-ext)
-- `npm run buildzip:ff`
-  - create an extension package from source
+Build and watch for changes in js files, then run corresponding browser with `web-ext`.
 
-The extension uses [MyShows JSON-RPC API](https://api.myshows.me/shared/doc/).
-To make it work you need credentials and then add them in `/js/config.js`;
+    npm run dev:chrome
+    npm run dev:ff
+
+Create production build in the **extension** folder.
+
+    npm run build:chrome
+    npm run build:ff
+
+The extension uses [MyShows API](http://api.myshows.me/). Use need to create `.env` file and add credentials there.
 
 ## License
 

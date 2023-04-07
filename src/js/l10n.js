@@ -8,6 +8,8 @@
  * @license MPL-2.0
  */
 
+import browser from 'webextension-polyfill';
+
 function translateElementAttributes(element) {
     const attrList = [
         'title',

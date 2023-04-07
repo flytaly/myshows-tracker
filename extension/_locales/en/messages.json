@@ -1,0 +1,310 @@
+{
+    "description": {
+        "message": "Track and rate your favourite TV-shows",
+        "description": "Description of the extension"
+    },
+    "name": {
+        "message": "MyShows: TV Show tracker",
+        "description": "Name of the extension"
+    },
+    "extension_title": {
+        "message": "MyShows",
+        "description": "Extension title"
+    },
+    "loginMessage": {
+        "message": "Log in to authorize extension",
+        "description": "Login form message"
+    },
+    "loginInput_placeholder": {
+        "message": "Login or E-mail",
+        "description": "Login input placeholder"
+    },
+    "passwordInput_placeholder": {
+        "message": "Password",
+        "description": "Password input placeholder"
+    },
+    "signup": {
+        "message": "Sign-up",
+        "description": "Signup link"
+    },
+    "loginButton": {
+        "message": "Log in",
+        "description": "Login Button"
+    },
+    "loggingIn": {
+        "message": "Logging in ...",
+        "description": "Login Button during logging"
+    },
+    "loginErrorMsg": {
+        "message": "Error",
+        "description": "Login error message"
+    },
+    "emptyUsername": {
+        "message": "enter login or email",
+        "description": "Empty username input warning"
+    },
+    "emptyPassword": {
+        "message": "enter password",
+        "description": "Empty password input warning"
+    },
+    "invalidUsernameOrPassword": {
+        "message": "invalid username and password combination",
+        "description": "Invalid username or password message"
+    },
+    "tabShows": {
+        "message": "Shows",
+        "description": "Name of the tab with list of watching shows"
+    },
+    "tabShows_title": {
+        "message": "TV shows to watch",
+        "description": "Attribute title of the show tab"
+    },
+    "tabCalendar": {
+        "message": "Calendar",
+        "description": "Name of the tab with list of upcoming shows"
+    },
+    "tabCalendar_title": {
+        "message": "Upcoming episodes",
+        "description": "Attribute title of the calendar tab"
+    },
+    "tabPostponed": {
+        "message": "Later",
+        "description": "Name of the tab with list of postponed shows"
+    },
+    "tabPostponed_title": {
+        "message": "Going to watch",
+        "description": "Attribute title of the postponed tab"
+    },
+    "signOut": {
+        "message": "Sign out",
+        "description": "Sign out menu item"
+    },
+    "settings": {
+        "message": "Settings",
+        "description": "Settings menu item"
+    },
+    "nextEpisodeToWatch_title": {
+        "message": "Next unwatched episode",
+        "description": "Attribute title of an element with short name of the next unwatched episode"
+    },
+    "externalSearch_title": {
+        "message": "Search the show on external websites",
+        "description": "Attribute title of a button that opens list with websites"
+    },
+    "externalSearchLink_title": {
+        "message": "Open the show on external website",
+        "description": "Attribute title of a link to external site"
+    },
+    "externalSearchAdd": {
+        "message": "Add a search...",
+        "description": "Open settings to add a new search"
+    },
+    "unwatchedNumber_title": {
+        "message": "Number of unwatched episodes",
+        "description": "Attribute title of an element with number of unwatched episodes"
+    },
+    "backButton_title": {
+        "message": "Back to the list of the shows",
+        "description": "Back to main page button title attribute"
+    },
+    "logoLink_title": {
+        "message": "Open myshows.me",
+        "description": "Attribute title of logotype link"
+    },
+    "showLink_title": {
+        "message": "Open the show on myshow",
+        "description": "Attribute title of a show's link"
+    },
+    "season": {
+        "message": "season",
+        "description": "Word season in header of season block"
+    },
+    "commentsNumber_title": {
+        "message": "Comments to episode",
+        "description": "Attribute title of episode's comments number"
+    },
+    "episodesNumber_one": {
+        "message": "$1 episode",
+        "description": "Number of episodes: 1"
+    },
+    "episodesNumber_other": {
+        "message": "$1 episodes",
+        "description": "Number of episodes: 0 or >1"
+    },
+    "daysNumber_one": {
+        "message": "day",
+        "description": "Number of days: 1"
+    },
+    "daysNumber_other": {
+        "message": "days",
+        "description": "Number of days: 0 or >1"
+    },
+    "hoursNumber_one": {
+        "message": "hour",
+        "description": "Number of hour: 1"
+    },
+    "hoursNumber_other": {
+        "message": "hours",
+        "description": "Number of hour: 0 or >1"
+    },
+    "calendar_today": {
+        "message": "Today",
+        "description": "Calendar: name of the group of episodes that air today"
+    },
+    "rate0_title": {
+        "message": "No rating",
+        "description": "Attribute title rating: no stars"
+    },
+    "rate1_title": {
+        "message": "Not worth it",
+        "description": "Attribute title rating: 1 star"
+    },
+    "rate2_title": {
+        "message": "Meh",
+        "description": "Attribute title rating: 2 stars"
+    },
+    "rate3_title": {
+        "message": "Give it a watch",
+        "description": "Attribute title rating: 3 stars"
+    },
+    "rate4_title": {
+        "message": "Good one",
+        "description": "Attribute title rating: 4 stars"
+    },
+    "rate5_title": {
+        "message": "Great!",
+        "description": "Attribute title rating: 5 stars"
+    },
+    "postponedListTitle": {
+        "message": "Going to watch",
+        "description": "Title of the list with postponed shows"
+    },
+    "showsNumber_one": {
+        "message": "$1 shows",
+        "description": "Number of shows: 1"
+    },
+    "showsNumber_other": {
+        "message": "$1 shows",
+        "description": "Number of shows: 0 or >1"
+    },
+    "postponedShowCount_title": {
+        "message": "Episodes watched / episodes total",
+        "description": "Attribute title of postponed show's episodes number"
+    },
+    "settingFontSize": {
+        "message": "Basic font size",
+        "description": "Settings: set basic font size"
+    },
+    "settingFontSize_title": {
+        "message": "Scale extension's window and font sizes by chosen basic font size",
+        "description": "Attribute title of font size setting"
+    },
+    "settingTheme": {
+        "message": "Theme:"
+    },
+    "settingThemeLight": {
+        "message": "light"
+    },
+    "settingThemeDark": {
+        "message": "dark"
+    },
+    "settingThemeAuto": {
+        "message": "auto"
+    },
+    "settingDateFormat": {
+        "message": "Date format",
+        "description": "Setting: set format of the dates"
+    },
+    "settingDateFormatDefault": {
+        "message": "browser's UI language",
+        "description": "Setting: date format default option"
+    },
+    "settingDateExample": {
+        "message": "Example:",
+        "description": "Setting: date example"
+    },
+    "settingSortOrder": {
+        "message": "Sort order of episodes and seasons:",
+        "description": "Setting: set sort order of episodes"
+    },
+    "settingSortOldToNew": {
+        "message": "from oldest to newest",
+        "description": "Setting: sort order option from old to new"
+    },
+    "settingSortNewToOld": {
+        "message": "from newest to oldest",
+        "description": "Setting: sort order option from new to old"
+    },
+    "settingDisplayTitles": {
+        "message": "Display titles of the shows",
+        "description": "Setting: set displaying show's title"
+    },
+    "settingTitleOnlyOrig": {
+        "message": "only original",
+        "description": "Setting: display only original show's titles option"
+    },
+    "settingTitleRuAndOrig": {
+        "message": "Russian and original",
+        "description": "Setting: display Russian and original show's titles option"
+    },
+    "settingTitleOrigAndRu": {
+        "message": "original and Russian",
+        "description": "Setting: display original and Russian show's titles option"
+    },
+    "settingTitleRu": {
+        "message": "only Russian",
+        "description": "Setting: display only Russian show's titles option"
+    },
+    "settingLocaleGroup_label": {
+        "message": "Locale",
+        "description": "Attribute label for display show's titles option optgroup"
+    },
+    "settingSortShows": {
+        "message": "Place shows with new episodes at the top",
+        "description": "Setting: sort shows by latest episodes or not"
+    },
+    "settingShowNextEpisode": {
+        "message": "Always show the next episode on the \"Shows\" tab",
+        "description": "Setting: always show the next episode"
+    },
+    "settingShowNextEpisode_title": {
+        "message": "Always show the next episode or only by hover",
+        "description": "Attribute title for show next episode option"
+    },
+    "settingForceEngVer": {
+        "message": "Always open English version en.myshows.me",
+        "description": "Setting: always open English version"
+    },
+    "settingForceEngVer_title": {
+        "message": "Open en.myshows.me instead of myshows.me to force English version",
+        "description": "Attribute title for force English version option"
+    },
+    "settingExternalLinksLegend": {
+        "message": "Search a show on external websites:",
+        "description": "Setting: search a show on external websites:"
+    },
+    "settingExternalLinksInputName_placeholder": {
+        "message": "Name",
+        "description": "Placeholder for input with name"
+    },
+    "settingExternalLinksInputUrl_placeholder": {
+        "message": "URL e.g. https://youtube.com/results?search_query=",
+        "description": "Placeholder for input with search url"
+    },
+    "settingExternalLinksRemoveField_title": {
+        "message": "Remove the field",
+        "description": "Attribute title for remove field button"
+    },
+    "settingExternalLinksAddField": {
+        "message": "Add a field",
+        "description": "Add a new filed button"
+    },
+    "noNewEpisodes": {
+        "message": "No new episodes.",
+        "description": "Blank page message"
+    },
+    "findNewShows": {
+        "message": "Find shows to watch",
+        "description": "Blank page link"
+    }
+}

@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import browser from 'webextension-polyfill';
 import storage from '../storage.js';
 import { translateElement } from '../l10n.js'; // translate option page
 
@@ -46,10 +47,10 @@ async function saveExternalLinks(fieldset) {
 function setCurrentFontSize(fSizeDiff) {
     if (fSizeDiff) {
         const elem = $(`.font-size[data-f-size-diff="${fSizeDiff}"]`);
-        const prev = $('.font-size.default');
+        const prev = $('.font-size.current');
         if (elem) {
-            prev.classList.remove('default');
-            elem.classList.add('default');
+            prev.classList.remove('current');
+            elem.classList.add('current');
         }
     }
 }
@@ -68,8 +69,9 @@ function createUrlField(template, { name = '', url = '' } = {}) {
     nameElem.value = name;
     urlElem.value = url;
     deleteElem.addEventListener('click', ({ target }) => {
-        const fieldset = target.parentNode.parentNode;
-        fieldset.removeChild(target.parentNode);
+        const fieldset = target.closest('fieldset');
+        const li = target.closest('li');
+        target.closest('ul')?.removeChild(li);
         saveExternalLinks(fieldset);
     });
     return addSearchElem;

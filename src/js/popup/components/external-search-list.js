@@ -1,3 +1,4 @@
+import browser from 'webextension-polyfill';
 import templates from '../templates.js';
 
 export default class ExternalSearchList extends HTMLUListElement {

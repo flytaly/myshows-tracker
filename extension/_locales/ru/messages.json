@@ -1,0 +1,326 @@
+{
+    "description": {
+        "message": "Отслеживай вышедшие и будущие эпизоды сериалов",
+        "description": "Description of the extension"
+    },
+    "name": {
+        "message": "MyShows: календарь сериалов",
+        "description": "Name of the extension"
+    },
+    "extension_title": {
+        "message": "MyShows сериалы",
+        "description": "Extension title"
+    },
+    "loginMessage": {
+        "message": "Войти для авторизации расширения",
+        "description": "Login form message"
+    },
+    "loginInput_placeholder": {
+        "message": "Логин или E-mail",
+        "description": "Login input placeholder"
+    },
+    "passwordInput_placeholder": {
+        "message": "Пароль",
+        "description": "Password input placeholder"
+    },
+    "signup": {
+        "message": "Регистрация",
+        "description": "Signup link"
+    },
+    "loginButton": {
+        "message": "Войти",
+        "description": "Login Button"
+    },
+    "loggingIn": {
+        "message": "Вход...",
+        "description": "Login Button during logging"
+    },
+    "loginErrorMsg": {
+        "message": "Ошибка",
+        "description": "Login error message"
+    },
+    "emptyUsername": {
+        "message": "введите логин или E-mail",
+        "description": "Empty username input warning"
+    },
+    "emptyPassword": {
+        "message": "введите пароль",
+        "description": "Empty password input warning"
+    },
+    "invalidUsernameOrPassword": {
+        "message": "неправильный логин/E-mail или пароль",
+        "description": "Invalid username or password message"
+    },
+    "tabShows": {
+        "message": "Сериалы",
+        "description": "Name of the tab with list of watching shows"
+    },
+    "tabShows_title": {
+        "message": "Сериалы к просмотру",
+        "description": "Attribute title of the show tab"
+    },
+    "tabCalendar": {
+        "message": "Календарь",
+        "description": "Name of the tab with list of upcoming shows"
+    },
+    "tabCalendar_title": {
+        "message": "Список грядущих серий",
+        "description": "Attribute title of the calendar tab"
+    },
+    "tabPostponed": {
+        "message": "Позже",
+        "description": "Name of the tab with list of postponed shows"
+    },
+    "tabPostponed_title": {
+        "message": "Буду смотреть",
+        "description": "Attribute title of the postponed tab"
+    },
+    "signOut": {
+        "message": "Выход",
+        "description": "Sign out menu item"
+    },
+    "settings": {
+        "message": "Настройки",
+        "description": "Settings menu item"
+    },
+    "nextEpisodeToWatch_title": {
+        "message": "Следующая непросмотренная серия",
+        "description": "Attribute title of an element with short name of the next unwatched episode"
+    },
+    "externalSearch_title": {
+        "message": "Поиск сериала на внешних сайтах",
+        "description": "Attribute title of an button that opens list with websites"
+    },
+    "externalSearchLink_title": {
+        "message": "Поиск сериала на сайте",
+        "description": "Attribute title of a link to external site"
+    },
+    "externalSearchAdd": {
+        "message": "Добавить поиск...",
+        "description": "Open settings to add a new search"
+    },
+    "unwatchedNumber_title": {
+        "message": "Число непросмотренных серий",
+        "description": "Attribute title of an element with number of unwatched episodes"
+    },
+    "backButton_title": {
+        "message": "Назад к списку сериалов",
+        "description": "Back to main page button title attribute"
+    },
+    "logoLink_title": {
+        "message": "Открыть myshows.me",
+        "description": "Attribute title of logotype link"
+    },
+    "showLink_title": {
+        "message": "Открыть сериал на myshow",
+        "description": "Attribute title of a show's link"
+    },
+    "season": {
+        "message": "сезон",
+        "description": "Word season in header of season block"
+    },
+    "commentsNumber_title": {
+        "message": "Комментарии к серии",
+        "description": "Attribute title of episode's comments number"
+    },
+    "episodesNumber_one": {
+        "message": "$1 серия",
+        "description": "Number of episodes: 1, 21, 31..."
+    },
+    "episodesNumber_few": {
+        "message": "$1 серии",
+        "description": "Number of episodes: 2,3,4,22.."
+    },
+    "episodesNumber_many": {
+        "message": "$1 серий",
+        "description": "Number of episodes: 5,6,7,25.."
+    },
+    "daysNumber_one": {
+        "message": "день",
+        "description": "Number of days: 1, 21, 31..."
+    },
+    "daysNumber_few": {
+        "message": "дня",
+        "description": "Number of days: 2,3,4,22.."
+    },
+    "daysNumber_many": {
+        "message": "дней",
+        "description": "Number of days: 5,6,7,25.."
+    },
+    "hoursNumber_one": {
+        "message": "час",
+        "description": "Number of hours: 1,21"
+    },
+    "hoursNumber_few": {
+        "message": "часа",
+        "description": "Number of hours: 2,3,4,22.."
+    },
+    "hoursNumber_many": {
+        "message": "часов",
+        "description": "Number of hours: 5,6,7.."
+    },
+    "calendar_today": {
+        "message": "Сегодня",
+        "description": "Calendar: name of the group of episodes that air today"
+    },
+    "rate0_title": {
+        "message": "Нет оценки",
+        "description": "Attribute title rating: no stars"
+    },
+    "rate1_title": {
+        "message": "Не стоит смотреть",
+        "description": "Attribute title rating: 1 star"
+    },
+    "rate2_title": {
+        "message": "Так себе",
+        "description": "Attribute title rating: 2 stars"
+    },
+    "rate3_title": {
+        "message": "Можно посмотреть",
+        "description": "Attribute title rating: 3 stars"
+    },
+    "rate4_title": {
+        "message": "Хорошая серия",
+        "description": "Attribute title rating: 4 stars"
+    },
+    "rate5_title": {
+        "message": "Отличная серия",
+        "description": "Attribute title rating: 5 stars"
+    },
+    "postponedListTitle": {
+        "message": "Буду смотреть",
+        "description": "Title of the list with postponed shows"
+    },
+    "showsNumber_one": {
+        "message": "$1 сериал",
+        "description": "Number of shows: 1, 21, 31..."
+    },
+    "showsNumber_few": {
+        "message": "$1 сериала",
+        "description": "Number of shows: 2,3,4,22.."
+    },
+    "showsNumber_many": {
+        "message": "$1 сериалов",
+        "description": "Number of shows: 5,6,7,25.."
+    },
+    "postponedShowCount_title": {
+        "message": "Посмотрено эпизодов / Всего эпизодов",
+        "description": "Attribute title of postponed show's episodes number"
+    },
+    "settingFontSize": {
+        "message": "Базовый размер шрифта",
+        "description": "Settings: set basic font size"
+    },
+    "settingFontSize_title": {
+        "message": "Меняет размеры окна и шрифтов относительно выбранного базового размера",
+        "description": "Attribute title of font size setting"
+    },
+    "settingTheme": {
+        "message": "Тема:"
+    },
+    "settingThemeLight": {
+        "message": "светлая"
+    },
+    "settingThemeDark": {
+        "message": "тёмная"
+    },
+    "settingThemeAuto": {
+        "message": "автоматическая"
+    },
+    "settingDateFormat": {
+        "message": "Формат отображения дат",
+        "description": "Setting: set format of the dates"
+    },
+    "settingDateFormatDefault": {
+        "message": "язык интерфейса браузера",
+        "description": "Setting: date format default option"
+    },
+    "settingDateExample": {
+        "message": "Пример:",
+        "description": "Setting: date example"
+    },
+    "settingSortOrder": {
+        "message": "Порядок вывода эпизодов и сезонов:",
+        "description": "Setting: set sort order of episodes"
+    },
+    "settingSortOldToNew": {
+        "message": "от старых к новым",
+        "description": "Setting: sort order option from old to new"
+    },
+    "settingSortNewToOld": {
+        "message": "от новых к старым",
+        "description": "Setting: sort order option from new to old"
+    },
+    "settingDisplayTitles": {
+        "message": "Как показывать названия сериалов",
+        "description": "Setting: set displaying show's title"
+    },
+    "settingTitleOnlyOrig": {
+        "message": "только оригинальные названия",
+        "description": "Setting: display only original show's titles option"
+    },
+    "settingTitleRuAndOrig": {
+        "message": "русские и оригинальные",
+        "description": "Setting: display Russian and original show's titles option"
+    },
+    "settingTitleOrigAndRu": {
+        "message": "оригинальные и русские",
+        "description": "Setting: display original and Russian show's titles option"
+    },
+    "settingTitleRu": {
+        "message": "только русские",
+        "description": "Setting: display only Russian show's titles option"
+    },
+    "settingLocaleGroup_label": {
+        "message": "локализованные",
+        "description": "Attribute label for display show's titles option optgroup"
+    },
+    "settingSortShows": {
+        "message": "Размещать сериалы с новыми эпизодами наверху",
+        "description": "Setting: sort shows by latest episodes or not"
+    },
+    "settingShowNextEpisode": {
+        "message": "Всегда показывать следующий эпизод на вкладке \"Сериалы\"",
+        "description": "Setting: always show the next episode"
+    },
+    "settingShowNextEpisode_title": {
+        "message": "Всегда показывать следующий эпизод или только при наведении",
+        "description": "Attribute title for show next episode option"
+    },
+    "settingForceEngVer": {
+        "message": "Всегда открывать английскую версию сайта en.myshows.me",
+        "description": "Setting: always open English version"
+    },
+    "settingForceEngVer_title": {
+        "message": "При клике на ссылки открывать en.myshows.me вместо myshows.me",
+        "description": "Attribute title for force English version option"
+    },
+    "settingExternalLinksLegend": {
+        "message": "Поиск сериала на внешних ресурсах",
+        "description": "Setting: search a show on external websites:"
+    },
+    "settingExternalLinksInputName_placeholder": {
+        "message": "Название",
+        "description": "Placeholder for input with name"
+    },
+    "settingExternalLinksInputUrl_placeholder": {
+        "message": "URL напр. https://youtube.com/results?search_query=",
+        "description": "Placeholder for input with search url"
+    },
+    "settingExternalLinksRemoveField_title": {
+        "message": "Удалить поле поиска",
+        "description": "Attribute title for remove field button"
+    },
+    "settingExternalLinksAddField": {
+        "message": "Добавить поле",
+        "description": "Add a new filed button"
+    },
+    "noNewEpisodes": {
+        "message": "Нет новых серий.",
+        "description": "Blank page message"
+    },
+    "findNewShows": {
+        "message": "Найти сериалы для просмотра",
+        "description": "Blank page link"
+    }
+}

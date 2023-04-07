@@ -76,7 +76,8 @@ const rpcHandler = {
         // Intentionally sending requests sequentially (not concurrently with Promise.All)
         // to prevent triggering server's DDOS protection if the batch contains too many requests
         for (let i = 0; i < body.length; i += N) {
-            results.push(...(await this.request(body.slice(i, i + N), withAuth))); // eslint-disable-line no-await-in-loop
+            // eslint-disable-next-line no-await-in-loop
+            results.push(...(await this.request(body.slice(i, i + N), withAuth)));
         }
 
         return results.filter(({ error, id }) => {

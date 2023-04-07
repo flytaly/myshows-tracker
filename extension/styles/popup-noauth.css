@@ -1,0 +1,82 @@
+@import url('./modern-normalize.css');
+@import url('./colors.css');
+@import url('./popup/header.css');
+
+html {
+    font-size: 62.5%; /* ==10px if default font size is 16px */
+}
+
+body {
+    margin: 0;
+    font-size: 1.5rem;
+    width: 25rem;
+    background-color: hsl(220, 5%, 88%);
+}
+
+main {
+    padding: 2rem 1rem;
+    width: 100%;
+}
+
+.message {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    widows: 100%;
+}
+
+form > * {
+    margin-bottom: 0.5rem;
+}
+
+.message {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.error {
+    color: darkred;
+}
+
+input {
+    width: 100%;
+    font-size: 1.5rem;
+    padding: 0.2em 0.5em;
+    vertical-align: baseline;
+    border-radius: 4px;
+    border: 1px solid #cccccc;
+    background-color: #ffffff;
+}
+
+button {
+    width: 15rem;
+    padding: 0.32em 1em 0.38em;
+    font-size: 1.6rem;
+    font-weight: bold;
+    text-align: center;
+    color: #ffffff;
+    background: linear-gradient(to bottom, #6992e0 0%, #5b7dbb 100%);
+    border-color: transparent;
+    transition: box-shadow 0.25s;
+}
+
+button:hover {
+    box-shadow: 0 0 1.2rem 0.3rem rgba(91, 125, 187, 0.9);
+}
+
+button:active {
+    width: 15rem;
+    transform: scale(0.98);
+    background: linear-gradient(to bottom, #6992e0 0%, #5b7dbb 100%);
+    box-shadow: 0 0 0 0 rgba(91, 125, 187, 0.9);
+}
+
+.sign-up {
+    text-align: right;
+    font-size: 1.2rem;
+}

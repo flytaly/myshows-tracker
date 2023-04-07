@@ -1,12 +1,20 @@
 /* eslint-disable no-unused-expressions,no-underscore-dangle */
-import state from './state.js';
+import browser from 'webextension-polyfill';
 import storage from '../storage.js';
 import types from '../types.js';
 import app from './app.js';
 import setDefaultSettings from '../set-default-settings.js';
 import { setBadgeAndTitle } from './helpers.js';
+import { togglePopup } from './toggle-popup.js';
+import state from './state.js';
 
 async function update() {
+    const { accessToken } = await storage.getAuthData();
+    if (!accessToken) {
+        togglePopup(true);
+        return;
+    }
+    if (state.updating) return;
     state.updating = true;
     try {
         await app.updateData();
@@ -16,20 +24,14 @@ async function update() {
         console.error(`${e.name}: ${e.message} \n ${e.stack}`);
         if (e.name === 'AuthError' && e.needAuth) {
             state.updating = false;
-            await app.setAuth();
+            togglePopup(true);
         }
-        browser.alarms.create(types.ALARM_UPDATE, { delayInMinutes: 0.5 });
+        browser.alarms.create(types.ALARM_UPDATE, { delayInMinutes: 2 });
     }
     state.updating = false;
 }
 
 const startExtension = async () => {
-    const { accessToken } = await storage.getAuthData();
-
-    if (!accessToken) {
-        await app.setAuth();
-    }
-
     const watchingShows = await storage.getWatchingShows();
 
     if (watchingShows) {
@@ -39,29 +41,23 @@ const startExtension = async () => {
     await update();
 };
 
-// requestIdleCallback doesn't work in Chrome
-if (TARGET === 'chrome') {
-    startExtension();
-} else {
-    // firefox
-    window.requestIdleCallback(startExtension);
-}
+startExtension();
 
 browser.runtime.onInstalled.addListener(async () => {
     await setDefaultSettings();
 });
 
 browser.runtime.onConnect.addListener(async (port) => {
+    console.log(`Connected with ${port.name}`);
     state.popupPort = port;
 
-    state.popupPort.onMessage.addListener(async (message) => {
+    port.onMessage.addListener(async (message) => {
         const { type, payload } = message;
         switch (type) {
             case types.SIGN_OUT:
                 await browser.alarms.clearAll();
                 await storage.clear();
-                await app.setAuth();
-                await update();
+                togglePopup(true);
                 break;
             case types.RATE_EPISODE:
                 await app.rateEpisode(payload.episodeId, payload.rating, payload.showId);
@@ -69,6 +65,7 @@ browser.runtime.onConnect.addListener(async (port) => {
             case types.LOGIN: {
                 try {
                     await app.login(payload.username, payload.password);
+                    togglePopup();
                     await update();
                 } catch (e) {
                     state.loginError = e;
@@ -79,9 +76,10 @@ browser.runtime.onConnect.addListener(async (port) => {
         }
     });
 
-    state.popupPort.onDisconnect.addListener(() => {
+    port.onDisconnect.addListener(() => {
         state.popupPort = null;
     });
+
     // force update if popup has been opened
     if (!state.updating) {
         await update();
