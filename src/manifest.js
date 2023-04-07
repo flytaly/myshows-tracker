@@ -14,7 +14,7 @@ function browserSpecific() {
     if (TARGET === 'firefox') {
         manifest.browser_specific_settings = {
             gecko: {
-                strict_min_version: '109',
+                strict_min_version: '109.0',
                 id: 'myshows@flytaly',
             },
         };
