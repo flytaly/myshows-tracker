@@ -4,7 +4,7 @@ import { TARGET } from '../scripts/utils.js';
 function browserSpecific() {
     const manifest = {};
     if (TARGET === 'chrome') {
-        manifest.minimum_chrome_version = '86';
+        manifest.minimum_chrome_version = '105';
         manifest.key =
             'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzS/1DCNgzInyNUYNZcwDad5+SZPVAsiQaXfTC2k14b9CE3E2WWSROMK9BDesmKk5bOlrDyNlu0ZU5/kR8BBIKX1Hh6ZiXT2tZz+Q/YW3J2Tv6aqPYsOubzG2b2alcVjeO/HP30CDYMl5ia0GmGd4/nshWKrEH8/e8vYwlXM2dvsZEAZ0Rp2VliC5ycc8qoZXLk/MxFeC1jduqpfs5nkoe6TOsAU8svJerTUlpt1acU66xoRqOW+XsnHGlOb0zox9wY+PwSI2yCEJIXYh3OcOUqFCXmlGzJ+uVlFcnKvWFHViuO6r20Sb7aeEAB9kDSph/2iRIKQcDodGgPEKQV026wIDAQAB';
         manifest.background = {
@@ -12,9 +12,9 @@ function browserSpecific() {
         };
     }
     if (TARGET === 'firefox') {
-        manifest.applications = {
+        manifest.browser_specific_settings = {
             gecko: {
-                strict_min_version: '101',
+                strict_min_version: '109',
                 id: 'myshows@flytaly',
             },
         };
