@@ -22,7 +22,7 @@ Create production build in the **extension** folder.
     npm run build:chrome
     npm run build:ff
 
-The extension uses [MyShows API](http://api.myshows.me/). Use need to create `.env` file and add credentials there.
+The extension uses [MyShows API](http://api.myshows.me/). You need to create `.env` file and add credentials in it.
 
 ## License
 
