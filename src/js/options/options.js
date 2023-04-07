@@ -69,8 +69,9 @@ function createUrlField(template, { name = '', url = '' } = {}) {
     nameElem.value = name;
     urlElem.value = url;
     deleteElem.addEventListener('click', ({ target }) => {
-        const fieldset = target.parentNode.parentNode;
-        fieldset.removeChild(target.parentNode);
+        const fieldset = target.closest('fieldset');
+        const li = target.closest('li');
+        target.closest('ul')?.removeChild(li);
         saveExternalLinks(fieldset);
     });
     return addSearchElem;
