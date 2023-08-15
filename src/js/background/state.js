@@ -28,7 +28,7 @@ const state = new Proxy(
                     break;
                 case 'totalEpisodes':
                     browser.action.setBadgeBackgroundColor({ color: '#252525' });
-                    browser.action.setBadgeText({ text: value ? value.toString() : null });
+                    browser.action.setBadgeText({ text: value ? value.toString() : '' });
                     break;
                 case 'extensionTitle':
                     browser.action.setTitle({ title: value });
