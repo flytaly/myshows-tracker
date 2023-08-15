@@ -1,6 +1,8 @@
-import { resolve } from 'path';
+import { resolve, dirname } from 'path';
 import { bgCyan, black } from 'kolorist';
 import dotenv from 'dotenv';
+
+import { fileURLToPath } from 'url';
 
 export const IS_DEV = process.env.NODE_ENV === 'development';
 export const TARGET = process.env.TARGET === 'firefox' ? 'firefox' : 'chrome';
@@ -14,6 +16,9 @@ export function log(name, message) {
     // eslint-disable-next-line no-console
     console.log(black(bgCyan(` ${name} `)), message);
 }
+
+// eslint-disable-next-line no-underscore-dangle
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /** @param  {...string} args */
 export const r = (...args) => resolve(__dirname, '..', ...args);
