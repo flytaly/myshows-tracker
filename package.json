@@ -1,6 +1,6 @@
 {
     "name": "myshows-tracker",
-    "version": "3.0.0",
+    "version": "3.0.2",
     "description": "Myshows.me browser extension for tracking TV shows",
     "main": "extension/manifest.json",
     "type": "module",
