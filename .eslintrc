@@ -5,7 +5,7 @@
         "sourceType": "module"
     },
     "env": {
-        "browser": true,
+        "browser": true
     },
     "plugins": ["prettier"],
     "rules": {
@@ -21,6 +21,7 @@
                 "ignoreTemplateLiterals": true
             }
         ],
+        "consistent-return": "off",
         "no-console": "off",
         "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"],
         "import/prefer-default-export": "off",

@@ -31,7 +31,12 @@ async function update() {
     state.updating = false;
 }
 
+let isStarted = false;
+
 const startExtension = async () => {
+    if (isStarted) return;
+    isStarted = true;
+
     const watchingShows = await storage.getWatchingShows();
 
     if (watchingShows) {
@@ -45,6 +50,10 @@ startExtension();
 
 browser.runtime.onInstalled.addListener(async () => {
     await setDefaultSettings();
+});
+
+browser.runtime.onStartup.addListener(async () => {
+    startExtension();
 });
 
 browser.runtime.onConnect.addListener(async (port) => {
@@ -82,11 +91,11 @@ browser.runtime.onConnect.addListener(async (port) => {
 
     // force update if popup has been opened
     if (!state.updating) {
-        await update();
-    } else {
-        // set state as true again so it send message to the popup
-        state.updating = true;
+        const wasUpdated = (state.lastUpdate || 0) > Date.now() - 5000;
+        return !wasUpdated ? update() : undefined;
     }
+    // set state as true again so it send message to the popup
+    state.updating = true;
 });
 
 browser.alarms.onAlarm.addListener(async ({ name }) => {
